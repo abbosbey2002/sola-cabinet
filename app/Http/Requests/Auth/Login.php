@@ -13,6 +13,10 @@ class Login extends FormRequest
      */
     public function rules()
     {
+        if ($this->isMethod('get')) {
+            return [];
+        }
+
         return [
             'login' => 'required'
         ];
