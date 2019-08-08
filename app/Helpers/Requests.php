@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Helpers;
 use App\Http\Requests\Auth\Verify;
 use GuzzleHttp\Client;
@@ -11,6 +10,9 @@ use App\Http\Requests\Auth\Verify as VerifyRequest;
 use App\Http\Requests\Abonent\Edit as AbonentEditRequest;
 use App\Http\Requests\Wifi\Password as WifiPasswordRequest;
 use App\Http\Requests\Payment\History as PaymentHistoryRequest;
+use App\Http\Requests\Traffic\Detail as TrafficDetailRequest;
+use App\Http\Requests\Tariff\Set as SetTariffRequest;
+
 
 class Requests
 {
@@ -241,6 +243,12 @@ class Requests
     }
 
 
+    /**
+     * @param PaymentHistoryRequest $request
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getPayments(PaymentHistoryRequest $request, string $method = 'POST')
     {
         $url = "{$this->url}/acct/payments";
@@ -260,5 +268,182 @@ class Requests
 
         return false;
     }
+
+    /**
+     * @param TrafficDetailRequest $request
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getTrafficDetail(TrafficDetailRequest $request, string $method = 'POST')
+    {
+        $url = "{$this->url}/traffic/detail";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'detail_month' => $request->getMonth(),
+            'lang' => $this->lang
+        ];
+
+        $response = $this->client->request($method, $url, [
+            $this->header($json)
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return $this->setData($response);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getTariff(string $method = 'POST')
+    {
+        $url = "{$this->url}/tariff/available";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => $this->lang
+        ];
+
+        $response = $this->client->request($method, $url, [
+            $this->header($json)
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return $this->setData($response);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function TariffConnected(string $method = 'POST')
+    {
+        $url = "{$this->url}/tariff/connected";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => $this->lang
+        ];
+
+        $response = $this->client->request($method, $url, [
+            $this->header($json)
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return $this->setData($response);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param SetTariffRequest $request
+     * @param $tariff_id
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function setTariff(SetTariffRequest $request, $tariff_id, string $method = 'POST')
+    {
+        $url = "{$this->url}/tariff/connect";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'tariff_id' => $tariff_id,
+            'tariff_conndate' => $request->getTariffDate()
+        ];
+
+        $response = $this->client->request($method, $url, [
+            $this->header($json)
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return $this->setData($response);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param $tariff_id
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function TariffDisConnect($tariff_id, string $method = 'POST')
+    {
+        $url = "{$this->url}/tariff/disconnect";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'tariff_id' => $tariff_id
+        ];
+
+        $response = $this->client->request($method, $url, [
+            $this->header($json)
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return $this->setData($response);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function newDevice(string $method = 'POST')
+    {
+        $url = "{$this->url}/device/new";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => $this->lang
+        ];
+
+        $response = $this->client->request($method, $url, [
+            $this->header($json)
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return $this->setData($response);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $method
+     * @return array|bool
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getDevices(string $method = 'POST')
+    {
+        $url = "{$this->url}/device/list";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => $this->lang
+        ];
+
+        $response = $this->client->request($method, $url, [
+            $this->header($json)
+        ]);
+
+        if ($response->getStatusCode() == 200) {
+            return $this->setData($response);
+        }
+
+        return false;
+    }
+
+
+
 
 }
