@@ -23,4 +23,37 @@ class SetCookie
 
         Cookie::queue('data', $data, 1000);
     }
+
+    /**
+     * @param $login
+     */
+    public function setLogin($login)
+    {
+        Cookie::queue('login', $login, 1000);
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogin(): string
+    {
+        return (string) Cookie::get('login');
+    }
+
+    /**
+     * @param $id
+     */
+    public function setAccID($id)
+    {
+        Cookie::queue('account', $id, 1000);
+    }
+
+    /**
+     * @return string
+     */
+    public function getAccID(): string
+    {
+        return (string) Cookie::get('account');
+    }
+
 }
