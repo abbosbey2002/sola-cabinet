@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::group(['prefix' => 'cabinet', 'namespace' => 'Site\Cabinet'], function () {
+   Route::get('/', 'Controller@index')->name('cabinet');
+});
