@@ -13,14 +13,17 @@ use \Exception;
 class Controller extends BaseController
 {
     protected $requests;
+    protected $cookie;
 
     /**
      * Controller constructor.
      * @param Requests $requests
+     * @param SetCookie $cookie
      */
-    public function __construct(Requests $requests)
+    public function __construct(Requests $requests, SetCookie $cookie)
     {
         $this->requests = $requests;
+        $this->cookie = $cookie;
     }
 
     /**
@@ -35,7 +38,11 @@ class Controller extends BaseController
             return abort(500);
         }
 
-        return view('site.cabinet.index', compact('info'));
+        if (empty(request()->cookie('account'))) {
+            $this->cookie->setAccID($info['body']['acc_id']);
+        }
+
+        return $this->view('cabinet.index', compact('info'));
     }
 
 }

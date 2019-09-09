@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\Login as LoginRequest;
 use App\Http\Requests\Auth\Verify as VerifyRequest;
 
 use App\Helpers\Requests;
+use App\Helpers\SetCookie;
 use App\Helpers\Errors;
 
 use \Exception;
@@ -17,16 +18,19 @@ class Controller extends BaseController
 {
     protected $request;
     protected $errors;
+    protected $cookie;
 
     /**
      * Controller constructor.
      * @param Requests $request
      * @param Errors $errors
+     * @param SetCookie $cookie
      */
-    public function __construct(Requests $request, Errors $errors)
+    public function __construct(Requests $request, Errors $errors, SetCookie $cookie)
     {
         $this->request = $request;
         $this->errors = $errors;
+        $this->cookie = $cookie;
     }
 
     /**
@@ -37,21 +41,25 @@ class Controller extends BaseController
     public function login(LoginRequest $request)
     {
         if ($request->isMethod('get')) {
-            return view('site.auth.login');
+            return $this->view('auth.login', null);
         }
 
         try {
            $response = $this->request->identify($request);
         } catch (Exception $exception) {
-            return abort(403);
+            //return abort(403);
         }
 
+        //return $response;
+
+        //return $request->cookie('data');
+
         if ($response['status'] == 200) {
-            return view('site.auth.verify');
+            return $this->view('auth.verify', null);
         }
 
         $message = $this->errors->message($response['body']['code']);
-        return view('site.auth.login')->withErrors($message);
+        return $this->view('auth.login', null)->withErrors($message);
     }
 
     /**
@@ -62,21 +70,33 @@ class Controller extends BaseController
     public function verify(VerifyRequest $request)
     {
         if ($request->isMethod('get')) {
-            return view('site.auth.verify');
+            return $this->view('auth.verify', null);
         }
+
 
         try {
             $response = $this->request->verify($request);
         } catch (Exception $exception) {
-            return abort(403);
+            //return abort(403);
         }
+
+        //return $response;
 
         if ($response['status'] == 200) {
             return redirect()->route('cabinet');
         }
 
         $message = $this->errors->message($response['body']['code']);
-        return view('site.auth.verify')->withErrors($message);
+        return $this->view('auth.verify', null)->withErrors($message);
+    }
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function logout()
+    {
+        $this->cookie->logout();
+        return redirect()->route('login');
     }
 
 }

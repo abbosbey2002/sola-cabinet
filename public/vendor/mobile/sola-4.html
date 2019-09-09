@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<title>Document</title>
+
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/media.css">
+	<link rel="stylesheet" href="libs/touch-sideswipe-master/touch-sideswipe.min.css">
+	<link rel="stylesheet" href="fonts/museosanscyrl/museosanscyrl.css">
+	<link rel="stylesheet" href="libs/swiper-slider/swiper.min.css">
+	<link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css">
+	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
+
+</head>
+<body>
+	
+
+
+
+
+	<div class="top-div">
+		<a href="#">
+			<img src="images/logo.png" class="main-logo responsive-logo img-width logo-img" alt="logo">
+		</a>
+		<a href="#" class="exit_link">
+			<img src="images/exit.png" class="img-width" alt="">
+		</a>
+	</div>
+
+	<!-- MOBILE MENU -->
+
+	<nav id="touchSideSwipe" class="touch-side-swipe responsive-nav">
+
+		<div class="container p-0">
+			<div id="menu">
+				<div class="logo-div text-center">
+
+
+
+
+				</div>
+				<a href="#" class="main_color text-center pb-4">Узбекский язык</a>
+
+				<div class="mycontainer2">
+					<ul class="main-ul">
+						<li><a href="#section01" class="link"><img src="images/link1.png" class="mr-3" alt="">ДАННЫЕ</a></li>
+						<li><a href="#section02" class="link"><img src="images/link2.png" class="mr-3" alt="">СТАТИСТИКА</a></li>
+						<li><a href="#section04" class="link"><img src="images/link3.png" class="mr-3" alt="">ФИНАНСОВАЯ СТАТИСТИКА</a></li>
+						<li><a href="#section04" class="link"></a></li>
+					</ul> <!-- main-ul -->
+
+
+					<p class="menu_p">
+						Есть вопросы? Позвоните: <br>
+						<a href="tel: 1130">1130</a> 
+						или 
+						<a href="tel: 712070806">+998 71 207-08-06</a>
+					</p>
+				</div> <!-- mycontainer -->
+
+			</div> <!-- #menu -->
+
+		</div> <!-- container -->
+		<p class="menu_bottom_p">Личный кабинет Sola©2019. Все права защищены. <br>
+		Разработка и дизайн Usoft</p>
+	</nav> <!-- touch-side-swipe responsive-nav -->
+
+
+	<div class="nav_noner">
+
+	</div>
+
+
+	<section class="section1">
+		<div class="mycontainer">
+			<h4>Ваш лицевой счет: SOLA3333000 </h4>
+			<div class="myborder_bottom info_block">
+				<img src="images/purse.png" alt="">
+				<div class="d-flex flex-column">
+					<h3>На вашем счету:</h3>
+					<span class="green_span">23 723 500 UZS</span>
+				</div> <!-- d-flex -->
+			</div> <!-- info_block -->
+
+			<div class="myborder_bottom info_block">
+				<img src="images/tairf.png" alt="">
+				<div class="d-flex flex-column">
+					<h3>Ваш тариф:</h3>
+					<span class="green_span">UNLIM 2</span>
+				</div> <!-- d-flex -->
+			</div> <!-- info_block -->
+
+			<a href="#" class="mybtn mt-4">СМЕНИТЬ ТАРИФ</a>
+		</div> <!-- mycontainer -->
+	</section> <!-- main-section -->
+
+	<section class="section position-relative red_bg section2">
+		<div class="mycontainer">
+			<h2 class="mb-4">Статистика трафика:</h2>
+		</div> <!-- mycontainer -->
+		<div class="position-relative">
+			<canvas id="myChart" width="50" height="50"></canvas>
+
+			<img src="images/myshadow.png" class="myshadow" alt="">
+
+			<div class="recieve_info">
+				<h3>50298 MB</h3>
+				<div class="d-flex justify-content-center align-items-center">
+					<div class="chart_color redwhite_bg mr-2"></div> <!-- chart_color -->
+					<p>получено</p>
+				</div> <!-- d-flex -->
+			</div> <!-- recieve_info -->
+		</div> <!-- position-relative -->
+
+		<div class="row justify-content-center m-0">
+			<div class="col-8">
+				<div class="chart_info">
+					<h4>отправлено/получено</h4>
+					<div class="d-flex justify-content-center align-items-center">
+						<div class="chart_color red_bg mr-2"></div> <!-- chart_color -->
+						<p>отправлено 6018 MB</p>
+					</div> <!-- d-flex -->
+				</div> <!-- chart_info -->
+			</div> <!-- col-8 -->
+		</div> <!-- row -->
+		
+	</section> <!-- section -->
+
+	<section class="section position-relative purple_bg section2">
+		<div class="position-relative">
+			<canvas id="myChart2" width="50" height="50"></canvas>
+			<img src="images/myshadow.png" class="myshadow2" alt="">
+			<div class="recieve_info">
+				<h3>50632 MB</h3>
+				<div class="d-flex justify-content-center align-items-center">
+					<div class="chart_color purplewhite_bg mr-2"></div> <!-- chart_color -->
+					<p>internet</p>
+				</div> <!-- d-flex -->
+			</div> <!-- recieve_info -->
+		</div> <!-- position-relative -->
+
+		<div class="row justify-content-center m-0">
+			<div class="col-8">
+				<div class="chart_info">
+					<h4>подсети</h4>
+					<div class="d-flex justify-content-center align-items-center">
+						<div class="chart_color purple_bg mr-2"></div> <!-- chart_color -->
+						<p>TAS-IX 4582 MB</p>
+					</div> <!-- d-flex -->
+				</div> <!-- chart_info -->
+			</div> <!-- col-8 -->
+		</div> <!-- row -->
+		
+	</section> <!-- section -->
+
+
+	<section class="dark_bg section section2">
+
+		<div class="mycontainer">
+			
+			<h3>Общий трафик</h3>
+
+		</div> <!-- mycontainer -->
+
+		<table class="table mytable table-sm">
+			<thead>
+				<tr>
+					<th scope="col">Тип</th>
+					<th scope="col">Длительность</th>
+					<th scope="col">Получено</th>
+					<th scope="col">Отправлено</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Internet</td>
+					<td>485:48:36</td>
+					<td>250062.4 MB</td>
+					<td>26480.5 MB</td>
+				</tr>
+				<tr>
+					<td>Tas-ix</td>
+					<td>485:46:56</td>
+					<td>28577.0 MB</td>
+					<td>8309.2 MB</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+	</section> <!-- dark_bg -->
+
+
+
+	<footer>
+		<p>
+			Личный кабинет Sola©2019. Все права защищены. <br>
+			Разработка и дизайн Usoft
+		</p>
+	</footer> <!-- footer -->
+
+
+
+
+	<script src="js/jquery.js"></script>
+	<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+	<script src="libs/bootstrap/js/popper.min.js"></script>
+	<script src="js/chart.min.js"></script>
+	<script src="libs/swiper-slider/swiper.min.js"></script>
+	<script src="libs/touch-sideswipe-master/touch-sideswipe.min.js"></script>
+	<script src="js/smoothscroll.min.js"></script>
+
+	<script src="js/main.js"></script>
+
+	<script>
+		var ctx = document.getElementById('myChart');
+		
+		var myChart = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				
+				datasets: [{
+					label: '',
+					data: [6018, 50298 ],
+					backgroundColor: [
+					'#00000000',
+					'#f6aeae'
+					],
+					hoverBackgroundColor: [
+					'#00000000',
+					'#f6aeae'
+					],
+					
+					borderColor: "#00000000"
+				}],
+				
+			},
+			options: {
+				legend: {
+					labels: {
+						fontColor: '#fff'
+					}
+				}
+			}
+		});
+
+		var ctx = document.getElementById('myChart2');
+		var myChart2 = new Chart(ctx, {
+			type: 'doughnut',
+			data: {
+				
+				datasets: [{
+					label: '',
+					data: [6018, 50298 ],
+					backgroundColor: [
+					'#00000000',
+					'#d5cffa'
+					],
+					hoverBackgroundColor: [
+					'#00000000',
+					'#d5cffa'
+					],
+					borderColor: "#00000000",
+
+				}],
+			},
+			options: {
+				legend: {
+					labels: {
+						fontColor: '#fff'
+					}
+				}
+			}
+		});
+	</script>
+</body>
+</html>

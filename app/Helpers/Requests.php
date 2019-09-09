@@ -44,7 +44,7 @@ class Requests
     private function generateAuthToken($requestJSON)
     {
         $userName = env('SOLA_USERNAME');
-        $secretKey = env('SOLA_PASSWORD');
+        $secretKey = env('SOLA_SECRET_KEY');
         $json = json_encode($requestJSON);
 
         $auth = "{$userName} {$secretKey} {$json}";
@@ -62,8 +62,9 @@ class Requests
             'json' => $json,
             'http_errors' => false,
             'headers' =>[
-                'X-Access-Token' => $this->token,
-                'Authorization' => $this->generateAuthToken($json)
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
             ]
         ];
     }
@@ -88,6 +89,7 @@ class Requests
      */
     public function identify(LoginRequest $request, string $method = 'POST')
     {
+
         $url = "{$this->url}/identify";
 
         $json = [
@@ -95,20 +97,30 @@ class Requests
             'lang' => $this->lang
         ];
 
+        //return $this->generateAuthToken($json);
+
         $response = $this->client->request($method, $url, [
-            $this->header($json)
-        ]);
+                'json' => $json,
+                'http_errors' => false,
+                'headers' =>[
+                    'X-Access-Token' => $this->generateAuthToken($json),
+                    'Authorization' => $this->token,
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
 
         $this->cookie->setLogin($request->getLogin());
 
         $data = $this->setData($response);
+
+        //return $response->getBody();
 
         if ($response->getStatusCode() == 200) {
             $this->cookie->AbonentType($data['body']['abonType']);
             return $data;
         }
 
-        return false;
+        return $data;
     }
 
     /**
@@ -122,20 +134,28 @@ class Requests
         $url = "{$this->url}/verify";
 
         $json = [
-            'phn' => $request->getLogin(),
-            'smsCode' => $request->getPassword(),
+            'phn' => $request->cookie('login'),
+            'smsCode' => $request->getCode(),
             'lang' => $this->lang
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
         ]);
 
-        if ($response->getBody() == 200) {
-            return $this->setData($response);
-        }
+        $data = $this->setData($response);
 
-        return false;
+//        if ($response->getBody() == 200) {
+//            return $this->cookie->setAccID();
+//        }
+
+        return $data;
     }
 
     /**
@@ -153,8 +173,16 @@ class Requests
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+                'json' => $json,
+                'http_errors' => false,
+                'headers' =>[
+                    'X-Access-Token' => $this->generateAuthToken($json),
+                    'Authorization' => $this->token,
+                    'Content-Type' => 'application/json'
+                ]
         ]);
+
+       //return $response->getBody();
 
         if ($response->getStatusCode() == 200) {
             return $this->setData($response);
@@ -275,24 +303,33 @@ class Requests
      * @return array|bool
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getTrafficDetail(TrafficDetailRequest $request, string $method = 'POST')
+    public function getTrafficDetail(string $method = 'POST')
     {
+        return $this->cookie->getAccID();
         $url = "{$this->url}/traffic/detail";
         $json = [
-            'acc_id' => $this->cookie->getAccID(),
-            'detail_month' => $request->getMonth(),
+            'acc_id' => 1215371, //$this->cookie->getAccID(),
+            'detail_month' => '2019-09',//$request->getMonth(),
             'lang' => $this->lang
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
         ]);
 
+        $data = $this->setData($response);
+
         if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
+            return $data;
         }
 
-        return false;
+        return $data;
     }
 
     /**
@@ -304,19 +341,23 @@ class Requests
     {
         $url = "{$this->url}/tariff/available";
         $json = [
-            'acc_id' => $this->cookie->getAccID(),
+            'acc_id' => request()->cookie('account'),//$this->cookie->getAccID(),
             'lang' => $this->lang
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
         ]);
 
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
+        $data = $this->setData($response);
 
-        return false;
+        return $data;
     }
 
     /**
@@ -433,17 +474,21 @@ class Requests
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
         ]);
 
+        $data = $this->setData($response);
+
         if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
+            return $data;
         }
 
-        return false;
+        return $data;
     }
-
-
-
-
 }

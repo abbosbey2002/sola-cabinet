@@ -17,9 +17,9 @@ class SetCookie
         //1 - разовый
         //2 - постоянный
 
-        $data = [
+        $data = json_encode([
             'type' => $type
-        ];
+        ]);
 
         Cookie::queue('data', $data, 1000);
     }
@@ -54,6 +54,13 @@ class SetCookie
     public function getAccID(): string
     {
         return (string) Cookie::get('account');
+    }
+
+    public function logout()
+    {
+        \Cookie::forget('account');
+        \Cookie::forget('login');
+        \Cookie::forget('data');
     }
 
 }

@@ -15,19 +15,15 @@ class Verify extends FormRequest
     public function rules()
     {
         return [
-            'login' => 'required',
-            'password' => 'required'
+            'code' => 'required'
         ];
     }
 
-
-    public function getLogin(): string
+    /**
+     * @return string
+     */
+    public function getCode(): string
     {
-        return (string) $this->get('login');
-    }
-
-    public function getPassword(): string
-    {
-        return (string) $this->get('password');
+        return (string) $this->get('code');
     }
 }
