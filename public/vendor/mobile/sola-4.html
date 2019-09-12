@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="">
+
 <head>
 
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-	<title>Document</title>
+	<title>Sola-4</title>
 
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/media.css">
@@ -14,11 +15,14 @@
 	<link rel="stylesheet" href="libs/swiper-slider/swiper.min.css">
 	<link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css">
 	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-	<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
-
+	<link rel='stylesheet prefetch'
+		href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
+	<!-- Jquery Modal css-->
+	<!-- <link rel="stylesheet" href="libs/jquery-modal/jquery.modal.min.css"> -->
 </head>
+
 <body>
-	
+
 
 
 
@@ -48,17 +52,22 @@
 
 				<div class="mycontainer2">
 					<ul class="main-ul">
-						<li><a href="#section01" class="link"><img src="images/link1.png" class="mr-3" alt="">ДАННЫЕ</a></li>
-						<li><a href="#section02" class="link"><img src="images/link2.png" class="mr-3" alt="">СТАТИСТИКА</a></li>
-						<li><a href="#section04" class="link"><img src="images/link3.png" class="mr-3" alt="">ФИНАНСОВАЯ СТАТИСТИКА</a></li>
-						<li><a href="#section04" class="link"></a></li>
+						<li><a href="#section01" class="link"><img src="images/link1.png" class="mr-3" alt="">ДАННЫЕ</a>
+						</li>
+						<li><a href="#section02" class="link"><img src="images/link2.png" class="mr-3"
+									alt="">СТАТИСТИКА</a></li>
+						<li><a href="#section04" class="link"><img src="images/link3.png" class="mr-3" alt="">ФИНАНСОВАЯ
+								СТАТИСТИКА</a></li>
+						<li><a href="#section04" class="link"><img src="images/link4.png" class="mr-3"
+									alt="">ДОПОЛНИТЕЛЬНЫЕ УСЛУГИ</a></li>
+						<li><a href="#section05" class="link"></a></li>
 					</ul> <!-- main-ul -->
 
 
 					<p class="menu_p">
 						Есть вопросы? Позвоните: <br>
-						<a href="tel: 1130">1130</a> 
-						или 
+						<a href="tel: 1130">1130</a>
+						или
 						<a href="tel: 712070806">+998 71 207-08-06</a>
 					</p>
 				</div> <!-- mycontainer -->
@@ -67,7 +76,7 @@
 
 		</div> <!-- container -->
 		<p class="menu_bottom_p">Личный кабинет Sola©2019. Все права защищены. <br>
-		Разработка и дизайн Usoft</p>
+			Разработка и дизайн Usoft</p>
 	</nav> <!-- touch-side-swipe responsive-nav -->
 
 
@@ -95,7 +104,16 @@
 				</div> <!-- d-flex -->
 			</div> <!-- info_block -->
 
-			<a href="#" class="mybtn mt-4">СМЕНИТЬ ТАРИФ</a>
+			<button type="button" class="mybtn mt-4" data-toggle="modal" data-target="#change-modal">
+				СМЕНИТЬ ТАРИФ
+			</button>
+
+			<div class="statics-tarif">
+				<p>Статистика трафика <span>за январь</span></p>
+				<button type="button" class="btn" data-toggle="modal" data-target="#statics-modal">
+					ВЫБРАТЬ ДАТУ
+				</button>
+			</div>
 		</div> <!-- mycontainer -->
 	</section> <!-- main-section -->
 
@@ -128,7 +146,7 @@
 				</div> <!-- chart_info -->
 			</div> <!-- col-8 -->
 		</div> <!-- row -->
-		
+
 	</section> <!-- section -->
 
 	<section class="section position-relative purple_bg section2">
@@ -155,14 +173,14 @@
 				</div> <!-- chart_info -->
 			</div> <!-- col-8 -->
 		</div> <!-- row -->
-		
+
 	</section> <!-- section -->
 
 
 	<section class="dark_bg section section2">
 
 		<div class="mycontainer">
-			
+
 			<h3>Общий трафик</h3>
 
 		</div> <!-- mycontainer -->
@@ -204,7 +222,86 @@
 		</p>
 	</footer> <!-- footer -->
 
+	<!-- Statics Tarif Modal -->
+	<div class="modal fade" id="statics-modal">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
 
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Выберите месяц</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form action="form.php">
+						<select name="month" id="month" required>
+							<option value="val1"><span>Январь</span></option>
+							<option value="val2">Февраль</option>
+							<option value="val3">Март</option>
+							<option value="val4">Апрель</option>
+							<option value="val5">Май</option>
+							<option value="val6">Июнь</option>
+							<option value="val7">Июль</option>
+							<option value="val8">Август</option>
+							<option value="val9">Сентябрь</option>
+							<option value="val10">Октябрь</option>
+							<option value="val11">Ноябрь</option>
+							<option value="val12">Декабрь</option>
+						</select>
+
+						<button type="submit" class="mybtn mt-4">выбрать</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Change Tarif Modal -->
+	<div class="modal fade" id="change-modal">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Когда подключить?</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form action="form.php">
+						<button type="button" class="mybtn" data-toggle="modal" data-target="#sucess-modal">СЕЙЧАС</button>
+						<button type="button" class="mybtn mt-4" data-toggle="modal" data-target="#sucess-modal">С НОВОГО МЕСЯЦА</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Success Modal -->
+	<div class="modal fade" id="sucess-modal">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header d-flex justify-content-center flex-column align-items-center">
+					<img src="images/check-mark.png" alt="Check icon">
+					<h4 class="modal-title mt-4">Тариф успешно подключен!</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+
+				</div>
+
+			</div>
+		</div>
+	</div>
 
 
 	<script src="js/jquery.js"></script>
@@ -214,31 +311,32 @@
 	<script src="libs/swiper-slider/swiper.min.js"></script>
 	<script src="libs/touch-sideswipe-master/touch-sideswipe.min.js"></script>
 	<script src="js/smoothscroll.min.js"></script>
-
+	<!-- Jquery Modal js -->
+	<!-- <script src="libs/jquery-modal/jquery.modal.min.js"></script> -->
 	<script src="js/main.js"></script>
 
 	<script>
 		var ctx = document.getElementById('myChart');
-		
+
 		var myChart = new Chart(ctx, {
 			type: 'doughnut',
 			data: {
-				
+
 				datasets: [{
 					label: '',
-					data: [6018, 50298 ],
+					data: [6018, 50298],
 					backgroundColor: [
-					'#00000000',
-					'#f6aeae'
+						'#00000000',
+						'#f6aeae'
 					],
 					hoverBackgroundColor: [
-					'#00000000',
-					'#f6aeae'
+						'#00000000',
+						'#f6aeae'
 					],
-					
+
 					borderColor: "#00000000"
 				}],
-				
+
 			},
 			options: {
 				legend: {
@@ -253,17 +351,17 @@
 		var myChart2 = new Chart(ctx, {
 			type: 'doughnut',
 			data: {
-				
+
 				datasets: [{
 					label: '',
-					data: [6018, 50298 ],
+					data: [6018, 50298],
 					backgroundColor: [
-					'#00000000',
-					'#d5cffa'
+						'#00000000',
+						'#d5cffa'
 					],
 					hoverBackgroundColor: [
-					'#00000000',
-					'#d5cffa'
+						'#00000000',
+						'#d5cffa'
 					],
 					borderColor: "#00000000",
 
@@ -279,4 +377,5 @@
 		});
 	</script>
 </body>
+
 </html>

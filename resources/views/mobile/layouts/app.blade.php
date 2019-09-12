@@ -17,6 +17,10 @@
     <link rel="shortcut icon" href="/vendor/mobile/images/favicon.png" type="image/x-icon">
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
 
+    @if($errors->any())
+        <link rel="stylesheet" href="/vendor/toastr/build/toastr.min.css">
+    @endif
+
     @stack('css')
 
 </head>
@@ -35,6 +39,20 @@
 
 <script src="/vendor/mobile/js/main.js"></script>
 
+@if($errors->any())
+    <script src="/vendor/toastr/build/toastr.min.js"></script>
+    <script>
+        toastr.error('{{ $errors->first() }}', {
+            // timeout in milliseconds
+            time: 3000,
+            // 'top-left', 'top-center', 'top-right', 'right-bottom', 'bottom-center', 'left-bottom'
+            position: 'top-right',
+        });
+    </script>
+@endif
+
 @stack('js')
+
+
 </body>
 </html>

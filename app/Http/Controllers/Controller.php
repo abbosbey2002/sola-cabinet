@@ -12,14 +12,12 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    protected $agent;
-
     /**
      * Controller constructor.
      */
     public function __construct()
     {
-        $this->agent = new Mobile_Detect();
+
     }
 
     /**
@@ -29,11 +27,13 @@ class Controller extends BaseController
      */
     public function view($path, $compact)
     {
-        //if ($this->agent->isMobile()) {
+        $agent = new Mobile_Detect();
+
+        if ($agent->isMobile()) {
             $folder = 'mobile.' . $path;
-        //} else {
-        //    $folder = 'desktop.' . $path;
-       // }
+        } else {
+            $folder = 'desktop.' . $path;
+        }
 
         if ($compact) {
             return view($folder, $compact);

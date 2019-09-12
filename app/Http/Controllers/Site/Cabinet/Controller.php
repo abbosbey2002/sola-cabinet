@@ -38,10 +38,6 @@ class Controller extends BaseController
             return abort(500);
         }
 
-        if (empty(request()->cookie('account'))) {
-            $this->cookie->setAccID($info['body']['acc_id']);
-        }
-
         return $this->view('cabinet.index', compact('info'));
     }
 

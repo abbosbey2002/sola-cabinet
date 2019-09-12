@@ -50,9 +50,7 @@ class Controller extends BaseController
             //return abort(403);
         }
 
-        //return $response;
-
-        //return $request->cookie('data');
+        return $response;
 
         if ($response['status'] == 200) {
             return $this->view('auth.verify', null);
@@ -72,7 +70,6 @@ class Controller extends BaseController
         if ($request->isMethod('get')) {
             return $this->view('auth.verify', null);
         }
-
 
         try {
             $response = $this->request->verify($request);

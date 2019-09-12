@@ -11,41 +11,7 @@
 
     <!-- MOBILE MENU -->
 
-    <nav id="touchSideSwipe" class="touch-side-swipe responsive-nav">
-
-        <div class="container p-0">
-            <div id="menu">
-                <div class="logo-div text-center">
-
-
-
-
-                </div>
-                <a href="#" class="main_color text-center pb-4">Узбекский язык</a>
-
-                <div class="mycontainer2">
-                    <ul class="main-ul">
-                        <li><a href="#section01" class="link"><img src="/vendor/mobile/images/link1.png" class="mr-3" alt="">ДАННЫЕ</a></li>
-                        <li><a href="#section02" class="link"><img src="/vendor/mobile/images/link2.png" class="mr-3" alt="">СТАТИСТИКА</a></li>
-                        <li><a href="#section04" class="link"><img src="/vendor/mobile/images/link3.png" class="mr-3" alt="">ФИНАНСОВАЯ СТАТИСТИКА</a></li>
-                        <li><a href="#section04" class="link"></a></li>
-                    </ul> <!-- main-ul -->
-
-
-                    <p class="menu_p">
-                        Есть вопросы? Позвоните: <br>
-                        <a href="tel: 1130">1130</a>
-                        или
-                        <a href="tel: 712070806">+998 71 207-08-06</a>
-                    </p>
-                </div> <!-- mycontainer -->
-
-            </div> <!-- #menu -->
-
-        </div> <!-- container -->
-        <p class="menu_bottom_p">Личный кабинет Sola©2019. Все права защищены. <br>
-            Разработка и дизайн Usoft</p>
-    </nav> <!-- touch-side-swipe responsive-nav -->
+    @include('mobile.include.menu')
 
 
     <div class="nav_noner">
@@ -97,7 +63,9 @@
                                     <span class="fw-bold">120 000 UZS</span>
                                 </div> <!-- d-flex -->
                             </div> <!-- d-flex -->
-                            <a href="{{ route('tariff.connect', $tariff['tariff_id']) }}" class="mybtn py-2 mt-3 green_shadow">Подключить</a>
+                            <a href="#" data-id="{{ $tariff['tariff_id'] }}" class="mybtn py-2 mt-3 green_shadow connect_btn">
+                                Подключить
+                            </a>
                         </div> <!-- rate_card_info -->
                     </div> <!-- rate_card -->
                 </div> <!-- swiper-slide -->
@@ -112,3 +80,117 @@
 
     @include('mobile.include.footer')
 @endsection
+
+@push('js')
+    <!-- Change Tarif Modal -->
+    <div class="modal fade" id="change-modal">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Когда подключить?</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body d-flex justify-content-center align-items-center flex-column">
+
+                        <button type="button" class="mybtn type_tariff" data-type="now">
+                            СЕЙЧАС
+                        </button>
+
+                        <button type="button" class="mybtn mt-4 type_tariff" data-type="month">
+                            С НОВОГО МЕСЯЦА
+                        </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Tarif Modal -->
+    <div class="modal fade" id="accept-modal">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header d-flex flex-column justify-content-center align-items-center">
+                    <img src="/vendor/mobile/images/exclamation_mark.png" alt="Question icon" style="width: 60px; height: 60px;">
+                    <h4 class="modal-title mt-4 text-center">Вы действительно хотите подключить?</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body d-flex flex-row justify-content-center align-items-center">
+                    <button style="width: 100px" type="button" class="mybtn bg-danger mx-3" data-dismiss="modal">
+                        Нет
+                    </button>
+                    <button style="width: 100px" type="button" class="mybtn mx-3 yes">
+                        Да
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    @if(session()->has('info'))
+        <script>
+            $(document).ready(function () {
+               $('#sucess-modal').modal('show')
+            });
+        </script>
+        <!-- Success Modal -->
+        <div class="modal fade" id="sucess-modal">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header d-flex justify-content-center flex-column align-items-center">
+                        <img src="/vendor/mobile/images/check-mark.png" alt="Check icon">
+                        <h4 class="modal-title mt-4">Тариф успешно подключен!</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <script>
+        var id = 0;
+        var type = 'not';
+
+
+        $('.connect_btn').on('click', function (e) {
+            e.preventDefault();
+            id = $(this).data('id');
+            $('#accept-modal').modal('show');
+            //$('#change-modal').modal('show');
+        });
+
+        $('.yes').on('click', function (e) {
+           e.preventDefault();
+            $('#accept-modal').modal('hide');
+            $('#change-modal').modal('show');
+        });
+
+        $('.type_tariff').on('click', function (e) {
+            e.preventDefault();
+            type = $(this).data('type');
+            sendConfig();
+        });
+
+        function sendConfig()
+        {
+            window.location.replace("/tariffs/connect/" + id + "/" + type);
+        }
+    </script>
+@endpush

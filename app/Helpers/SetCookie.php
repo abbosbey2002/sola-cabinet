@@ -24,6 +24,14 @@ class SetCookie
         Cookie::queue('data', $data, 1000);
     }
 
+    public function getType()
+    {
+        $data = request()->cookie('data');
+        $json = json_decode($data, true);
+
+        return $json['type'];
+    }
+
     /**
      * @param $login
      */

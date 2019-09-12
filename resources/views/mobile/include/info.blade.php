@@ -1,6 +1,6 @@
 <section class="section1">
     <div class="mycontainer">
-        <h4>Ваш лицевой счет: {{ $info['body']['acc_id'] }} </h4>
+        <h4>Ваш лицевой счет: {{ request()->cookie('account') }} </h4>
         <div class="myborder_bottom info_block">
             <img src="/vendor/mobile/images/purse.png" alt="">
             <div class="d-flex flex-column">
@@ -24,6 +24,15 @@
         </div> <!-- info_block -->
         @if($tariff)
             <a href="{{ route('tariffs') }}" class="mybtn mt-4">СМЕНИТЬ ТАРИФ</a>
+        @endif
+
+        @if(!empty($date))
+            <div class="statics-tarif">
+                <p>Статистика трафика <span>за {{ Carbon::now()->format('F')  }}</span></p>
+                <button type="button" class="btn" data-toggle="modal" data-target="#statics-modal">
+                    ВЫБРАТЬ ДАТУ
+                </button>
+            </div>
         @endif
     </div> <!-- mycontainer -->
 </section> <!-- main-section -->

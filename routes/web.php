@@ -16,7 +16,12 @@ Route::group(['prefix' => '/', 'middleware' => 'login', 'namespace' => 'Site'], 
 
     Route::group(['prefix' => '/tariffs', 'namespace' => 'Tariffs'], function () {
         Route::get('/', 'Controller@index')->name('tariffs');
-        Route::get('/connect/{id}', 'Controller@connect')->name('tariff.connect');
+        Route::get('/connect/{id}/{type}', 'Controller@connect')->name('tariff.connect');
+    });
+
+    Route::group(['prefix' => '/services', 'namespace' => 'Services'], function () {
+        Route::get('/', 'Controller@index')->name('services');
+        Route::get('/device/add', 'Controller@newDevice')->name('services.device.new');
     });
 
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
@@ -25,6 +30,10 @@ Route::group(['prefix' => '/', 'middleware' => 'login', 'namespace' => 'Site'], 
 
     Route::group(['prefix' => 'traffic', 'namespace' => 'Traffic'], function () {
         Route::get('/detail', 'Controller@index')->name('traffic');
+    });
+
+    Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {
+        Route::get('/history', 'Controller@index')->name('payment');
     });
 });
 

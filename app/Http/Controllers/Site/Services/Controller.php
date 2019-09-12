@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Http\Controllers\Site\Tariffs;
-
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller as ExController;
+namespace App\Http\Controllers\Site\Services;
 
 use App\Helpers\Requests;
+use App\Helpers\SetCookie;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller as ExController;
 
 class Controller extends ExController
 {
     protected $requests;
+    protected $cookie;
 
     /**
      * Controller constructor.
      * @param Requests $requests
+     * @param SetCookie $cookie
      */
-    public function __construct(Requests $requests)
+    public function __construct(Requests $requests, SetCookie $cookie)
     {
         $this->requests = $requests;
+        $this->cookie = $cookie;
     }
 
     /**
@@ -28,7 +30,7 @@ class Controller extends ExController
     public function index()
     {
         try {
-            $tariffs = $this->requests->getTariff();
+            $devices = $this->requests->getDevices();
         } catch (\Exception $exception) {
             abort(403);
         }
@@ -39,35 +41,27 @@ class Controller extends ExController
             abort(403);
         }
 
-        return $this->view('tariffs.index', compact('info', 'tariffs'));
+        $type = $this->cookie->getType();
+
+        return $this->view('services.index', compact('devices', 'info', 'type'));
     }
 
     /**
-     * @param int $id
-     * @param string $type
      * @return \Illuminate\Http\RedirectResponse
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function connect(int $id, string $type)
+    public function newDevice()
     {
-        switch ($type) {
-            case 'now':
-                $date = Carbon::now()->format('Y-m-d');
-                break;
-            case 'month':
-                $date = Carbon::parse(Carbon::now()->addMonth())->firstOfMonth()->format('Y-m-d');
-        }
-
         try {
-            $response = $this->requests->setTariff(6, $date);
+            $response = $this->requests->newDevice();
         } catch (\Exception $exception) {
-           abort(403);
+            abort(404);
         }
 
-        if ($response['status'] != 200) {
-            return redirect()->back()->withErrors($response['body']['errMsg']);
+        if ($response['status'] == 200) {
+            return redirect()->back()->with('info', 'success');
         }
 
-        return redirect()->back()->with('info', 'success');
+        return redirect()->back()->withErrors($response['body']['errMsg']);
     }
 }

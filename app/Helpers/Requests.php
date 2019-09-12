@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 use App\Http\Requests\Auth\Verify;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use App\Helpers\SetCookie;
 
@@ -29,7 +30,7 @@ class Requests
     public function __construct(SetCookie $cookie)
     {
         $api = env('API_IP');
-        $this->url = "http://{$api}/apipc";
+        $this->url = "http://{$api}/";
         $this->client = new Client();
         $this->cookie = $cookie;
         $this->lang = 'uz';
@@ -109,14 +110,16 @@ class Requests
                 ]
             ]);
 
-        $this->cookie->setLogin($request->getLogin());
 
+        return $response->getBody();
+        $this->cookie->setLogin($request->getLogin());
         $data = $this->setData($response);
 
         //return $response->getBody();
 
         if ($response->getStatusCode() == 200) {
-            $this->cookie->AbonentType($data['body']['abonType']);
+            $this->cookie->setAccID($data['body']['accs'][0]['accId']);
+            $this->cookie->AbonentType($data['body']['accs'][0]['abonType']);
             return $data;
         }
 
@@ -168,7 +171,7 @@ class Requests
         $url = "{$this->url}/abonent/info";
 
         $json = [
-            'phn' => $this->cookie->getLogin(),
+            'phn' => $this->cookie->getAccID(),
             'lang' => $this->lang
         ];
 
@@ -272,44 +275,46 @@ class Requests
 
 
     /**
-     * @param PaymentHistoryRequest $request
      * @param string $method
-     * @return array|bool
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getPayments(PaymentHistoryRequest $request, string $method = 'POST')
+    public function getPayments(string $method = 'POST')
     {
         $url = "{$this->url}/acct/payments";
         $json = [
             'acc_id' => $this->cookie->getAccID(),
-            'pay_month' => $request->getPayMonth(),
+            'pay_month' => Carbon::now()->format('Y-m'),
             'lang' => $this->lang
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
         ]);
 
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
+        $data = $this->setData($response);
 
-        return false;
+        return $data;
     }
 
     /**
-     * @param TrafficDetailRequest $request
      * @param string $method
-     * @return array|bool
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTrafficDetail(string $method = 'POST')
     {
-        return $this->cookie->getAccID();
+        //return $this->cookie->getAccID();
         $url = "{$this->url}/traffic/detail";
         $json = [
             'acc_id' => 1215371, //$this->cookie->getAccID(),
-            'detail_month' => '2019-09',//$request->getMonth(),
+            'detail_month' => '2019-08',//$request->getMonth(),
             'lang' => $this->lang
         ];
 
@@ -334,7 +339,7 @@ class Requests
 
     /**
      * @param string $method
-     * @return array|bool
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getTariff(string $method = 'POST')
@@ -385,30 +390,33 @@ class Requests
     }
 
     /**
-     * @param SetTariffRequest $request
-     * @param $tariff_id
+     * @param int $tariff_id
+     * @param string $tariff_date
      * @param string $method
-     * @return array|bool
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function setTariff(SetTariffRequest $request, $tariff_id, string $method = 'POST')
+    public function setTariff(int $tariff_id, string $tariff_date, string $method = 'POST')
     {
         $url = "{$this->url}/tariff/connect";
         $json = [
             'acc_id' => $this->cookie->getAccID(),
             'tariff_id' => $tariff_id,
-            'tariff_conndate' => $request->getTariffDate()
+            'tariff_conndate' => $tariff_date
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
         ]);
 
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
+        $data = $this->setData($response);
+        return $data;
     }
 
     /**
@@ -438,7 +446,7 @@ class Requests
 
     /**
      * @param string $method
-     * @return array|bool
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function newDevice(string $method = 'POST')
@@ -450,19 +458,22 @@ class Requests
         ];
 
         $response = $this->client->request($method, $url, [
-            $this->header($json)
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
         ]);
 
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
+        $data = $this->setData($response);
+        return $data;
     }
 
     /**
      * @param string $method
-     * @return array|bool
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getDevices(string $method = 'POST')
@@ -484,11 +495,6 @@ class Requests
         ]);
 
         $data = $this->setData($response);
-
-        if ($response->getStatusCode() == 200) {
-            return $data;
-        }
-
         return $data;
     }
 }
