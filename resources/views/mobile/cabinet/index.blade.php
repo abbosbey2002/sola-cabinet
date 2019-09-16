@@ -1,20 +1,14 @@
 @extends('mobile.layouts.app')
+@section('title', trans('app.cabinet.title'). ' - ')
 @section('content')
-    <div class="top-div">
-        <a href="#">
-            <img src="/vendor/mobile/images/logo.png" class="main-logo responsive-logo img-width logo-img" alt="logo">
-        </a>
-        <a href="{{ route('logout') }}" class="exit_link">
-            <img src="/vendor/mobile/images/exit.png" class="img-width" alt="">
-        </a>
-    </div>
+
+    @include('mobile.include.header')
 
     <!-- MOBILE MENU -->
 
     @include('mobile.include.menu')
 
     <div class="nav_noner">
-
     </div>
 
 
@@ -25,11 +19,11 @@
         <div class="mycontainer">
             <div class="myborder_bottom2 py-3">
 
-                <h3>Личные данные:</h3>
+                <h3>@lang('app.cabinet.personal_data'):</h3>
 
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>Ваш лицевой счет:</span>
+                        <span>@lang('app.cabinet.account'):</span>
                     </div> <!-- minw-50 -->
                     <div>
                         <span>{{ request()->cookie('account') }}</span>
@@ -38,7 +32,7 @@
 
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>Логин:</span>
+                        <span>@lang('app.cabinet.login'):</span>
                     </div> <!-- minw-50 -->
                     <div>
                         <span>{{ request()->cookie('login') }} </span>
@@ -47,28 +41,29 @@
 
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>Дата подключения:</span>
+                        <span>@lang('app.cabinet.date_reg'):</span>
                     </div> <!-- minw-50 -->
                     <div>
                         <span>{{ date('d.m.Y', strtotime($info['body']['contract_date'])) }} </span>
                     </div>
                 </div> <!-- d-flex -->
                 @if(!empty($info['body']['name']))
-                <div class="d-flex">
-                    <div class="minw-50">
-                        <span>Ф.И.О.:</span>
-                    </div> <!-- minw-50 -->
-                    <div>
-                        <span>
-                            {{ $info['body']['name'] }}
-                        </span>
-                    </div>
-                </div> <!-- d-flex -->
+                    <div class="d-flex">
+                        <div class="minw-50">
+                            <span>@lang('app.cabinet.fio'):</span>
+                        </div> <!-- minw-50 -->
+                        <div>
+                            <span>
+                                {{ $info['body']['name'] }}
+                            </span>
+                        </div>
+                    </div> <!-- d-flex -->
                 @endif
+
                 @if(!empty($info['body']['email']))
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>Email:</span>
+                        <span>@lang('app.cabinet.email'):</span>
                     </div> <!-- minw-50 -->
                     <div>
                         <span>{{ $info['body']['email'] }}</span>
@@ -79,7 +74,7 @@
                 @if(!empty($info['body']['phone']))
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>Телефон:</span>
+                        <span>@lang('app.cabinet.phone'):</span>
                     </div> <!-- minw-50 -->
                     <div>
                         <span>{{ $info['body']['phone'] }}</span>
@@ -90,7 +85,7 @@
                 @if(!empty($info['body']['address']))
                     <div class="d-flex">
                         <div class="minw-50">
-                            <span>Адресс подключения:</span>
+                            <span>@lang('app.cabinet.connected'):</span>
                         </div> <!-- minw-50 -->
                         <div>
                             <span>{{ $info['body']['address'] }}</span>
@@ -99,14 +94,14 @@
                 @endif
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>Тариф:</span>
+                        <span>@lang('app.cabinet.tariff'):</span>
                     </div> <!-- minw-50 -->
                     <div>
                         <span>
                             @if(!empty($info['body']['curr_tariff_name']))
                                 {{ $info['body']['curr_tariff_name'] }}
                             @else
-                                Нет тарифа
+                                @lang('app.cabinet.no_tariff')
                             @endif
                         </span>
                     </div>
@@ -116,11 +111,11 @@
 
             <div class="myborder_bottom2 py-3">
 
-                <h3>Дополнительные услуги:</h3>
+                <h3>@lang('app.cabinet.services'):</h3>
                 @if(!empty($info['body']['device_count']))
                     <div class="d-flex">
                         <div class="minw-50">
-                            <span>Количество устройств: </span>
+                            <span>@lang('app.cabinet.services_count'): </span>
                         </div> <!-- minw-50 -->
                         <div>
                             <span>{{ $info['body']['device_count'] }}</span>
@@ -130,7 +125,7 @@
 
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>Активных устройств: </span>
+                        <span>@lang('app.cabinet.active_count'): </span>
                     </div> <!-- minw-50 -->
                     <div>
                         <span>
@@ -145,39 +140,16 @@
 
             </div> <!-- myborder_bottom -->
 
-{{--            <div class="myborder_bottom2 py-3">--}}
-
-{{--                <h3>Состояние трафика:</h3>--}}
-{{--                <div class="d-flex">--}}
-{{--                    <div class="minw-50">--}}
-{{--                        <span>Входящий: </span>--}}
-{{--                    </div> <!-- minw-50 -->--}}
-{{--                    <div>--}}
-{{--                        <span>45088.2 MB  </span>--}}
-{{--                    </div>--}}
-{{--                </div> <!-- d-flex -->--}}
-
-{{--                <div class="d-flex">--}}
-{{--                    <div class="minw-50">--}}
-{{--                        <span>Исходящий:</span>--}}
-{{--                    </div> <!-- minw-50 -->--}}
-{{--                    <div>--}}
-{{--                        <span>5294.6 MB </span>--}}
-{{--                    </div>--}}
-{{--                </div> <!-- d-flex -->--}}
-
-
-{{--            </div> <!-- myborder_bottom -->--}}
 
             <div class="py-3">
 
-                <h3>Баланс счета:</h3>
+                <h3>@lang('app.cabinet.balance'):</h3>
                 <div class="d-flex">
                     <div class="minw-50">
-                        <span>На счету: </span>
+                        <span>@lang('app.cabinet.amount'): </span>
                     </div> <!-- minw-50 -->
                     <div>
-                        <span>{{ number_format($info['body']['saldo'], 0, '', ' ') }} UZS  </span>
+                        <span>{{ number_format($info['body']['saldo'], 0, '', ' ') }} @lang('app.ye')  </span>
                     </div>
                 </div> <!-- d-flex -->
 

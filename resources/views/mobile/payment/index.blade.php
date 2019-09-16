@@ -1,13 +1,7 @@
 @extends('mobile.layouts.app')
+@section('title', trans('app.payment.title'). ' - ')
 @section('content')
-    <div class="top-div">
-        <a href="#">
-            <img src="/vendor/mobile/images/logo.png" class="main-logo responsive-logo img-width logo-img" alt="logo">
-        </a>
-        <a href="{{ route('logout') }}" class="exit_link">
-            <img src="/vendor/mobile/images/exit.png" class="img-width" alt="">
-        </a>
-    </div>
+    @include('mobile.include.header')
 
     <!-- MOBILE MENU -->
 
@@ -19,81 +13,49 @@
     </div>
 
 
-    @include('mobile.include.info', ['info' => $info, 'tariff' => true, 'date' => true])
+    @include('mobile.include.info', ['info' => $info, 'tariff' => true, 'date' => true, 'months' => $months])
 
     <section class="dark_bg section section2">
 
         <div class="mycontainer">
 
-            <h2 class="mb-4">Финансовая статистика</h2>
-            <h3 class="mb-3">Оплаты</h3>
+            <h2 class="mb-4">@lang('app.payment.title')</h2>
+            <h3 class="mb-3">@lang('app.payment.pays')</h3>
 
-            <table class="table mytable table-sm">
+            <table class="table mytable table-sm table-responsive">
                 <thead>
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Дата</th>
-                    <th scope="col">Платежная система</th>
-                    <th scope="col">Сумма</th>
-                    <th scope="col">Статус</th>
-
+                    <th scope="col">@lang('app.payment.date')</th>
+                    <th scope="col">@lang('app.payment.payments')</th>
+                    <th scope="col">@lang('app.payment.amount')</th>
+                    <th scope="col">@lang('app.payment.status')</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($payments['body']['payments'] as $payment)
-                    <tr>
-                        <td>{{ $payment['payment_id'] }}</td>
-                        <td>{{ date('H:i, d.m', strtotime($payment['payment_date'])) }}</td>
-                        <td>{{ $payment['payment_system'] }}</td>
-                        <td>{{ number_format($payment['amount'], 0, '', ' ') }} UZS</td>
-                        <td>
-                            @switch($payment['payment_status'])
-                                @case(0)
-                                    Не оплачено
-                                    @break
-                                @case(1)
-                                    Оплчено
-                                    @break
-                                @case(2)
-                                    Отказано
-                                    @break
-                                @default
-                                    Не оплачено
-                                    @break
-                            @endswitch
-                        </td>
-                    </tr>
-                @endforeach
+                    @if(count($payments['body']['payments']) == 0)
+                        <tr>
+                            <td colspan="5">
+                                @lang('app.no_data')
+                            </td>
+                        </tr>
+                    @endif
+                    @foreach($payments['body']['payments'] as $payment)
+                        <tr>
+                            <td>{{ $payment['payment_id'] }}</td>
+                            <td>{{ date('H:i, d.m', strtotime($payment['payment_date'])) }}</td>
+                            <td>{{ $payment['payment_system'] }}</td>
+                            <td>{{ number_format($payment['amount'], 0, '', ' ') }} @lang('app.ye')</td>
+                            <td>
+                                {{ $payment['payment_status'] }}
+                            </td>
+                        </tr>
+                    @endforeach
 
                 </tbody>
             </table>
 
             <br>
-
-
-
-
-{{--            <h3 class="mb-3">Снятия</h3>--}}
-
-{{--            <table class="table mytable table-sm">--}}
-{{--                <thead>--}}
-{{--                <tr>--}}
-{{--                    <th scope="col">Дата</th>--}}
-{{--                    <th scope="col">Описание</th>--}}
-{{--                    <th scope="col">Сумма</th>--}}
-
-{{--                </tr>--}}
-{{--                </thead>--}}
-{{--                <tbody>--}}
-{{--                <tr>--}}
-{{--                    <td>2019-08-09 17:32:45</td>--}}
-{{--                    <td>Month fee 155806</td>--}}
-{{--                    <td>16 000 000 UZS</td>--}}
-
-{{--                </tr>--}}
-
-{{--                </tbody>--}}
-{{--            </table>--}}
 
         </div> <!-- mycontainer -->
 
@@ -112,29 +74,23 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Выберите месяц</h4>
+                    <h4 class="modal-title">@lang('app.modal.choose_date')</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form action="form.php" method="post">
+                    <form action="{{ route('payment.month') }}" method="post">
+                        @csrf
                         <select name="month" id="month" required>
-                            <option value="val1"><span>Январь</span></option>
-                            <option value="val2">Февраль</option>
-                            <option value="val3">Март</option>
-                            <option value="val4">Апрель</option>
-                            <option value="val5">Май</option>
-                            <option value="val6">Июнь</option>
-                            <option value="val7">Июль</option>
-                            <option value="val8">Август</option>
-                            <option value="val9">Сентябрь</option>
-                            <option value="val10">Октябрь</option>
-                            <option value="val11">Ноябрь</option>
-                            <option value="val12">Декабрь</option>
+                            @for ($i = 1; $i <= Carbon::now()->format('n'); $i++)
+                                <option @if(Carbon::now()->format('Y-m') == $months[$i]['month']) selected @endif value="{{ $months[$i]['month'] }}">
+                                    <span>{{ $months[$i]['name'] }}</span>
+                                </option>
+                            @endfor
                         </select>
 
-                        <button type="submit" class="mybtn mt-4">выбрать</button>
+                        <button type="submit" class="mybtn mt-4">@lang('app.modal.choose')</button>
                     </form>
                 </div>
 

@@ -1,6 +1,5 @@
 <footer>
     <p>
-        Личный кабинет Sola © 2019. Все права защищены. <br>
-        Разработка и дизайн Usoft
+        @lang('app.footer.copy', ['year' => date('Y', time())])
     </p>
 </footer> <!-- footer -->

@@ -15,12 +15,12 @@ class History extends FormRequest
     public function rules()
     {
         return [
-            'pay_month' => 'nullable'
+            'month' => 'required'
         ];
     }
 
     public function getPayMonth(): string
     {
-        return (string) $this->get('pay_month') ? $this->get("pay_month") : date('Y-m', time());
+        return $this->get('month');
     }
 }

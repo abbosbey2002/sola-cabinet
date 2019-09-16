@@ -1,13 +1,7 @@
 @extends('mobile.layouts.app')
+@section('title', trans('app.tariff.title'). ' - ')
 @section('content')
-    <div class="top-div">
-        <a href="#">
-            <img src="/vendor/mobile/images/logo.png" class="main-logo responsive-logo img-width logo-img" alt="logo">
-        </a>
-        <a href="{{ route('logout') }}" class="exit_link">
-            <img src="/vendor/mobile/images/exit.png" class="img-width" alt="">
-        </a>
-    </div>
+    @include('mobile.include.header')
 
     <!-- MOBILE MENU -->
 
@@ -20,7 +14,6 @@
 
 
     @include('mobile.include.info', ['info' => $info, 'tariff' => false])
-
 
 
     <section class="dark_bg section section2">
@@ -36,35 +29,55 @@
                         </div> <!-- rate_cart_title -->
                         <div class="rate_card_info">
                             <div class="d-flex align-items-center py-2 myborder_bottom">
-                                <img src="/vendor/mobile/images/rate_img1.png" alt="">
+                                <img src="/vendor/desktop/images/rate_img1.png" alt="">
                                 <div class="d-flex flex-column">
-                                    <span>Скорость</span>
-                                    <span class="fw-bold">до 4 Мбит/сек</span>
+                                    <span>@lang('app.tariff.speed')</span>
+                                    <span class="fw-bold">
+                                            @if($tariff['spdu'] == 'Mbps')
+                                            @lang('app.tariff.mb', ['speed' => $tariff['tspd']])
+                                        @else
+                                            @lang('app.tariff.kb', ['speed' => $tariff['tspd']])
+                                        @endif
+                                        </span>
                                 </div> <!-- d-flex -->
                             </div> <!-- d-flex -->
                             <div class="d-flex align-items-center py-2 myborder_bottom">
-                                <img src="/vendor/mobile/images/rate_img2.png" alt="">
+                                <img src="/vendor/desktop/images/rate_img2.png" alt="">
                                 <div class="d-flex flex-column">
                                     <span>Срок действия </span>
-                                    <span class="fw-bold">1 месяц</span>
+                                    <span class="fw-bold">
+                                            @if($tariff['prdu'] == 'HOUR')
+                                            {{ $tariff['tprd'] }} @lang('app.tariff.hour')
+                                        @elseif($tariff['prdu'] == 'MIN')
+                                            {{ $tariff['tprd'] }} @lang('app.tariff.minut')
+                                        @else
+                                            {{ $tariff['tprd'] }} @lang('app.tariff.day')
+                                        @endif
+                                        </span>
                                 </div> <!-- d-flex -->
                             </div> <!-- d-flex -->
                             <div class="d-flex align-items-center py-2 myborder_bottom">
-                                <img src="/vendor/mobile/images/rate_img3.png" alt="">
+                                <img src="/vendor/desktop/images/rate_img3.png" alt="">
                                 <div class="d-flex flex-column">
-                                    <span>Трафик</span>
-                                    <span class="fw-bold">Безлимитный</span>
+                                    <span>@lang('app.tariff.trafic')</span>
+                                    <span class="fw-bold">
+                                            @if($tariff['vol'] == 0)
+                                            @lang('app.tariff.no_limit')
+                                        @endif
+                                        </span>
                                 </div> <!-- d-flex -->
                             </div> <!-- d-flex -->
                             <div class="d-flex align-items-center py-2 myborder_bottom">
-                                <img src="/vendor/mobile/images/rate_img4.png" alt="">
+                                <img src="/vendor/desktop/images/rate_img4.png" alt="">
                                 <div class="d-flex flex-column">
-                                    <span>Стоимость </span>
-                                    <span class="fw-bold">120 000 UZS</span>
+                                    <span>@lang('app.tariff.amount') </span>
+                                    <span class="fw-bold">
+                                            {{ number_format($tariff['cost'] / 100, 0, '', ' ') }} @lang('app.ye')</span>
+
                                 </div> <!-- d-flex -->
                             </div> <!-- d-flex -->
                             <a href="#" data-id="{{ $tariff['tariff_id'] }}" class="mybtn py-2 mt-3 green_shadow connect_btn">
-                                Подключить
+                                @lang('app.tariff.connect')
                             </a>
                         </div> <!-- rate_card_info -->
                     </div> <!-- rate_card -->
@@ -89,7 +102,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title">Когда подключить?</h4>
+                    <h4 class="modal-title">@lang('app.modal.to_connect')</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -97,11 +110,11 @@
                 <div class="modal-body d-flex justify-content-center align-items-center flex-column">
 
                         <button type="button" class="mybtn type_tariff" data-type="now">
-                            СЕЙЧАС
+                            @lang('app.modal.now')
                         </button>
 
                         <button type="button" class="mybtn mt-4 type_tariff" data-type="month">
-                            С НОВОГО МЕСЯЦА
+                            @lang('app.modal.month')
                         </button>
 
                 </div>
@@ -118,17 +131,17 @@
                 <!-- Modal Header -->
                 <div class="modal-header d-flex flex-column justify-content-center align-items-center">
                     <img src="/vendor/mobile/images/exclamation_mark.png" alt="Question icon" style="width: 60px; height: 60px;">
-                    <h4 class="modal-title mt-4 text-center">Вы действительно хотите подключить?</h4>
+                    <h4 class="modal-title mt-4 text-center">@lang('app.modal.are_you_sure')</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
                 <!-- Modal body -->
                 <div class="modal-body d-flex flex-row justify-content-center align-items-center">
                     <button style="width: 100px" type="button" class="mybtn bg-danger mx-3" data-dismiss="modal">
-                        Нет
+                        @lang('app.no')
                     </button>
                     <button style="width: 100px" type="button" class="mybtn mx-3 yes">
-                        Да
+                        @lang('app.yes')
                     </button>
                 </div>
 
@@ -150,7 +163,7 @@
                     <!-- Modal Header -->
                     <div class="modal-header d-flex justify-content-center flex-column align-items-center">
                         <img src="/vendor/mobile/images/check-mark.png" alt="Check icon">
-                        <h4 class="modal-title mt-4">Тариф успешно подключен!</h4>
+                        <h4 class="modal-title mt-4">@lang('app.modal.success_tariff')</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 

@@ -15,7 +15,7 @@ class CheckCookie
      */
     public function handle($request, Closure $next)
     {
-        if ($request->cookie('login') && $request->cookie('account') && $request->cookie('data')) {
+        if ($request->cookie('verify')) {
             return redirect('/');
         }
 

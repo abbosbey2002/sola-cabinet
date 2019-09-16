@@ -62,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'login' => \App\Http\Middleware\Login::class,
         'checkCookie' => \App\Http\Middleware\CheckCookie::class,
+        'setLang' => \App\Http\Middleware\SetLang::class
     ];
 
     /**

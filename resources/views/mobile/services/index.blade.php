@@ -1,13 +1,7 @@
 @extends('mobile.layouts.app')
+@section('title', trans('app.services.title'). ' - ')
 @section('content')
-    <div class="top-div">
-        <a href="#">
-            <img src="/vendor/mobile/images/logo.png" class="main-logo responsive-logo img-width logo-img" alt="logo">
-        </a>
-        <a href="{{ route('logout') }}" class="exit_link">
-            <img src="/vendor/mobile/images/exit.png" class="img-width" alt="">
-        </a>
-    </div>
+    @include('mobile.include.header')
 
     <!-- MOBILE MENU -->
 
@@ -23,16 +17,23 @@
 
     <section class="dark_bg section section2">
         <div class="mycontainer">
-            <h2 class="mb-4">Ваши устройства</h2>
-            <table class="table mytable table-sm">
+            <h2 class="mb-4">@lang('app.services.devices')</h2>
+            <table class="table mytable table-sm ">
                 <thead>
                 <tr>
-                    <th scope="col">Устройство</th>
-                    <th scope="col">Статус</th>
-                    <th scope="col">Последняя активность</th>
+                    <th scope="col">@lang('app.services.device')</th>
+                    <th scope="col">@lang('app.services.status')</th>
+                    <th scope="col">@lang('app.services.last_online')</th>
                 </tr>
                 </thead>
                 <tbody>
+                    @if(count($devices['body']['devices']) == 0)
+                        <tr>
+                            <td colspan="3">
+                                @lang('app.no_data')
+                            </td>
+                        </tr>
+                    @endif
                     @foreach($devices['body']['devices'] as $device)
                         <tr>
                             <td>{{ $device['mac'] }}</td>
@@ -56,7 +57,7 @@
 
             @if($type == 2)
                 <a href="{{ route('services.device.new') }}" class="mybtn mt-4 w-75 mx-auto">
-                    ДОБАВИТЬ УСТРОЙСТВО
+                    @lang('app.services.add_devices')
                 </a>
             @endif
         </div> <!-- mycontainer -->
@@ -81,7 +82,7 @@
                     <div class="modal-header d-flex justify-content-center flex-column align-items-center">
                         <img src="/vendor/mobile/images/check-mark.png" alt="Check icon">
                         <h4 class="modal-title mt-4 text-center">
-                            Новое устройство успешно добавлено!
+                            @lang('app.services.add_success')
                         </h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>

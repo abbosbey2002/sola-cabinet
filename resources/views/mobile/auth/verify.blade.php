@@ -28,18 +28,21 @@
             <img src="/vendor/mobile/images/bird.png" alt="">
 
             <p>
-                Код подтверждения отправлен на номер
-                ******{{ substr(request()->cookie('login'), 7,12) }} введите его в поле ниже
+                @lang('app.auth.send_phone', ['phone' => substr(session()->get('phone'), 7,12)])
             </p>
 
-            <input type="text" placeholder="Код" name="code" class="text-center"  required="">
+            <input type="text" minlength="4" maxlength="4" placeholder="@lang('app.auth.code')" name="code" class="text-center"  required="">
 
-            <button type="submit">Войти</button>
+            <button type="submit">@lang('app.auth.login')</button>
 
         </form> <!-- begin_form -->
     </div> <!-- container -->
 
-    <a href="#" class="lang_link">Узбекский язык</a>
+    @if(App::isLocale('uz'))
+        <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">@lang('app.lang')</a>
+    @elseif(App::isLocale('ru'))
+        <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">@lang('app.lang')</a>
+    @endif
 </header> <!-- header -->
 
 

@@ -8,16 +8,20 @@
                 <img src="/vendor/mobile/images/bird.png" alt="">
 
 
-                <input type="text" placeholder="Логин" name="login" required="">
+                <input type="text" placeholder="@lang('app.auth.phone')" name="login" required="">
 {{--                <input type="password" placeholder="Пароль" required="">--}}
 
-                <button type="submit">Продолжить</button>
+                <button type="submit">@lang('app.auth.next')</button>
 
 
             </form> <!-- begin_form -->
         </div> <!-- container -->
 
-        <a href="#" class="lang_link">Узбекский язык</a>
+        @if(App::isLocale('uz'))
+            <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">@lang('app.lang')</a>
+        @elseif(App::isLocale('ru'))
+            <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">@lang('app.lang')</a>
+        @endif
     </header>
 @endsection
 

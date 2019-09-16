@@ -110,8 +110,7 @@ class Requests
                 ]
             ]);
 
-
-        return $response->getBody();
+        $request->session()->put('phone', $request->getLogin());
         $this->cookie->setLogin($request->getLogin());
         $data = $this->setData($response);
 
@@ -154,9 +153,9 @@ class Requests
 
         $data = $this->setData($response);
 
-//        if ($response->getBody() == 200) {
-//            return $this->cookie->setAccID();
-//        }
+        if ($response->getStatusCode() == 200) {
+            $this->cookie->verifyUser();
+        }
 
         return $data;
     }
@@ -303,6 +302,36 @@ class Requests
         return $data;
     }
 
+
+    /**
+     * @param PaymentHistoryRequest $request
+     * @param string $method
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getPaymentsMonth(PaymentHistoryRequest $request, string $method = 'POST')
+    {
+        $url = "{$this->url}/acct/payments";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'pay_month' => $request->getPayMonth(),
+            'lang' => $this->lang
+        ];
+
+        $response = $this->client->request($method, $url, [
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $data = $this->setData($response);
+        return $data;
+    }
+
     /**
      * @param string $method
      * @return array
@@ -313,8 +342,8 @@ class Requests
         //return $this->cookie->getAccID();
         $url = "{$this->url}/traffic/detail";
         $json = [
-            'acc_id' => 1215371, //$this->cookie->getAccID(),
-            'detail_month' => '2019-08',//$request->getMonth(),
+            'acc_id' => 1179527,//1213347, //$this->cookie->getAccID(),
+            'detail_month' => Carbon::now()->format('Y-m'),//$request->getMonth(),
             'lang' => $this->lang
         ];
 
@@ -334,6 +363,36 @@ class Requests
             return $data;
         }
 
+        return $data;
+    }
+
+    /**
+     * @param TrafficDetailRequest $request
+     * @param string $method
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getTrafficDetailMonth(TrafficDetailRequest $request, string $method = 'POST')
+    {
+        //return $this->cookie->getAccID();
+        $url = "{$this->url}/traffic/detail";
+        $json = [
+            'acc_id' => 1179527,//$this->cookie->getAccID(),
+            'detail_month' => $request->getMonth(),
+            'lang' => $this->lang
+        ];
+
+        $response = $this->client->request($method, $url, [
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $data = $this->setData($response);
         return $data;
     }
 

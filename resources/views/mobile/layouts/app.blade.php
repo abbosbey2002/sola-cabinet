@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <title>@yield('title')Document</title>
+    <title>@yield('title'){{ env('APP_NAME') }}</title>
 
     <link rel="stylesheet" href="/vendor/mobile/css/style.css">
     <link rel="stylesheet" href="/vendor/mobile/css/media.css">

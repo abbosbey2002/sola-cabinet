@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<title>SolaWeb-6</title>
+
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/media.css">
+	<link rel="stylesheet" href="fonts/museosanscyrl/museosanscyrl.css">
+	<link rel="stylesheet" href="libs/bootstrap/css/bootstrap.min.css">
+	<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+	<link rel='stylesheet prefetch'
+		href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
+
+</head>
+
+<body>
+
+	<nav class="touch-side-swipe responsive-nav py-3">
+
+		<div class="container p-0">
+			<div id="menu">
+				<div class="mr-4">
+					<img src="images/main-logo-h.png" alt="Main logo h">
+				</div>
+
+				<div class="mycontainer2">
+					<ul class="main-ul">
+						<li class="">
+							<a href="#section01" class="link">
+								<div class="mr-2 h_icon"></div>
+								<span>Данные</span>
+							</a>
+						</li>
+						<li class="active">
+							<a href="#section02" class="link">
+								<div class="mr-2 h_icon"></div>
+								<span>Статистика</span>
+							</a>
+						</li>
+						<li class="">
+							<a href="#section04" class="link">
+								<div class="mr-2 h_icon"></div>
+								<span>Финансовая статистика</span>
+							</a>
+						</li>
+						<li class="">
+							<a href="#section04" class="link">
+								<div class="mr-2 h_icon"></div>
+								<span>Доп услуги</span>
+							</a>
+						</li>
+						<li class="">
+							<a href="#section05" class="link"></a>
+						</li>
+					</ul> <!-- main-ul -->
+
+				</div> <!-- mycontainer -->
+
+				<a href="#" class="main_color">Узбекский язык</a>
+
+
+			</div> <!-- #menu -->
+
+		</div> <!-- container -->
+
+	</nav> <!-- touch-side-swipe responsive-nav -->
+
+	<section class="section1">
+		<div class="container">
+			<div class="d-flex justify-content-between align-items-center bb1px">
+				<p class="menu_p">Ваш лицевой счет: SOLA3333000 </p>
+				<p class="menu_p">
+					Есть вопросы? Позвоните:
+					<a href="tel: 1130">1130</a>
+					или
+					<a href="tel: 712070806">+998 71 207-08-06</a>
+				</p>
+			</div>
+
+			<div class="row py-4">
+				<div class="col-lg-4">
+					<div class="info_block">
+						<img src="images/purse.png" alt="">
+						<div class="d-flex flex-column">
+							<h3>На вашем счету:</h3>
+							<span class="green_span">23 723 500 UZS</span>
+						</div> <!-- d-flex -->
+					</div> <!-- info_block -->
+
+				</div>
+				<div class="col-lg-4">
+					<div class="info_block">
+						<img src="images/tairf.png" alt="">
+						<div class="d-flex flex-column">
+							<h3>Ваш тариф:</h3>
+							<span class="green_span">UNLIM 2</span>
+						</div> <!-- d-flex -->
+					</div> <!-- info_block -->
+				</div>
+				<div class="col-lg-4">
+					<button type="button" class="mybtn mt-2" data-toggle="modal" data-target="#change-modal">
+						СМЕНИТЬ ТАРИФ
+					</button>
+				</div>
+			</div>
+		</div> <!-- mycontainer -->
+	</section> <!-- main-section -->
+
+
+
+
+	<section class="dark_bg section section2">
+
+		<div class="container">
+
+			<h2 class="mb-4 text-center">Общий трафик</h2>
+			<h3 class="mb-3">Оплаты</h3>
+
+			<table class="table mytable table-sm">
+				<thead>
+					<tr>
+						<th scope="col">Дата</th>
+						<th scope="col">Описание</th>
+						<th scope="col">Сумма</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>2019-08-09 17:32:45</td>
+						<td>Кадыров</td>
+						<td>16 000 000 UZS</td>
+
+					</tr>
+
+				</tbody>
+			</table>
+
+			<br>
+
+
+
+
+			<h3 class="mb-3">Снятия</h3>
+
+			<table class="table mytable table-sm">
+				<thead>
+					<tr>
+						<th scope="col">Дата</th>
+						<th scope="col">Описание</th>
+						<th scope="col">Сумма</th>
+
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>2019-08-09 17:32:45</td>
+						<td>Month fee 155806</td>
+						<td>16 000 000 UZS</td>
+
+					</tr>
+
+				</tbody>
+			</table>
+
+		</div> <!-- mycontainer -->
+
+
+
+	</section> <!-- dark_bg -->
+
+
+
+	<footer>
+		<p>
+			Личный кабинет Sola©2019. Все права защищены.
+			Разработка и дизайн <a href="https://usoft.uz">Usoft</a>
+		</p>
+	</footer> <!-- footer -->
+
+
+	<!-- Change Tarif Modal -->
+	<div class="modal fade" id="change-modal">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header">
+					<h4 class="modal-title">Когда подключить?</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<form action="form.php">
+						<button type="button" class="mybtn" data-toggle="modal"
+							data-target="#sucess-modal">СЕЙЧАС</button>
+						<button type="button" class="mybtn mt-4" data-toggle="modal" data-target="#sucess-modal">С
+							НОВОГО МЕСЯЦА</button>
+					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<!-- Success Modal -->
+	<div class="modal fade" id="sucess-modal">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header d-flex justify-content-center flex-column align-items-center">
+					<img src="images/check-mark.png" alt="Check icon">
+					<h4 class="modal-title mt-4">Тариф успешно подключен!</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body">
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script src="js/jquery.js"></script>
+	<script src="libs/bootstrap/js/bootstrap.min.js"></script>
+	<script src="libs/bootstrap/js/popper.min.js"></script>
+	<script src="js/chart.min.js"></script>
+	<script src="libs/swiper-slider/swiper.min.js"></script>
+	<script src="libs/touch-sideswipe-master/touch-sideswipe.min.js"></script>
+	<script src="js/smoothscroll.min.js"></script>
+
+	<script src="js/main.js"></script>
+</body>
+
+</html>

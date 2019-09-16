@@ -11,7 +11,7 @@
 |
 */
 
-Route::group(['prefix' => '/', 'middleware' => 'login', 'namespace' => 'Site'], function () {
+Route::group(['prefix' => '/', 'middleware' => ['login', 'setLang'], 'namespace' => 'Site'], function () {
     Route::get('/', 'Cabinet\Controller@index')->name('cabinet');
 
     Route::group(['prefix' => '/tariffs', 'namespace' => 'Tariffs'], function () {
@@ -30,15 +30,18 @@ Route::group(['prefix' => '/', 'middleware' => 'login', 'namespace' => 'Site'], 
 
     Route::group(['prefix' => 'traffic', 'namespace' => 'Traffic'], function () {
         Route::get('/detail', 'Controller@index')->name('traffic');
+        Route::post('/detail/month/', 'Controller@other_month')->name('traffic.month');
     });
 
     Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {
         Route::get('/history', 'Controller@index')->name('payment');
+        Route::match(['get', 'post'], '/history/month', 'Controller@other_month')->name('payment.month');
     });
 });
 
+Route::get('/change/lang/{lang}', 'Controller@changeLang')->name('change.lang');
 
-Route::group(['prefix' => 'auth', 'namespace' => 'Site\Auth', 'middleware' => 'checkCookie'], function () {
+Route::group(['prefix' => 'auth', 'namespace' => 'Site\Auth', 'middleware' => ['checkCookie', 'setLang'] ], function () {
    Route::match(['get', 'post'], '/login', 'Controller@login')->name('login');
    Route::match(['get', 'post'], '/verify', 'Controller@verify')->name('verify');
 });

@@ -50,7 +50,6 @@ class Controller extends BaseController
             //return abort(403);
         }
 
-        return $response;
 
         if ($response['status'] == 200) {
             return $this->view('auth.verify', null);
@@ -77,7 +76,6 @@ class Controller extends BaseController
             //return abort(403);
         }
 
-        //return $response;
 
         if ($response['status'] == 200) {
             return redirect()->route('cabinet');

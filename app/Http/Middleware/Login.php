@@ -15,7 +15,7 @@ class Login
      */
     public function handle($request, Closure $next)
     {
-        if ($request->cookie('login')) {
+        if ($request->cookie('verify')) {
             return $next($request);
         } else {
             return redirect()->route('login');

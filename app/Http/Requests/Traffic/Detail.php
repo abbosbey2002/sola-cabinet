@@ -22,6 +22,6 @@ class Detail extends FormRequest
 
     public function getMonth(): string
     {
-        return (string) $this->get('detail_month') ? $this->get('detail_month') : date('Y-m', time());
+        return (string) $this->get('month');
     }
 }
