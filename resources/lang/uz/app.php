@@ -2,121 +2,121 @@
 return [
     'lang' => 'Rus tili',
     'ye' => 'UZS',
-    'no_data' => 'нет данные',
+    'no_data' => 'ma\'lumotlar yo\'q',
     'home' => 'Bosh sahifa',
 
     'auth' => [
-        'phone' => 'Телефон',
-        'next' => 'Продолжить',
-        'send_phone' => 'Код подтверждения отправлен на номер
-                    ******:phone введите его в поле ниже',
-        'code' => 'Код',
-        'login' => 'Войти',
+        'phone' => 'Telefon',
+        'next' => 'Davom ettirish',
+        'send_phone' => 'Tasdiqlash kodi
+                    ******:phone raqamiga yuborildi, uni quyida kiriting',
+        'code' => 'Kod',
+        'login' => 'Kirish',
     ],
 
     'header' => [
-        'balance' => 'На вашем счету',
-        'no_tariff' => 'Нет тарифа',
-        'tariff' => 'Ваш тариф',
-        'change_tariff' => 'СМЕНИТЬ ТАРИФ',
-        'date_choose' => 'Статистика <span>за :Month</span>',
-        'choose' => 'ВЫБРАТЬ ДАТУ',
+        'balance' => 'Hisobingizda',
+        'no_tariff' => 'Tarif yo\'q',
+        'tariff' => 'Sizning tarifingiz',
+        'change_tariff' => 'TARIFNI O\'ZGARTIRISH',
+        'date_choose' => '<span>:Month oyi uchun</span> statistika',
+        'choose' => 'SANANI TANLASH',
     ],
 
     'menu' => [
-        'data' => 'Данные',
-        'tariff' => 'Тарифы',
-        'traffic' => 'Статистика',
-        'payments' => ' Финансовая статистика',
-        'services' => 'Доп. Услуги',
-        'call' => ' Есть вопросы? Позвоните:',
-        'or' => 'или',
-        'logout' => 'Выйти'
+        'data' => 'Ma\'lumotlar',
+        'tariff' => 'Tariflar',
+        'traffic' => 'Statistika',
+        'payments' => ' Moliya statistikasi',
+        'services' => 'Qo\'sh. xizmatlar',
+        'call' => ' Savollar bormi? Qo\'ng\'iroq qiling:',
+        'or' => 'yoki',
+        'logout' => 'Chiqish'
     ],
 
     'cabinet' => [
-        'title' => 'Кабинет',
-        'personal_data' => 'Личные данные',
-        'account' => 'Ваш лицевой счет',
-        'login' => 'Логин',
-        'date_reg' => 'Дата подключения',
-        'fio' => 'Ф.И.О.',
+        'title' => 'Kabinet',
+        'personal_data' => 'Shaxsiy ma\'lumotlar',
+        'account' => 'Hisob raqamingiz',
+        'login' => 'Login',
+        'date_reg' => 'Ulanish sanasi',
+        'fio' => 'F.I.SH.',
         'email' => 'Email',
-        'phone' => 'Телефон',
-        'connected' => 'Адресс подключения',
-        'tariff' => 'Тариф',
-        'no_tariff' => 'Нет тарифа',
-        'services' => 'Дополнительные услуги',
-        'services_count' => 'Количество устройств',
-        'active_count' => 'Активных устройств',
-        'balance' => 'Баланс счета',
-        'amount' => 'На счету',
+        'phone' => 'Telefon',
+        'connected' => 'Ulanish manzili',
+        'tariff' => 'Tarif',
+        'no_tariff' => 'Tarif yo\'q',
+        'services' => 'Qo\'shimcha xizmatlar',
+        'services_count' => 'Qurilmalar soni',
+        'active_count' => 'Faol qurilmalar',
+        'balance' => 'Hisobdagi mablag\'',
+        'amount' => 'Hisobda',
     ],
 
     'payment' => [
-        'title' => 'Финансовая статистика',
-        'pays' => 'Оплаты',
-        'date' => 'Дата',
-        'payments' => 'Платежная система',
-        'amount' => 'Сумма',
-        'status' => 'Статус'
+        'title' => 'Moliya statistikasi',
+        'pays' => 'To\'lovlar',
+        'date' => 'Sana',
+        'payments' => 'To\'lov tizimi',
+        'amount' => 'Summa',
+        'status' => 'Holat'
     ],
 
     'services' => [
-        'title' => 'Дополнительный услуги',
-        'devices' => 'Ваши устройства',
-        'device' => 'Устройство',
-        'status' => 'Статус',
-        'last_online' => 'Последняя активность',
-        'add_devices' => 'ДОБАВИТЬ УСТРОЙСТВО',
-        'add_success' => 'Новое устройство успешно добавлено!'
+        'title' => 'Qo\'shimcha xizmatlar',
+        'devices' => 'Sizning qurilmalaringiz',
+        'device' => 'Qurilma',
+        'status' => 'Holat',
+        'last_online' => 'So\'ngi faollik',
+        'add_devices' => 'QURILMA QO\'SHISH',
+        'add_success' => 'Yangi qurilma muvaffaqiyatli qo\'shildi!'
     ],
 
     'tariff' => [
-        'title' => 'Тарифы',
-        'speed' => 'Скорость',
-        'mb' => 'до :speed Мбит/сек',
-        'kb' => 'до :speed Кбит/сек',
-        'validate' => 'Срок действия',
-        'hour' => 'Час(ов)',
-        'minut' => 'Минут',
-        'day' => 'Дней',
-        'trafic' => 'Трафик',
-        'no_limit' => 'Безлимитный',
-        'amount' => 'Стоимость',
-        'connect' => 'Подключить'
+        'title' => 'Tariflar',
+        'speed' => 'Tezlik',
+        'mb' => ':speed Mbit/s gacha',
+        'kb' => ':speed Kbit/s gacha',
+        'validate' => 'Amal qilish muddati',
+        'hour' => 'Soat',
+        'minut' => 'Daqiqa',
+        'day' => 'Kun',
+        'trafic' => 'Trafik',
+        'no_limit' => 'Limitsiz',
+        'amount' => 'Narxi',
+        'connect' => 'Ulash'
     ],
 
     'modal' => [
-        'choose_date' => 'Выберите месяц',
-        'choose' => 'выбрать',
-        'to_connect' => 'Когда подключить',
-        'now' => 'СЕЙЧАС',
-        'month' => 'С НОВОГО МЕСЯЦА',
-        'are_you_sure' => 'Вы действительно хотите подключить?',
-        'success_tariff' => 'Тариф успешно подключен!'
+        'choose_date' => 'Oyni tanlang',
+        'choose' => 'tanlash',
+        'to_connect' => 'Qachon ulash kerak',
+        'now' => 'HOZIR',
+        'month' => 'YANGI OYDAN',
+        'are_you_sure' => 'Haqiqatdan ham ulanishni istaysizmi?',
+        'success_tariff' => 'Tarif muvaffaqiyatli ulandi!'
     ],
 
     'traffic' => [
-        'title' => 'Статистика трафика',
-        'mb' => 'Мб',
-        'in' => 'получено',
-        'inout' => 'отправлено/получено',
-        'out' => 'отправлено',
-        'all_traffic' => 'Общий трафик',
-        'date' => 'Дата трафика',
-        'inn' => 'Получено (Mb)',
-        'outt' => 'Отправлено (Mb)'
+        'title' => 'Trafik statistikasi',
+        'mb' => 'Mb',
+        'in' => 'qabul qilindi',
+        'inout' => 'yuborildi/qabul qilindi',
+        'out' => 'yuborildi',
+        'all_traffic' => 'Umumiy trafik',
+        'date' => 'Trafik sanasi',
+        'inn' => 'Qabul qilindi(Mb)',
+        'outt' => 'Yuborildi (Mb)'
     ],
 
     'footer' => [
-        'copy' => 'Личный кабинет Sola © :year. Все права защищены. <br>
-        Разработка и дизайн Usoft'
+        'copy' => 'Shaxsiy kabinet Sola © :year. Barcha huquqlar himoyalangan. <br>
+        Ishlanma va dizayn Usoft'
     ],
 
-    'no' => 'Нет',
-    'yes' => 'Да',
+    'no' => 'Yo\'q',
+    'yes' => 'Ha',
 
-    'next' => 'след.',
-    'prev' => 'пред.'
+    'next' => 'keyingi',
+    'prev' => 'oldingi'
 ];
