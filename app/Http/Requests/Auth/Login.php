@@ -27,6 +27,6 @@ class Login extends FormRequest
      */
     public function getLogin(): string
     {
-        return (string) $this->get('login');
+        return (string) str_replace(['+', ' '], '', $this->get('login'));
     }
 }

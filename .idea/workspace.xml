@@ -3,9 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/Requests.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/Requests.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/ru/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/ru/app.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Requests/Auth/Login.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/Auth/Login.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,11 +18,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="670">
-              <caret line="120" column="20" selection-start-line="120" selection-start-column="20" selection-end-line="120" selection-end-column="20" />
+            <state relative-caret-position="441">
+              <caret line="21" column="20" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/lang/uz/app.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2520">
+              <caret line="120" column="21" selection-start-line="120" selection-start-column="21" selection-end-line="120" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -30,20 +39,35 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="148" column="50" selection-start-line="148" selection-start-column="50" selection-end-line="148" selection-end-column="50" />
+            <state relative-caret-position="232">
+              <caret line="150" column="58" lean-forward="true" selection-start-line="150" selection-start-column="24" selection-end-line="150" selection-end-column="58" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="392">
+              <caret line="150" column="58" lean-forward="true" selection-start-line="150" selection-start-column="58" selection-end-line="150" selection-end-column="58" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
+        <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="492">
-              <caret line="382" column="10" lean-forward="true" selection-start-line="382" selection-start-column="10" selection-end-line="382" selection-end-column="10" />
-              <folding>
-                <element signature="e#30#64#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="399">
+              <caret line="140" column="61" lean-forward="true" selection-start-line="140" selection-start-column="61" selection-end-line="140" selection-end-column="61" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Login.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="588">
+              <caret line="28" column="5" lean-forward="true" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -91,7 +115,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$USER_HOME$/Downloads/site_uz (1).php" />
         <option value="$PROJECT_DIR$/resources/lang/en/errors.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Auth/Verify.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Taraffic/Controller.php" />
@@ -116,8 +139,6 @@
         <option value="$PROJECT_DIR$/resources/views/mobile/services/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/mobile/trafic/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/mobile/trafic/month.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/footer.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" />
@@ -125,7 +146,6 @@
         <option value="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/services/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/auth/verify.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php" />
@@ -137,11 +157,15 @@
         <option value="$PROJECT_DIR$/app/Http/Kernel.php" />
         <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Cabinet/Controller.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
-        <option value="$PROJECT_DIR$/resources/lang/uz/app.php" />
         <option value="$PROJECT_DIR$/app/Helpers/Requests.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/lang/ru/app.php" />
+        <option value="$PROJECT_DIR$/resources/views/mobile/trafic/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/mobile/trafic/month.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Requests/Auth/Login.php" />
+        <option value="$PROJECT_DIR$/resources/lang/uz/app.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" />
       </list>
     </option>
   </component>
@@ -267,6 +291,27 @@
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Requests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Requests" type="462c0819:PsiDirectoryNode" />
+              <item name="Auth" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -286,6 +331,13 @@
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="lang" type="462c0819:PsiDirectoryNode" />
+              <item name="uz" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -294,6 +346,14 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="desktop" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="layouts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
@@ -309,6 +369,14 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="mobile" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="mobile" type="462c0819:PsiDirectoryNode" />
+              <item name="trafic" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
@@ -381,7 +449,7 @@
       <workItem from="1568457986731" duration="1629000" />
       <workItem from="1568628583396" duration="8267000" />
       <workItem from="1568653245407" duration="6599000" />
-      <workItem from="1568714861906" duration="628000" />
+      <workItem from="1568714861906" duration="1420000" />
     </task>
     <task id="LOCAL-00001" summary="Login &amp;&amp; Verify Requests &amp;&amp; Cookie Set AccountType">
       <created>1565211779766</created>
@@ -439,17 +507,31 @@
       <option name="project" value="LOCAL" />
       <updated>1568664485360</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="lang bugs fixed">
+      <created>1568716030838</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1568716030838</updated>
+    </task>
+    <task id="LOCAL-00010" summary="design bugs fixed">
+      <created>1568716649560</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1568716649560</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80279000" />
+    <option name="totallyTimeSpent" value="81071000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29613733" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.29613733" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -505,16 +587,11 @@
     <MESSAGE value="Info &amp; Traffic &amp; Tariffs" />
     <MESSAGE value="Info &amp;&amp; Traffic &amp;&amp; Payment &amp;&amp; Services &amp;&amp; Auth bugs fixed" />
     <MESSAGE value="100% success project" />
-    <option name="LAST_COMMIT_MESSAGE" value="100% success project" />
+    <MESSAGE value="lang bugs fixed" />
+    <MESSAGE value="design bugs fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="design bugs fixed" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Http/Middleware/CheckCookie.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="17" column="38" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/vendor/desktop/images/h_icon4.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -680,20 +757,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/trafic/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="78" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/trafic/month.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="431">
-          <caret line="148" column="88" lean-forward="true" selection-start-line="148" selection-start-column="88" selection-end-line="148" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/header.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -719,13 +782,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="469">
           <caret line="41" column="29" lean-forward="true" selection-start-line="41" selection-start-column="29" selection-end-line="41" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="20" column="38" lean-forward="true" selection-start-line="20" selection-start-column="38" selection-end-line="20" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -819,20 +875,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3402">
-          <caret line="162" column="60" selection-start-line="162" selection-start-column="60" selection-end-line="162" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/uz/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="105" column="21" selection-start-line="105" selection-start-column="21" selection-end-line="105" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/footer.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
@@ -846,16 +888,6 @@
           <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
           <folding>
             <element signature="e#39#51#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="492">
-          <caret line="382" column="10" lean-forward="true" selection-start-line="382" selection-start-column="10" selection-end-line="382" selection-end-column="10" />
-          <folding>
-            <element signature="e#30#64#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -874,17 +906,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="148" column="50" selection-start-line="148" selection-start-column="50" selection-end-line="148" selection-end-column="50" />
+        <state relative-caret-position="492">
+          <caret line="382" column="10" lean-forward="true" selection-start-line="382" selection-start-column="10" selection-end-line="382" selection-end-column="10" />
+          <folding>
+            <element signature="e#30#64#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/trafic/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="383">
+          <caret line="133" column="13" selection-start-line="133" selection-start-column="13" selection-end-line="133" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/trafic/month.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="407">
+          <caret line="132" column="13" selection-start-line="132" selection-start-column="13" selection-end-line="132" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="670">
-          <caret line="120" column="20" selection-start-line="120" selection-start-column="20" selection-end-line="120" selection-end-column="20" />
+        <state relative-caret-position="441">
+          <caret line="21" column="20" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="28" column="5" lean-forward="true" selection-start-line="28" selection-start-column="5" selection-end-line="28" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/uz/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2520">
+          <caret line="120" column="21" selection-start-line="120" selection-start-column="21" selection-end-line="120" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="140" column="61" lean-forward="true" selection-start-line="140" selection-start-column="61" selection-end-line="140" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="150" column="58" lean-forward="true" selection-start-line="150" selection-start-column="24" selection-end-line="150" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="150" column="58" lean-forward="true" selection-start-line="150" selection-start-column="58" selection-end-line="150" selection-end-column="58" />
         </state>
       </provider>
     </entry>
