@@ -170,7 +170,7 @@ class Requests
         $url = "{$this->url}/abonent/info";
 
         $json = [
-            'phn' => $this->cookie->getAccID(),
+            'acc_id' => $this->cookie->getAccID(),
             'lang' => $this->lang
         ];
 
@@ -342,7 +342,7 @@ class Requests
         //return $this->cookie->getAccID();
         $url = "{$this->url}/traffic/detail";
         $json = [
-            'acc_id' => 1179527,//1213347, //$this->cookie->getAccID(),
+            'acc_id' => $this->cookie->getAccID(), //1179527,//1213347, //,
             'detail_month' => Carbon::now()->format('Y-m'),//$request->getMonth(),
             'lang' => $this->lang
         ];
@@ -377,7 +377,7 @@ class Requests
         //return $this->cookie->getAccID();
         $url = "{$this->url}/traffic/detail";
         $json = [
-            'acc_id' => 1179527,//$this->cookie->getAccID(),
+            'acc_id' => $this->cookie->getAccID(), 1179527,//$this->cookie->getAccID(),
             'detail_month' => $request->getMonth(),
             'lang' => $this->lang
         ];
