@@ -148,8 +148,8 @@
                     paginate: {
                         previous: "@lang('app.prev')",
                         next: "@lang('app.next')",
-                        emptyTable: "@lang('app.no_data')"
-                    }
+                    },
+                    emptyTable: "@lang('app.no_data')"
                 }
             });
         } );
