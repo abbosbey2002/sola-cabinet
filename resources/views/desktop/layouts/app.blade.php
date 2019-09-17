@@ -129,9 +129,11 @@
                 </div> <!-- info_block -->
             </div>
             <div class="col-lg-4">
-                <a href="{{ route('tariffs') }}" class="mybtn mt-2">
-                    @lang('app.header.change_tariff')
-                </a>
+                @if(!empty($tariff))
+                    <a href="{{ route('tariffs') }}" class="mybtn mt-2">
+                        @lang('app.header.change_tariff')
+                    </a>
+                @endif
             </div>
         </div>
         @if(!empty($date))

@@ -33,7 +33,11 @@ class Requests
         $this->url = "http://{$api}/";
         $this->client = new Client();
         $this->cookie = $cookie;
-        $this->lang = 'uz';
+        if (request()->cookie('lang')) {
+            $this->lang = request()->cookie('lang');
+        } else {
+            $this->lang = 'ru';
+        }
 
         $this->token = 'Basic ' . base64_encode(env("SOLA_USERNAME").':'.env('SOLA_PASSWORD'));
     }

@@ -1,4 +1,4 @@
-@extends('desktop.layouts.app', [ 'info' => $info, 'date' => true, 'months' => $months, 'month' => $month ])
+@extends('desktop.layouts.app', [ 'info' => $info, 'date' => true, 'months' => $months, 'month' => $month, 'tariff' => true ])
 @section('title', trans('app.traffic.title').' - ')
 @section('content')
     <section class="container-fluid">
