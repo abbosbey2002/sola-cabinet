@@ -135,21 +135,18 @@
             </div>
         </div>
         @if(!empty($date))
-
-
             <div class="statics-tarif py-4">
-
-                @if(!empty($month))
-                    @lang('app.header.date_choose', ['Month' => $months[Carbon::parse($month)->format('n')]['name']])
-                @else
-                    @lang('app.header.date_choose', ['Month' => $months[Carbon::now()->format('n')]['name']])
-                @endif
-
+                <p>
+                    @if(!empty($month))
+                        @lang('app.header.date_choose', ['Month' => $months[Carbon::parse($month)->format('n')]['name']])
+                    @else
+                        @lang('app.header.date_choose', ['Month' => $months[Carbon::now()->format('n')]['name']])
+                    @endif
+                </p>
                 <button type="button" class="btn" data-toggle="modal" data-target="#statics-modal">
                     @lang('app.header.choose')
                 </button>
             </div>
-
         @endif
     </div> <!-- mycontainer -->
 </section> <!-- main-section -->

@@ -119,7 +119,18 @@
 
     <script>
         $(document).ready(function() {
-            $('#example').DataTable({searching: false, iDisplayLength: 20, info: false, bLengthChange: false});
+            $('#example').DataTable({
+                searching: false,
+                iDisplayLength: 20,
+                info: false,
+                bLengthChange: false,
+                language: {
+                    paginate: {
+                        previous: "@lang('app.prev')",
+                        next: "@lang('app.next')"
+                    }
+                }
+            });
         } );
     </script>
 
