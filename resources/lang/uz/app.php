@@ -82,7 +82,7 @@ return [
         'minut' => 'Daqiqa',
         'day' => 'Kun',
         'trafic' => 'Trafik',
-        'no_limit' => 'Limitsiz',
+        'no_limit' => 'Cheksiz',
         'amount' => 'Narxi',
         'connect' => 'Ulash'
     ],
