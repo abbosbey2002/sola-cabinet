@@ -35,6 +35,18 @@ class SetCookie
         return $json['type'];
     }
 
+
+    /**
+     * @return mixed
+     */
+    public static function getTypee()
+    {
+        $data = request()->cookie('data');
+        $json = json_decode($data, true);
+
+        return $json['type'];
+    }
+
     /**
      *
      */

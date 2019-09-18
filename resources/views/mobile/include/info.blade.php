@@ -22,7 +22,7 @@
                     </span>
             </div> <!-- d-flex -->
         </div> <!-- info_block -->
-        @if(SetCookie::getType() ==  2)
+        @if(SetCookie::getTypee() ==  2)
             @if($tariff)
                 <a href="{{ route('tariffs') }}" class="mybtn mt-4">@lang('app.header.change_tariff')</a>
             @endif

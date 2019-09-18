@@ -129,7 +129,7 @@
                 </div> <!-- info_block -->
             </div>
             <div class="col-lg-4">
-                @if(SetCookie::getType() ==  2)
+                @if(SetCookie::getTypee() ==  2)
                     @if(!empty($tariff))
                         <a href="{{ route('tariffs') }}" class="mybtn mt-2">
                             @lang('app.header.change_tariff')
