@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/SetCookie.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/SetCookie.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,7 +18,16 @@
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/info.blade.php">
           <provider selected="true" editor-type-id="text-editor">
@@ -27,11 +37,59 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="589">
+              <caret line="70" column="9" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
+              <folding>
+                <element signature="e#53#71#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="478">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="131">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="81">
+              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="137" column="22" lean-forward="true" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="22" />
+            <state relative-caret-position="2877">
+              <caret line="137" column="22" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -116,10 +174,6 @@
         <option value="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php" />
         <option value="$PROJECT_DIR$/config/app.php" />
         <option value="$PROJECT_DIR$/resources/lang/ru/app.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/services/index.blade.php" />
@@ -130,6 +184,10 @@
         <option value="$PROJECT_DIR$/app/Helpers/SetCookie.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php" />
       </list>
     </option>
   </component>
@@ -234,6 +292,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -257,6 +316,30 @@
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="Http" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+              <item name="Site" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="Http" type="462c0819:PsiDirectoryNode" />
+              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
+              <item name="Site" type="462c0819:PsiDirectoryNode" />
+              <item name="Tariffs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
@@ -381,7 +464,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -444,7 +526,8 @@
       <workItem from="1568628583396" duration="8267000" />
       <workItem from="1568653245407" duration="6599000" />
       <workItem from="1568714861906" duration="2860000" />
-      <workItem from="1568789378441" duration="613000" />
+      <workItem from="1568789378441" duration="893000" />
+      <workItem from="1568790801847" duration="39000" />
     </task>
     <task id="LOCAL-00001" summary="Login &amp;&amp; Verify Requests &amp;&amp; Cookie Set AccountType">
       <created>1565211779766</created>
@@ -558,17 +641,24 @@
       <option name="project" value="LOCAL" />
       <updated>1568789899455</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="bugs fixed">
+      <created>1568789998670</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1568789998670</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="83124000" />
+    <option name="totallyTimeSpent" value="83443000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3004292" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30472103" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -636,16 +726,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="514">
           <caret line="427" column="17" selection-start-line="427" selection-start-column="17" selection-end-line="427" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
-          <folding>
-            <element signature="e#53#71#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -917,41 +997,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="30" column="69" selection-start-line="30" selection-start-column="69" selection-end-line="30" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="452">
-          <caret line="30" column="69" selection-start-line="30" selection-start-column="69" selection-end-line="30" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="338">
-          <caret line="47" column="73" selection-start-line="47" selection-start-column="73" selection-end-line="47" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="557">
-          <caret line="48" column="32" lean-forward="true" selection-start-line="48" selection-start-column="32" selection-end-line="48" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="63">
-          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Helpers/SetCookie.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="468">
@@ -1008,6 +1053,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="12" column="24" selection-start-line="12" selection-start-column="24" selection-end-line="12" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/info.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="504">
@@ -1017,8 +1069,46 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="137" column="22" lean-forward="true" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="22" />
+        <state relative-caret-position="2877">
+          <caret line="137" column="22" selection-start-line="137" selection-start-column="22" selection-end-line="137" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="70" column="9" selection-start-line="70" selection-start-column="9" selection-end-line="70" selection-end-column="9" />
+          <folding>
+            <element signature="e#53#71#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="81">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>

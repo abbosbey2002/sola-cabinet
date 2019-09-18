@@ -8,7 +8,6 @@
             <table class="table mytable table-sm">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">@lang('app.payment.date')</th>
                     <th scope="col">@lang('app.payment.payments')</th>
                     <th scope="col">@lang('app.payment.amount')</th>
@@ -25,7 +24,6 @@
                 @endif
                 @foreach($payments['body']['payments'] as $payment)
                     <tr>
-                        <td>{{ $payment['payment_id'] }}</td>
                         <td>{{ date('H:i, d.m', strtotime($payment['payment_date'])) }}</td>
                         <td>{{ $payment['payment_system'] }}</td>
                         <td>{{ number_format($payment['amount'] / 100, 0, '', ' ') }} @lang('app.ye')</td>
