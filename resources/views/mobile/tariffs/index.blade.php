@@ -182,7 +182,13 @@
 
     <script>
         var id = 0;
-        var type = 'not';
+
+
+        @if(SetCookie::getTypee() == 2)
+            var type = 'not';
+        @else
+            var type = 'now';
+        @endif
 
 
         $('.connect_btn').on('click', function (e) {
@@ -194,15 +200,22 @@
 
         $('.yes').on('click', function (e) {
            e.preventDefault();
-            $('#accept-modal').modal('hide');
-            $('#change-modal').modal('show');
+
+            @if(SetCookie::getTypee() == 2)
+                $('#change-modal').modal('show');
+            @else
+                sendConfig();
+            @endif
+
         });
 
-        $('.type_tariff').on('click', function (e) {
-            e.preventDefault();
-            type = $(this).data('type');
-            sendConfig();
-        });
+        @if(SetCookie::getTypee() == 2)
+            $('.type_tariff').on('click', function (e) {
+                e.preventDefault();
+                type = $(this).data('type');
+                sendConfig();
+            });
+        @endif
 
         function sendConfig()
         {
