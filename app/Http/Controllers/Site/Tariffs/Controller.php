@@ -61,7 +61,7 @@ class Controller extends ExController
         }
 
         try {
-            $response = $this->requests->setTariff(6, $date);
+            $response = $this->requests->setTariff($id, $date);
         } catch (\Exception $exception) {
            abort(403);
         }

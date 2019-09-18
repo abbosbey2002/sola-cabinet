@@ -76,9 +76,12 @@
 
                                 </div> <!-- d-flex -->
                             </div> <!-- d-flex -->
-                            <a href="#" data-id="{{ $tariff['tariff_id'] }}" class="mybtn py-2 mt-3 green_shadow connect_btn">
-                                @lang('app.tariff.connect')
-                            </a>
+                            @if(empty($info['body']['curr_tariff_name']))
+                                <a href="#" data-id="{{ $tariff['tariff_id'] }}" class="mybtn py-2 mt-3 green_shadow connect_btn">
+                                    @lang('app.tariff.connect')
+                                </a>
+                            @endif
+
                         </div> <!-- rate_card_info -->
                     </div> <!-- rate_card -->
                 </div> <!-- swiper-slide -->

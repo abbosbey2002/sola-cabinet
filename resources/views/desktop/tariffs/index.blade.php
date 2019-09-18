@@ -59,9 +59,11 @@
 
                                     </div> <!-- d-flex -->
                                 </div> <!-- d-flex -->
-                                <a href="#" data-id="{{ $tariff['tariff_id'] }}" class="mybtn py-2 mt-3 green_shadow connect_btn">
-                                    @lang('app.tariff.connect')
-                                </a>
+                                @if(empty($info['body']['curr_tariff_name']))
+                                    <a href="#" data-id="{{ $tariff['tariff_id'] }}" class="mybtn py-2 mt-3 green_shadow connect_btn">
+                                        @lang('app.tariff.connect')
+                                    </a>
+                                @endif
                             </div> <!-- rate_card_info -->
                         </div> <!-- rate_card -->
                     </div>
@@ -72,33 +74,35 @@
 @endsection
 
 @push('js')
-    <!-- Change Tarif Modal -->
-    <div class="modal fade" id="change-modal">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
-            <div class="modal-content">
+    @if(SetCookie::getTypee() == 2)
+        <!-- Change Tarif Modal -->
+        <div class="modal fade" id="change-modal">
+            <div class="modal-dialog modal-dialog-centered modal-sm">
+                <div class="modal-content">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">@lang('app.modal.to_connect')</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">@lang('app.modal.to_connect')</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body d-flex justify-content-center align-items-center flex-column">
+
+                        <button type="button" class="mybtn type_tariff" data-type="now">
+                            @lang('app.modal.now')
+                        </button>
+
+                        <button type="button" class="mybtn mt-4 type_tariff" data-type="month">
+                            @lang('app.modal.month')
+                        </button>
+
+                    </div>
+
                 </div>
-
-                <!-- Modal body -->
-                <div class="modal-body d-flex justify-content-center align-items-center flex-column">
-
-                    <button type="button" class="mybtn type_tariff" data-type="now">
-                        @lang('app.modal.now')
-                    </button>
-
-                    <button type="button" class="mybtn mt-4 type_tariff" data-type="month">
-                        @lang('app.modal.month')
-                    </button>
-
-                </div>
-
             </div>
         </div>
-    </div>
+    @endif
 
     <!-- Change Tarif Modal -->
     <div class="modal fade" id="accept-modal">
