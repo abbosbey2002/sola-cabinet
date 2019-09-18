@@ -33,7 +33,7 @@
         <div class="container">
             <form action="{{ route('login') }}" class="begin_form" method="post">
                 @csrf
-                <input type="text" placeholder="@lang('app.auth.phone')" name="login" required="">
+                <input type="tel" placeholder="@lang('app.auth.phone')" name="login" required="">
                 <button type="submit">@lang('app.auth.next')</button>
             </form> <!-- begin_form -->
 

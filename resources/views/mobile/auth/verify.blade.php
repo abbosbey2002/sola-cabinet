@@ -31,7 +31,7 @@
                 @lang('app.auth.send_phone', ['phone' => substr(session()->get('phone'), 7,12)])
             </p>
 
-            <input type="text" minlength="4" maxlength="4" placeholder="@lang('app.auth.code')" name="code" class="text-center"  required="">
+            <input type="tel" minlength="4" maxlength="4" placeholder="@lang('app.auth.code')" name="code" class="text-center"  required="">
 
             <button type="submit">@lang('app.auth.login')</button>
 

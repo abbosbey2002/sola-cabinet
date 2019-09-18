@@ -8,7 +8,7 @@
                 <img src="/vendor/mobile/images/bird.png" alt="">
 
 
-                <input type="text" placeholder="@lang('app.auth.phone')" name="login" required="">
+                <input type="tel" placeholder="@lang('app.auth.phone')" name="login" required="">
 {{--                <input type="password" placeholder="Пароль" required="">--}}
 
                 <button type="submit">@lang('app.auth.next')</button>
