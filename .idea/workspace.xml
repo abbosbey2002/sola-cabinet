@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php" afterDir="false" />
     </list>
@@ -18,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="755">
-              <caret line="82" column="34" lean-forward="true" selection-start-line="78" selection-start-column="28" selection-end-line="82" selection-end-column="34" />
+            <state relative-caret-position="681">
+              <caret line="85" column="45" lean-forward="true" selection-start-line="85" selection-start-column="45" selection-end-line="85" selection-end-column="45" />
             </state>
           </provider>
         </entry>
@@ -30,19 +29,31 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="387">
-              <caret line="89" column="20" lean-forward="true" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
+            <state relative-caret-position="591">
+              <caret line="61" column="106" lean-forward="true" selection-start-line="61" selection-start-column="80" selection-end-line="61" selection-end-column="106" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="620">
+            <state relative-caret-position="598">
               <caret line="65" column="22" lean-forward="true" selection-start-line="65" selection-start-column="22" selection-end-line="65" selection-end-column="22" />
               <folding>
                 <element signature="e#53#71#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="318">
+              <caret line="461" column="20" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
+              <folding>
+                <element signature="e#30#64#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -139,9 +150,9 @@
         <option value="$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php" />
         <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php" />
       </list>
     </option>
   </component>
@@ -507,7 +518,7 @@
       <workItem from="1568714861906" duration="2860000" />
       <workItem from="1568789378441" duration="893000" />
       <workItem from="1568790801847" duration="608000" />
-      <workItem from="1568793564816" duration="1545000" />
+      <workItem from="1568793564816" duration="2267000" />
     </task>
     <task id="LOCAL-00001" summary="Login &amp;&amp; Verify Requests &amp;&amp; Cookie Set AccountType">
       <created>1565211779766</created>
@@ -649,11 +660,25 @@
       <option name="project" value="LOCAL" />
       <updated>1568791677064</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Tarif connected change">
+      <created>1568803412170</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1568803412171</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Change tariff JS code">
+      <created>1568804004713</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1568804004713</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="85557000" />
+    <option name="totallyTimeSpent" value="86279000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1440" y="0" width="1920" height="1080" extended-state="0" />
@@ -723,7 +748,9 @@
     <MESSAGE value="Payment remove ID" />
     <MESSAGE value="Lang bugs fixed" />
     <MESSAGE value="auth bugs fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="auth bugs fixed" />
+    <MESSAGE value="Tarif connected change" />
+    <MESSAGE value="Change tariff JS code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Change tariff JS code" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/public/vendor/desktop/css/style.css">
@@ -911,16 +938,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="46" column="21" lean-forward="true" selection-start-line="46" selection-start-column="21" selection-end-line="46" selection-end-column="21" />
-          <folding>
-            <element signature="e#30#64#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Login.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="588">
@@ -1092,27 +1109,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="755">
-          <caret line="82" column="34" lean-forward="true" selection-start-line="78" selection-start-column="28" selection-end-line="82" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="387">
-          <caret line="89" column="20" lean-forward="true" selection-start-line="89" selection-start-column="20" selection-end-line="89" selection-end-column="20" />
+        <state relative-caret-position="318">
+          <caret line="461" column="20" selection-start-line="461" selection-start-column="20" selection-end-line="461" selection-end-column="20" />
+          <folding>
+            <element signature="e#30#64#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="620">
+        <state relative-caret-position="598">
           <caret line="65" column="22" lean-forward="true" selection-start-line="65" selection-start-column="22" selection-end-line="65" selection-end-column="22" />
           <folding>
             <element signature="e#53#71#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="591">
+          <caret line="61" column="106" lean-forward="true" selection-start-line="61" selection-start-column="80" selection-end-line="61" selection-end-column="106" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="681">
+          <caret line="85" column="45" lean-forward="true" selection-start-line="85" selection-start-column="45" selection-end-line="85" selection-end-column="45" />
         </state>
       </provider>
     </entry>

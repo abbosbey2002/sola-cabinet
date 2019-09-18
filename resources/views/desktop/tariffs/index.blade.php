@@ -59,7 +59,7 @@
 
                                     </div> <!-- d-flex -->
                                 </div> <!-- d-flex -->
-                                @if(empty($info['body']['curr_tariff_name']))
+                                @if(empty($info['body']['curr_tariff_name']) || SetCookie::getTypee() == 2)
                                     <a href="#" data-id="{{ $tariff['tariff_id'] }}" class="mybtn py-2 mt-3 green_shadow connect_btn">
                                         @lang('app.tariff.connect')
                                     </a>
