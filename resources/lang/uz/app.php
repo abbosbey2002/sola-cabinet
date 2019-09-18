@@ -1,6 +1,6 @@
 <?php
 return [
-    'lang' => 'Rus tili',
+    'lang' => 'Русский язык',
     'ye' => 'So`m',
     'no_data' => 'ma\'lumotlar yo\'q',
     'home' => 'Bosh sahifa',

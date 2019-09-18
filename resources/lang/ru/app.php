@@ -1,6 +1,6 @@
 <?php
 return [
-    'lang' => 'Узбекский язык',
+    'lang' => 'O`zbek tili',
     'ye' => 'Сум',
     'no_data' => 'нет данных',
     'home' => 'Главная',
