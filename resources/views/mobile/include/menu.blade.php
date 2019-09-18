@@ -9,7 +9,7 @@
             @if(App::isLocale('uz'))
                 <a href="{{ route('change.lang', ['ru']) }}" class="main_color text-center pb-4">@lang('app.lang')</a>
             @elseif(App::isLocale('ru'))
-                <a href="{{ route('change.lang', ['ru']) }}" class="main_color text-center pb-4">@lang('app.lang')</a>
+                <a href="{{ route('change.lang', ['uz']) }}" class="main_color text-center pb-4">@lang('app.lang')</a>
             @endif
 
             <div class="mycontainer2">

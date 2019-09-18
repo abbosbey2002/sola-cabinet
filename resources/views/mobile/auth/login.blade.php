@@ -20,7 +20,7 @@
         @if(App::isLocale('uz'))
             <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">@lang('app.lang')</a>
         @elseif(App::isLocale('ru'))
-            <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">@lang('app.lang')</a>
+            <a href="{{ route('change.lang', ['uz']) }}" class="lang_link">@lang('app.lang')</a>
         @endif
     </header>
 @endsection

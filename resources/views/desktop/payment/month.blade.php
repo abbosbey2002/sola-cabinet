@@ -28,7 +28,7 @@
                         <td>{{ $payment['payment_id'] }}</td>
                         <td>{{ date('H:i, d.m', strtotime($payment['payment_date'])) }}</td>
                         <td>{{ $payment['payment_system'] }}</td>
-                        <td>{{ number_format($payment['amount'], 0, '', ' ') }} @lang('app.ye')</td>
+                        <td>{{ number_format($payment['amount'] / 100, 0, '', ' ') }} @lang('app.ye')</td>
                         <td>
                             {{ $payment['payment_status'] }}
                         </td>

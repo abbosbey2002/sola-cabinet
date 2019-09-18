@@ -1,7 +1,7 @@
 <?php
 return [
     'lang' => 'Rus tili',
-    'ye' => 'UZS',
+    'ye' => 'So`m',
     'no_data' => 'ma\'lumotlar yo\'q',
     'home' => 'Bosh sahifa',
 

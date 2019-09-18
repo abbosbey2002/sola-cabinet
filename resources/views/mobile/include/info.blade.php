@@ -14,7 +14,7 @@
             <div class="d-flex flex-column">
                 <h3>@lang('app.header.tariff'):</h3>
                 <span class="green_span">
-                        @if(!empty($info['body']['curr_tariff_name']))
+                    @if(!empty($info['body']['curr_tariff_name']))
                         {{ $info['body']['curr_tariff_name'] }}
                     @else
                         @lang('app.header.no_tariff')
@@ -22,8 +22,10 @@
                     </span>
             </div> <!-- d-flex -->
         </div> <!-- info_block -->
-        @if($tariff)
-            <a href="{{ route('tariffs') }}" class="mybtn mt-4">@lang('app.header.change_tariff')</a>
+        @if(SetCookie::getType() ==  2)
+            @if($tariff)
+                <a href="{{ route('tariffs') }}" class="mybtn mt-4">@lang('app.header.change_tariff')</a>
+            @endif
         @endif
 
         @if(!empty($date))
