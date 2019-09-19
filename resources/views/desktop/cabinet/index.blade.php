@@ -159,6 +159,7 @@
             top: 0;
             width: 100%;
             height: 5vh;
+            z-index: 1;
         }
 
         .section1 {
@@ -166,6 +167,7 @@
             top: 80px;
             width: 100%;
             height: 40vh;
+            z-index: 11;
         }
 
         .section2 {

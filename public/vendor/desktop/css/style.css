@@ -905,6 +905,7 @@ footer a:hover {
   position: relative;
   margin-top: 10px;
   transform: scale(.7);
+  z-index: 22;
 }
 
 .lang-content {
