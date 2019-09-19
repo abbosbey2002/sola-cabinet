@@ -54,51 +54,51 @@ class Controller extends BaseController
     {
         return [
             1 => [
-                'name' => 'Январь',
+                'name' => trans('app.months.1'),
                 'month' => Carbon::parse('first day of January')->format('Y-m')
             ],
             2 => [
-                'name' => 'Февраль',
+                'name' => trans('app.months.2'),
                 'month' => Carbon::parse('first day of February')->format('Y-m')
             ],
             3 => [
-                'name' => 'Март',
+                'name' => trans('app.months.3'),
                 'month' => Carbon::parse('first day of March')->format('Y-m')
             ],
             4 => [
-                'name' => 'Апрель',
+                'name' => trans('app.months.4'),
                 'month' => Carbon::parse('first day of April')->format('Y-m')
             ],
             5 => [
-                'name' => 'Май',
+                'name' => trans('app.months.5'),
                 'month' => Carbon::parse('first day of May')->format('Y-m')
             ],
             6 => [
-                'name' => 'Июнь',
+                'name' => trans('app.months.6'),
                 'month' => Carbon::parse('first day of June')->format('Y-m')
             ],
             7 => [
-                'name' => 'Июля',
+                'name' => trans('app.months.7'),
                 'month' => Carbon::parse('first day of July')->format('Y-m')
             ],
             8 => [
-                'name' => 'Август',
+                'name' => trans('app.months.8'),
                 'month' => Carbon::parse('first day of August')->format('Y-m')
             ],
             9 => [
-                'name' => 'Сентябрь',
+                'name' => trans('app.months.9'),
                 'month' => Carbon::parse('first day of September')->format('Y-m')
             ],
             10 => [
-                'name' => 'Октябрь',
+                'name' => trans('app.months.10'),
                 'month' => Carbon::parse('first day of October')->format('Y-m')
             ],
             11 => [
-                'name' => 'Ноябрь',
+                'name' => trans('app.months.11'),
                 'month' => Carbon::parse('first day of November')->format('Y-m')
             ],
             12 => [
-                'name' => 'Декабрь',
+                'name' => trans('app.months.12'),
                 'month' => Carbon::parse('first day of December')->format('Y-m')
             ],
         ];

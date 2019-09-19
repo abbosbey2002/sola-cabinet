@@ -46,8 +46,17 @@ class Controller extends ExController
         return $this->view('payment.index', compact('payments', 'info', 'months'));
     }
 
+    /**
+     * @param HistoryRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function other_month(HistoryRequest $request)
     {
+        if ($request->isMethod('get')) {
+            return redirect()->route('payment');
+        }
+
         try {
             $payments = $this->requests->getPaymentsMonth($request);
         } catch (\Exception $exception) {

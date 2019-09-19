@@ -42,7 +42,6 @@ class Controller extends ExController
 
         $months = $this->month();
 
-
         if($detail['status'] == 200) {
             $input = array_sum(array_map(function ($q) {
                     return $q['traffic_input'];

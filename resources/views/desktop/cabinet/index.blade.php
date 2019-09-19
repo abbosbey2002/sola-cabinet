@@ -58,26 +58,28 @@
                             </div> <!-- d-flex -->
                         @endif
 
-                        @if(!empty($info['body']['phone']))
-                            <div class="d-flex">
-                                <div class="minw-50">
-                                    <span>@lang('app.cabinet.phone'):</span>
-                                </div> <!-- minw-50 -->
-                                <div>
-                                    <span>{{ $info['body']['phone'] }}</span>
-                                </div>
-                            </div> <!-- d-flex -->
-                        @endif
+                        @if(SetCookie::getTypee() == 2)
+                            @if(!empty($info['body']['phone']))
+                                <div class="d-flex">
+                                    <div class="minw-50">
+                                        <span>@lang('app.cabinet.phone'):</span>
+                                    </div> <!-- minw-50 -->
+                                    <div>
+                                        <span>{{ $info['body']['phone'] }}</span>
+                                    </div>
+                                </div> <!-- d-flex -->
+                            @endif
 
-                        @if(!empty($info['body']['address']))
-                            <div class="d-flex">
-                                <div class="minw-50">
-                                    <span>@lang('app.cabinet.connected'):</span>
-                                </div> <!-- minw-50 -->
-                                <div>
-                                    <span>{{ $info['body']['address'] }}</span>
-                                </div>
-                            </div> <!-- d-flex -->
+                            @if(!empty($info['body']['address']))
+                                <div class="d-flex">
+                                    <div class="minw-50">
+                                        <span>@lang('app.cabinet.connected'):</span>
+                                    </div> <!-- minw-50 -->
+                                    <div>
+                                        <span>{{ $info['body']['address'] }}</span>
+                                    </div>
+                                </div> <!-- d-flex -->
+                            @endif
                         @endif
                         <div class="d-flex">
                             <div class="minw-50">

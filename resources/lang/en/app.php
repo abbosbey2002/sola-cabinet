@@ -19,8 +19,8 @@ return [
         'no_tariff' => 'There is no tariff',
         'tariff' => 'Your tariff',
         'change_tariff' => 'TO CHANGE THE TARIFF',
-        'date_choose' => 'Statistics <span>за :Month</span>',
-        'choose' => 'CHOOSE THE DATE',
+        'date_choose' => 'Statistics <span>for :Month</span>',
+        'choose' => 'CHOOSE MONTH',
     ],
 
     'menu' => [
@@ -77,7 +77,7 @@ return [
         'speed' => 'Speed',
         'mb' => 'till :speed Mbit/sec',
         'kb' => 'till :speed Kbit/sec',
-        'validate' => 'Validity',
+        'validity' => 'Validity',
         'hour' => 'Hour(s)',
         'minut' => 'Minute',
         'day' => 'Days',
@@ -118,5 +118,20 @@ return [
     'yes' => 'Yes',
 
     'next' => 'next',
-    'prev' => 'prev.'
+    'prev' => 'prev.',
+
+    'months' => [
+        '1' => 'January',
+        '2' => 'February',
+        '3' => 'March',
+        '4' => 'April',
+        '5' => 'May',
+        '6' => 'June',
+        '7' => 'July',
+        '8' => 'August',
+        '9' => 'September',
+        '10' => 'October',
+        '11' => 'November',
+        '12' => 'December'
+    ]
 ];

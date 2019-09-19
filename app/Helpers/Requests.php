@@ -36,8 +36,6 @@ class Requests
         $this->client = new Client();
         $this->cookie = $cookie;
 
-        //App::getLocale() = App::getLocale();
-
         $this->token = 'Basic ' . base64_encode(env("SOLA_USERNAME").':'.env('SOLA_PASSWORD'));
     }
 
@@ -55,23 +53,6 @@ class Requests
         return md5($auth);
     }
 
-
-    /**
-     * @param $json
-     * @return array
-     */
-    private function header($json): array
-    {
-        return [
-            'json' => $json,
-            'http_errors' => false,
-            'headers' =>[
-                'X-Access-Token' => $this->generateAuthToken($json),
-                'Authorization' => $this->token,
-                'Content-Type' => 'application/json'
-            ]
-        ];
-    }
 
     /**
      * @param $response
@@ -93,15 +74,11 @@ class Requests
      */
     public function identify(LoginRequest $request, string $method = 'POST')
     {
-
         $url = "{$this->url}/identify";
-
         $json = [
             'phn' => $request->getLogin(),
             'lang' => App::getLocale()
         ];
-
-        //return $this->generateAuthToken($json);
 
         $response = $this->client->request($method, $url, [
                 'json' => $json,
@@ -117,12 +94,9 @@ class Requests
         $this->cookie->setLogin($request->getLogin());
         $data = $this->setData($response);
 
-        //return $response->getBody();
-
         if ($response->getStatusCode() == 200) {
             $this->cookie->setAccID($data['body']['accs'][0]['accId']);
             $this->cookie->AbonentType($data['body']['accs'][0]['abonType']);
-            return $data;
         }
 
         return $data;
@@ -137,7 +111,6 @@ class Requests
     public function verify(VerifyRequest $request, string $method = 'POST')
     {
         $url = "{$this->url}/verify";
-
         $json = [
             'phn' => $request->cookie('login'),
             'smsCode' => $request->getCode(),
@@ -159,13 +132,12 @@ class Requests
         if ($response->getStatusCode() == 200) {
             $this->cookie->verifyUser();
         }
-
         return $data;
     }
 
     /**
      * @param string $method
-     * @return array|bool
+     * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function abonentInfo(string $method = 'POST')
@@ -187,94 +159,9 @@ class Requests
                 ]
         ]);
 
-       //return $response->getBody();
-
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
+        $data = $this->setData($response);
+        return $data;
     }
-
-
-    /**
-     * @param AbonentEditRequest $request
-     * @param string $method
-     * @return array|bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function abonentEdit(AbonentEditRequest $request, string $method = 'POST')
-    {
-        $url = "{$this->url}/abonent/edit";
-
-        $json = [
-            'acc_id' => $this->cookie->getAccID(),
-            'email' => $request->getEmail(),
-            'phone' => $request->getPhone()
-        ];
-
-        $response = $this->client->request($method, $url, [
-            $this->header($json)
-        ]);
-
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
-    }
-
-    /**
-     * @param string $method
-     * @return array|bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function balance(string $method = 'POST')
-    {
-        $url = "{$this->url}/acct/balance";
-        $json = [
-            'acc_id' => $this->cookie->getAccID(),
-            'lang' => App::getLocale()
-        ];
-
-        $response = $this->client->request($method, $url, [
-            $this->header($json)
-        ]);
-
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
-    }
-
-    /**
-     * @param WifiPasswordRequest $request
-     * @param string $method
-     * @return array|bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function changeWifiPassword(WifiPasswordRequest $request, string $method = 'POST')
-    {
-        $url = "{$this->url}/acct/wifipassword";
-        $json = [
-            'acc_id' => $this->cookie->getAccID(),
-            'curr_password' => $request->getCurrentPassword(),
-            'new_password' => $request->getNewPassword(),
-            'lang' => App::getLocale()
-        ];
-
-        $response = $this->client->request($method, $url, [
-            $this->header($json)
-        ]);
-
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
-    }
-
 
     /**
      * @param string $method
@@ -301,7 +188,6 @@ class Requests
         ]);
 
         $data = $this->setData($response);
-
         return $data;
     }
 
@@ -342,11 +228,10 @@ class Requests
      */
     public function getTrafficDetail(string $method = 'POST')
     {
-        //return $this->cookie->getAccID();
         $url = "{$this->url}/traffic/detail";
         $json = [
-            'acc_id' => $this->cookie->getAccID(), //1179527,//1213347, //,
-            'detail_month' => Carbon::now()->format('Y-m'),//$request->getMonth(),
+            'acc_id' => $this->cookie->getAccID(),
+            'detail_month' => Carbon::now()->format('Y-m'),
             'lang' => App::getLocale()
         ];
 
@@ -361,11 +246,6 @@ class Requests
         ]);
 
         $data = $this->setData($response);
-
-        if ($response->getStatusCode() == 200) {
-            return $data;
-        }
-
         return $data;
     }
 
@@ -377,10 +257,9 @@ class Requests
      */
     public function getTrafficDetailMonth(TrafficDetailRequest $request, string $method = 'POST')
     {
-        //return $this->cookie->getAccID();
         $url = "{$this->url}/traffic/detail";
         $json = [
-            'acc_id' => $this->cookie->getAccID(), 1179527,//$this->cookie->getAccID(),
+            'acc_id' => $this->cookie->getAccID(),
             'detail_month' => $request->getMonth(),
             'lang' => App::getLocale()
         ];
@@ -423,32 +302,7 @@ class Requests
         ]);
 
         $data = $this->setData($response);
-
         return $data;
-    }
-
-    /**
-     * @param string $method
-     * @return array|bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function TariffConnected(string $method = 'POST')
-    {
-        $url = "{$this->url}/tariff/connected";
-        $json = [
-            'acc_id' => $this->cookie->getAccID(),
-            'lang' => App::getLocale()
-        ];
-
-        $response = $this->client->request($method, $url, [
-            $this->header($json)
-        ]);
-
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
     }
 
     /**
@@ -479,31 +333,6 @@ class Requests
 
         $data = $this->setData($response);
         return $data;
-    }
-
-    /**
-     * @param $tariff_id
-     * @param string $method
-     * @return array|bool
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    public function TariffDisConnect($tariff_id, string $method = 'POST')
-    {
-        $url = "{$this->url}/tariff/disconnect";
-        $json = [
-            'acc_id' => $this->cookie->getAccID(),
-            'tariff_id' => $tariff_id
-        ];
-
-        $response = $this->client->request($method, $url, [
-            $this->header($json)
-        ]);
-
-        if ($response->getStatusCode() == 200) {
-            return $this->setData($response);
-        }
-
-        return false;
     }
 
     /**

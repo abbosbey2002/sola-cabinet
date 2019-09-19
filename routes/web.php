@@ -30,7 +30,7 @@ Route::group(['prefix' => '/', 'middleware' => ['login', 'setLang'], 'namespace'
 
     Route::group(['prefix' => 'traffic', 'namespace' => 'Traffic'], function () {
         Route::get('/detail', 'Controller@index')->name('traffic');
-        Route::post('/detail/month/', 'Controller@other_month')->name('traffic.month');
+        Route::match(['get', 'post'], '/detail/month/', 'Controller@other_month')->name('traffic.month');
     });
 
     Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {

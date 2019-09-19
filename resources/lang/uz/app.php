@@ -20,7 +20,7 @@ return [
         'tariff' => 'Sizning tarifingiz',
         'change_tariff' => 'TARIFNI O\'ZGARTIRISH',
         'date_choose' => '<span>:Month oyi uchun</span> statistika',
-        'choose' => 'SANANI TANLASH',
+        'choose' => 'OYNI TANLASH',
     ],
 
     'menu' => [
@@ -77,7 +77,7 @@ return [
         'speed' => 'Tezlik',
         'mb' => ':speed Mbit/s gacha',
         'kb' => ':speed Kbit/s gacha',
-        'validate' => 'Amal qilish muddati',
+        'validity' => 'Amal qilish muddati',
         'hour' => 'Soat',
         'minut' => 'Daqiqa',
         'day' => 'Kun',
@@ -118,5 +118,20 @@ return [
     'yes' => 'Ha',
 
     'next' => 'keyingi',
-    'prev' => 'oldingi'
+    'prev' => 'oldingi',
+
+    'months' => [
+        '1' => 'Yanvar',
+        '2' => 'Fevral',
+        '3' => 'Mart',
+        '4' => 'Aprel',
+        '5' => 'May',
+        '6' => 'Iyun',
+        '7' => 'Iyul',
+        '8' => 'Avgust',
+        '9' => 'Sentabr',
+        '10' => 'Oktabr',
+        '11' => 'Noyabr',
+        '12' => 'Dekabr'
+    ]
 ];

@@ -14,6 +14,10 @@ class Verify extends FormRequest
      */
     public function rules()
     {
+        if ($this->isMethod('get')) {
+            return [];
+        }
+
         return [
             'code' => 'required'
         ];
