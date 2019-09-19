@@ -88,7 +88,6 @@
                             <a href="{{ route('change.lang', ['uz']) }}">UZ</a>
                             <a href="{{ route('change.lang', ['en']) }}">En</a>
                         </div>
-
                     @else
                         <a href="#en" class="lang-dropbtn">EN</a>
                         <div class="lang-dropdown">
