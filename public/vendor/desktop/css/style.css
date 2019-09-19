@@ -299,7 +299,7 @@ a:hover {
 }
 
 .black {
-  color: #222 !important;
+  color: #fff !important;
 }
 
 .block {
@@ -804,11 +804,17 @@ footer a:hover {
   font-family: "Museo Sans Cyrl";
   margin: 0;
   color: rgb(6, 193, 41);
-  text-decoration: underline;
   line-height: 1.2;
   cursor: pointer;
   outline: none;
 }
+
+.statics-tarif button {
+  padding-bottom: 0px;
+  border-bottom: 1px solid rgb(6, 193, 41);
+  text-decoration: none;
+}
+
 
 .statics-tarif button:focus {
   outline: none !important;
@@ -968,4 +974,52 @@ footer a:hover {
   transform: translateX(-50%);
   width: 40px;
   height: 2px;
+}
+
+
+/* Lang Auth */
+.lang-auth {
+  top: unset;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%) scale(.75);
+}
+
+.lang-auth .lang-dropdown {
+  position: unset;
+  background-color: transparent;
+  width: 100%;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  visibility: visible;
+  opacity: 1;
+  transition: all .3s ease-in;
+}
+
+.lang-auth .lang-dropdown a:not(:last-of-type)::after {
+  content: "";
+  background-color: rgb(255, 255, 255);
+  opacity: 1;
+  position: absolute;
+  left: unset;
+  right: 0;
+  top: 50%;
+  transform: translateY(-55%) translateX(0);
+  width: 2px;
+  height: 20px;
+}
+
+.lang-auth .lang-dropdown a {
+  text-decoration: underline !important;
+}
+
+.lang-auth .lang-dropdown a:nth-of-type(odd) {
+  padding-bottom: 0;
+  padding-right: 10px;
+}
+
+.lang-auth .lang-dropdown a:nth-of-type(even) {
+  padding-top: 0;
+  padding-left: 10px;
 }

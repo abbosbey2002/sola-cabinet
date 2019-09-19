@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <title>Document</title>
+    <title>{{ env('APP_NAME') }}</title>
 
     <link rel="stylesheet" href="/vendor/mobile/css//style.css">
     <link rel="stylesheet" href="/vendor/mobile/css//media.css">
@@ -39,9 +39,32 @@
     </div> <!-- container -->
 
     @if(App::isLocale('uz'))
-        <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">@lang('app.lang')</a>
+        <div class="lang lang-auth">
+            <div class="lang-content">
+                <div class="lang-dropdown">
+                    <a href="{{ route('change.lang', ['ru']) }}">RU</a>
+                    <a href="{{ route('change.lang', ['en']) }}">EN</a>
+                </div>
+            </div>
+        </div>
     @elseif(App::isLocale('ru'))
-        <a href="{{ route('change.lang', ['uz']) }}" class="lang_link">@lang('app.lang')</a>
+        <div class="lang lang-auth">
+            <div class="lang-content">
+                <div class="lang-dropdown">
+                    <a href="{{ route('change.lang', ['uz']) }}">UZ</a>
+                    <a href="{{ route('change.lang', ['en']) }}">EN</a>
+                </div>
+            </div>
+        </div>
+    @else
+        <div class="lang lang-auth">
+            <div class="lang-content">
+                <div class="lang-dropdown">
+                    <a href="{{ route('change.lang', ['ru']) }}">RU</a>
+                    <a href="{{ route('change.lang', ['uz']) }}">UZ</a>
+                </div>
+            </div>
+        </div>
     @endif
 </header> <!-- header -->
 

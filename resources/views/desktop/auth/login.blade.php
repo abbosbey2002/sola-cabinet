@@ -41,11 +41,32 @@
     </div> <!-- container -->
 
     @if(App::isLocale('uz'))
-        <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">RU</a> | <a href="{{ route('change.lang', ['en']) }}" class="lang_link">EN</a>
+        <div class="lang lang-auth">
+            <div class="lang-content">
+                <div class="lang-dropdown">
+                    <a href="{{ route('change.lang', ['ru']) }}">RU</a>
+                    <a href="{{ route('change.lang', ['en']) }}">EN</a>
+                </div>
+            </div>
+        </div>
     @elseif(App::isLocale('ru'))
-        <a href="{{ route('change.lang', ['uz']) }}" class="lang_link">UZ</a> | <a href="{{ route('change.lang', ['en']) }}" class="lang_link">EN</a>
+        <div class="lang lang-auth">
+            <div class="lang-content">
+                <div class="lang-dropdown">
+                    <a href="{{ route('change.lang', ['uz']) }}">UZ</a>
+                    <a href="{{ route('change.lang', ['en']) }}">EN</a>
+                </div>
+            </div>
+        </div>
     @else
-        <a href="{{ route('change.lang', ['ru']) }}" class="lang_link">RU</a> | <a href="{{ route('change.lang', ['uz']) }}" class="lang_link">UZ</a>
+        <div class="lang lang-auth">
+            <div class="lang-content">
+                <div class="lang-dropdown">
+                    <a href="{{ route('change.lang', ['ru']) }}">RU</a>
+                    <a href="{{ route('change.lang', ['uz']) }}">UZ</a>
+                </div>
+            </div>
+        </div>
     @endif
 </header> <!-- header -->
 
