@@ -66,7 +66,7 @@ class Controller extends ExController
     public function other_month(DetailRequest $request)
     {
         if ($request->isMethod('get')) {
-            return redirect()->route('traffic');
+            return redirect() ->route('traffic');
         }
 
         try {

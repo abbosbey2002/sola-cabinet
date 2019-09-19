@@ -14,6 +14,8 @@ use App\Http\Requests\Payment\History as PaymentHistoryRequest;
 use App\Http\Requests\Traffic\Detail as TrafficDetailRequest;
 use App\Http\Requests\Tariff\Set as SetTariffRequest;
 
+use Illuminate\Support\Facades\App;
+
 
 class Requests
 {
@@ -33,11 +35,8 @@ class Requests
         $this->url = "http://{$api}/";
         $this->client = new Client();
         $this->cookie = $cookie;
-        if (request()->cookie('lang')) {
-            $this->lang = request()->cookie('lang');
-        } else {
-            $this->lang = 'ru';
-        }
+
+        //App::getLocale() = App::getLocale();
 
         $this->token = 'Basic ' . base64_encode(env("SOLA_USERNAME").':'.env('SOLA_PASSWORD'));
     }
@@ -99,7 +98,7 @@ class Requests
 
         $json = [
             'phn' => $request->getLogin(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         //return $this->generateAuthToken($json);
@@ -142,7 +141,7 @@ class Requests
         $json = [
             'phn' => $request->cookie('login'),
             'smsCode' => $request->getCode(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -175,7 +174,7 @@ class Requests
 
         $json = [
             'acc_id' => $this->cookie->getAccID(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -235,7 +234,7 @@ class Requests
         $url = "{$this->url}/acct/balance";
         $json = [
             'acc_id' => $this->cookie->getAccID(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -262,7 +261,7 @@ class Requests
             'acc_id' => $this->cookie->getAccID(),
             'curr_password' => $request->getCurrentPassword(),
             'new_password' => $request->getNewPassword(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -288,7 +287,7 @@ class Requests
         $json = [
             'acc_id' => $this->cookie->getAccID(),
             'pay_month' => Carbon::now()->format('Y-m'),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -319,7 +318,7 @@ class Requests
         $json = [
             'acc_id' => $this->cookie->getAccID(),
             'pay_month' => $request->getPayMonth(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -348,7 +347,7 @@ class Requests
         $json = [
             'acc_id' => $this->cookie->getAccID(), //1179527,//1213347, //,
             'detail_month' => Carbon::now()->format('Y-m'),//$request->getMonth(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -383,7 +382,7 @@ class Requests
         $json = [
             'acc_id' => $this->cookie->getAccID(), 1179527,//$this->cookie->getAccID(),
             'detail_month' => $request->getMonth(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -409,8 +408,8 @@ class Requests
     {
         $url = "{$this->url}/tariff/available";
         $json = [
-            'acc_id' => request()->cookie('account'),//$this->cookie->getAccID(),
-            'lang' => $this->lang
+            'acc_id' => request()->cookie('account'),
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -438,7 +437,7 @@ class Requests
         $url = "{$this->url}/tariff/connected";
         $json = [
             'acc_id' => $this->cookie->getAccID(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -517,7 +516,7 @@ class Requests
         $url = "{$this->url}/device/new";
         $json = [
             'acc_id' => $this->cookie->getAccID(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
@@ -544,7 +543,7 @@ class Requests
         $url = "{$this->url}/device/list";
         $json = [
             'acc_id' => $this->cookie->getAccID(),
-            'lang' => $this->lang
+            'lang' => App::getLocale()
         ];
 
         $response = $this->client->request($method, $url, [
