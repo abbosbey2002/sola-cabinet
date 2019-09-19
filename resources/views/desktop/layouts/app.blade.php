@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/vendor/desktop/css/media.css">
     <link rel="stylesheet" href="/vendor/desktop/fonts/museosanscyrl/museosanscyrl.css">
     <link rel="stylesheet" href="/vendor/desktop/libs/bootstrap/css/bootstrap.min.css">
-    <link rel="shortcut icon" href="/vendor/desktop/images/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/vendor/mobile/images/bird.png" type="image/x-icon">
     <link rel='stylesheet prefetch'
           href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
 
