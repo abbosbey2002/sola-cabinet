@@ -27,7 +27,7 @@
                                 <div class="d-flex align-items-center py-2 myborder_bottom">
                                     <img src="/vendor/desktop/images/rate_img2.png" alt="">
                                     <div class="d-flex flex-column">
-                                        <span>Срок действия </span>
+                                        <span>@lang('app.tariff.validity') </span>
                                         <span class="fw-bold">
                                             @if($tariff['prdu'] == 'HOUR')
                                                 {{ $tariff['tprd'] }} @lang('app.tariff.hour')

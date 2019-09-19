@@ -82,7 +82,7 @@ return [
         'minut' => 'Daqiqa',
         'day' => 'Kun',
         'trafic' => 'Trafik',
-        'no_limit' => 'Cheksiz',
+        'no_limit' => 'Cheklanmagan',
         'amount' => 'Narxi',
         'connect' => 'Ulash'
     ],
@@ -106,7 +106,7 @@ return [
         'all_traffic' => 'Umumiy trafik',
         'date' => 'Trafik sanasi',
         'inn' => 'Qabul qilindi(Mb)',
-        'outt' => 'Yuborildi (Mb)'
+        'outt' => 'Yuborildi (Mb)',
     ],
 
     'footer' => [
