@@ -24,6 +24,15 @@
 <body>
 
 	<div class="top-div">
+		<div class="lang">
+			<div class="lang-content">
+				<a href="#ru" class="lang-dropbtn">Ru</a>
+				<div class="lang-dropdown">
+					<a href="#uz">Uz</a>
+					<a href="#en">En</a>
+				</div>
+			</div>
+		</div>
 		<a href="#">
 			<img src="images/logo.png" class="main-logo responsive-logo img-width logo-img" alt="logo">
 		</a>
@@ -44,7 +53,7 @@
 
 
 				</div>
-				<a href="#" class="main_color text-center pb-4">Узбекский язык</a>
+				<!-- <a href="#" class="main_color text-center pb-4">Узбекский язык</a> -->
 
 				<div class="mycontainer2">
 					<ul class="main-ul">
@@ -241,10 +250,36 @@
 				<div class="modal-body">
 					<form action="form.php">
 						<button type="button" class="mybtn" data-toggle="modal"
-							data-target="#sucess-modal">СЕЙЧАС</button>
-						<button type="button" class="mybtn mt-4" data-toggle="modal" data-target="#sucess-modal">С
+							data-target="#accept-modal">СЕЙЧАС</button>
+						<button type="button" class="mybtn mt-4" data-toggle="modal" data-target="#accept-modal">С
 							НОВОГО МЕСЯЦА</button>
 					</form>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<!-- Change Tarif Modal -->
+	<div class="modal fade" id="accept-modal">
+		<div class="modal-dialog modal-dialog-centered modal-sm">
+			<div class="modal-content">
+
+				<!-- Modal Header -->
+				<div class="modal-header d-flex flex-column justify-content-center align-items-center">
+					<img src="images/exclamation_mark.png" alt="Question icon" style="width: 60px; height: 60px;">
+					<h4 class="modal-title mt-4 text-center">Вы действительно хотите подключить?</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+
+				<!-- Modal body -->
+				<div class="modal-body d-flex flex-row justify-content-center align-items-center">
+					<button style="width: 100px" type="button" class="mybtn mx-3" data-toggle="modal"
+						data-target="#sucess-modal">Да</button>
+					<button style="width: 100px" type="button" class="mybtn bg-danger mx-3" data-toggle="modal"
+						data-target="#sucess-modal">Нет</button>
 				</div>
 
 			</div>
@@ -271,6 +306,7 @@
 			</div>
 		</div>
 	</div>
+
 
 	<script src="js/jquery.js"></script>
 	<script src="libs/bootstrap/js/bootstrap.min.js"></script>

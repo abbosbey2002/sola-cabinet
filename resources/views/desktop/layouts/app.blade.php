@@ -74,11 +74,30 @@
 
             </div> <!-- mycontainer -->
 
-            @if(App::isLocale('uz'))
-                <a href="{{ route('change.lang', ['ru']) }}" class="main_color text-center">@lang('app.lang')</a>
-            @elseif(App::isLocale('ru'))
-                <a href="{{ route('change.lang', ['uz']) }}" class="main_color text-center">@lang('app.lang')</a>
-            @endif
+            <div class="lang">
+                <div class="lang-content">
+                    @if(App::isLocale('uz'))
+                        <a href="#uz" class="lang-dropbtn">UZ</a>
+                        <div class="lang-dropdown">
+                            <a href="{{ route('change.lang', ['ru']) }}">RU</a>
+                            <a href="{{ route('change.lang', ['en']) }}">En</a>
+                        </div>
+                    @elseif(App::isLocale('ru'))
+                        <a href="#ru" class="lang-dropbtn">RU</a>
+                        <div class="lang-dropdown">
+                            <a href="{{ route('change.lang', ['uz']) }}">UZ</a>
+                            <a href="{{ route('change.lang', ['en']) }}">En</a>
+                        </div>
+
+                    @else
+                        <a href="#en" class="lang-dropbtn">EN</a>
+                        <div class="lang-dropdown">
+                            <a href="{{ route('change.lang', ['ru']) }}">RU</a>
+                            <a href="{{ route('change.lang', ['uz']) }}">UZ</a>
+                        </div>
+                    @endif
+                </div>
+            </div>
 
             <span class="text-white pt-1 mt-2 mx-2">|</span>
             <a href="{{ route('logout') }}" class="main_color  px-0 mx-0">@lang('app.menu.logout')</a>

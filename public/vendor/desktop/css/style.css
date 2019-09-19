@@ -163,6 +163,7 @@ a:hover {
   backface-visibility: hidden;
   transition: all .3s;
 }
+
 .main-ul li:nth-of-type(1).active a .h_icon,
 .main-ul li:nth-of-type(1):hover a .h_icon {
   background-image: url('../images/h_icon1.png');
@@ -174,6 +175,7 @@ a:hover {
   backface-visibility: hidden;
   transition: all .3s;
 }
+
 .main-ul li:nth-of-type(2).active a .h_icon,
 .main-ul li:nth-of-type(2):hover a .h_icon {
   background-image: url('../images/h_icon2.png');
@@ -185,6 +187,7 @@ a:hover {
   backface-visibility: hidden;
   transition: all .3s;
 }
+
 .main-ul li:nth-of-type(3).active a .h_icon,
 .main-ul li:nth-of-type(3):hover a .h_icon {
   background-image: url('../images/h_icon3.png');
@@ -197,6 +200,7 @@ a:hover {
   backface-visibility: hidden;
   background-image: url('../images/icon4.png');
 }
+
 .main-ul li:nth-of-type(4).active a .h_icon,
 .main-ul li:nth-of-type(4):hover a .h_icon {
   background-image: url('../images/h_icon4.png');
@@ -208,11 +212,15 @@ a:hover {
   backface-visibility: hidden;
   background-image: url('../images/icon5.png');
 }
+
 .main-ul li:nth-of-type(5).active a .h_icon,
 .main-ul li:nth-of-type(5):hover a .h_icon {
   background-image: url('../images/h_icon5.png');
   transition: all .3s;
 }
+
+
+
 
 
 .white {
@@ -291,7 +299,7 @@ a:hover {
 }
 
 .black {
-  color: #fff !important;
+  color: #222 !important;
 }
 
 .block {
@@ -883,4 +891,81 @@ footer a:hover {
 .modal form select option span {
   text-align: center;
   width: 100%;
+}
+
+
+/* Language Css */
+.lang {
+  position: relative;
+  margin-top: 10px;
+  transform: scale(.7);
+}
+
+.lang-content {
+  position: relative;
+}
+
+.lang-dropbtn,
+.lang-dropbtn:hover {
+  text-decoration: underline !important;
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: 40px;
+  left: -18px;
+  border-radius: 5px;
+  background-color: rgb(19, 34, 46);
+  width: 70px;
+  padding: 8px 0;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all .3s ease-in;
+}
+
+.lang a {
+  font-size: 24px !important;
+  font-family: 'Museo Sans Cyrl';
+  color: rgb(255, 255, 255);
+  text-transform: uppercase;
+  position: relative;
+}
+
+.lang .lang-dropdown a:nth-of-type(odd) {
+  padding-bottom: 5px;
+}
+
+.lang .lang-dropdown a:nth-of-type(even) {
+  padding-top: 10px;
+}
+
+.lang a:hover {
+  color: white;
+}
+
+.lang .lang-dropdown a:hover {
+  color: rgba(255, 255, 255, .7) !important;
+}
+
+.lang:hover:hover .lang-dropdown,
+.lang .lang-dropbtn:hover+.lang-dropdown,
+.lang .lang-dropdown:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+.lang .lang-dropdown a:not(:last-of-type)::after {
+  content: "";
+  background-color: rgb(255, 255, 255);
+  opacity: 0.2;
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 2px;
 }
