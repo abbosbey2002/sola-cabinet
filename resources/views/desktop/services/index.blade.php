@@ -44,11 +44,11 @@
                 </tbody>
             </table>
 
-            @if($type == 2)
-                <a href="{{ route('services.device.new') }}" class="mybtn mt-4 mx-auto">
-                    @lang('app.services.add_devices')
-                </a>
-            @endif
+{{--            @if($type == 2)--}}
+{{--                <a href="{{ route('services.device.new') }}" class="mybtn mt-4 mx-auto">--}}
+{{--                    @lang('app.services.add_devices')--}}
+{{--                </a>--}}
+{{--            @endif--}}
         </div> <!-- mycontainer -->
 
     </section> <!-- dark_bg -->
