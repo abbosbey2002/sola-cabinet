@@ -61,12 +61,12 @@
                             <span>@lang('app.menu.payments')</span>
                         </a>
                     </li>
-                    <li class="{{ request()->routeIs('services') ? 'active' : '' }}">
-                        <a href="{{ route('services') }}" class="link">
-                            <div class="mr-2 h_icon"></div>
-                            <span>@lang('app.menu.services')</span>
-                        </a>
-                    </li>
+{{--                    <li class="{{ request()->routeIs('services') ? 'active' : '' }}">--}}
+{{--                        <a href="{{ route('services') }}" class="link">--}}
+{{--                            <div class="mr-2 h_icon"></div>--}}
+{{--                            <span>@lang('app.menu.services')</span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li class="">
                         <a href="#section05" class="link"></a>
                     </li>

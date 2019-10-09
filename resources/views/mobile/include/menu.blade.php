@@ -31,12 +31,12 @@
                             @lang('app.menu.payments')
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('services') }}" class="link {{ request()->routeIs('services') ? 'active' : '' }}">
-                            <img src="/vendor/mobile/images/link4.png" class="mr-3" alt="">
-                            @lang('app.menu.services')
-                        </a>
-                    </li>
+{{--                    <li>--}}
+{{--                        <a href="{{ route('services') }}" class="link {{ request()->routeIs('services') ? 'active' : '' }}">--}}
+{{--                            <img src="/vendor/mobile/images/link4.png" class="mr-3" alt="">--}}
+{{--                            @lang('app.menu.services')--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li><a href="#section04" class="link"></a></li>
                 </ul> <!-- main-ul -->
 
