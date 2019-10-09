@@ -51,6 +51,7 @@ return [
         'active_count' => 'Faol qurilmalar',
         'balance' => 'Hisobdagi mablag\'',
         'amount' => 'Hisobda',
+        'status' => 'Holat'
     ],
 
     'payment' => [

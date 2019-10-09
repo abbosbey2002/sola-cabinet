@@ -51,6 +51,7 @@ return [
         'active_count' => 'Активных устройств',
         'balance' => 'Баланс счета',
         'amount' => 'На счету',
+        'status' => 'Статус'
     ],
 
     'payment' => [

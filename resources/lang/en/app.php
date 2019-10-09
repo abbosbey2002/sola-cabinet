@@ -51,6 +51,7 @@ return [
         'active_count' => 'Active devices',
         'balance' => 'Account balance',
         'amount' => 'On account',
+        'status' => 'Status'
     ],
 
     'payment' => [
