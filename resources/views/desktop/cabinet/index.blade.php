@@ -96,14 +96,14 @@
                             </div>
                         </div> <!-- d-flex -->
 
-                        <div class="d-flex">
-                            <div class="minw-50">
-                                <span>@lang('app.cabinet.status'):</span>
-                            </div> <!-- minw-50 -->
-                            <div>
-                                <span>{{ $info['body']['status'] }}</span>
-                            </div>
-                        </div> <!-- d-flex -->
+{{--                        <div class="d-flex">--}}
+{{--                            <div class="minw-50">--}}
+{{--                                <span>@lang('app.cabinet.status'):</span>--}}
+{{--                            </div> <!-- minw-50 -->--}}
+{{--                            <div>--}}
+{{--                                <span>{{ $info['body']['status'] }}</span>--}}
+{{--                            </div>--}}
+{{--                        </div> <!-- d-flex -->--}}
 
                     </div> <!-- myborder_bottom -->
                 </div>

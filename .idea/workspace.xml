@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="68" column="29" lean-forward="true" selection-start-line="63" selection-start-column="23" selection-end-line="68" selection-end-column="29" />
+            <state relative-caret-position="564">
+              <caret line="113" selection-start-line="113" selection-end-line="114" />
             </state>
           </provider>
         </entry>
@@ -37,8 +39,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/mobile/cabinet/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="168">
-              <caret line="8" column="29" lean-forward="true" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
+            <state relative-caret-position="294">
+              <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/info.blade.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="82">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -46,8 +57,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="515">
-              <caret line="38" column="29" lean-forward="true" selection-start-line="33" selection-start-column="24" selection-end-line="38" selection-end-column="29" />
+            <state relative-caret-position="798">
+              <caret line="38" column="29" selection-start-line="33" selection-start-column="24" selection-end-line="38" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -56,7 +67,7 @@
         <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/header.blade.php">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="546">
-              <caret line="26" column="78" lean-forward="true" selection-start-line="26" selection-start-column="78" selection-end-line="26" selection-end-column="78" />
+              <caret line="26" column="78" selection-start-line="26" selection-start-column="78" selection-end-line="26" selection-end-column="78" />
             </state>
           </provider>
         </entry>
@@ -155,7 +166,6 @@
         <option value="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" />
         <option value="$PROJECT_DIR$/config/app.php" />
         <option value="$PROJECT_DIR$/app/Helpers/SetCookie.php" />
-        <option value="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/payment/month.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" />
@@ -183,13 +193,14 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Traffic/Controller.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/services/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/services/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/lang/ru/app.php" />
         <option value="$PROJECT_DIR$/resources/lang/uz/app.php" />
         <option value="$PROJECT_DIR$/resources/lang/en/app.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/cabinet/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" />
       </list>
     </option>
   </component>
@@ -296,6 +307,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -599,7 +611,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -672,7 +683,8 @@
       <workItem from="1568906330875" duration="1987000" />
       <workItem from="1569248457040" duration="789000" />
       <workItem from="1570623533997" duration="493000" />
-      <workItem from="1570625217796" duration="62000" />
+      <workItem from="1570625217796" duration="137000" />
+      <workItem from="1570626186156" duration="125000" />
     </task>
     <task id="LOCAL-00001" summary="Login &amp;&amp; Verify Requests &amp;&amp; Cookie Set AccountType">
       <created>1565211779766</created>
@@ -905,17 +917,24 @@
       <option name="project" value="LOCAL" />
       <updated>1570624116970</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Servicess OFF">
+      <created>1570625293049</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1570625293049</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95536000" />
+    <option name="totallyTimeSpent" value="95736000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22174536" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16738197" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -963,7 +982,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Helper: Requests 100% &amp;&amp;&amp; Requests: Tariff(SET), Traffic(Detail)" />
     <MESSAGE value="Info &amp; Traffic &amp; Tariffs" />
     <MESSAGE value="Info &amp;&amp; Traffic &amp;&amp; Payment &amp;&amp; Services &amp;&amp; Auth bugs fixed" />
     <MESSAGE value="100% success project" />
@@ -988,7 +1006,8 @@
     <MESSAGE value="Bugs fixed" />
     <MESSAGE value="ADD Devices off" />
     <MESSAGE value="Add Status client" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add Status client" />
+    <MESSAGE value="Servicess OFF" />
+    <option name="LAST_COMMIT_MESSAGE" value="Servicess OFF" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app/Http/Middleware/SetLang.php">
@@ -1061,13 +1080,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/info.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="20" column="26" lean-forward="true" selection-start-line="16" selection-start-column="20" selection-end-line="20" selection-end-column="26" />
         </state>
       </provider>
     </entry>
@@ -1306,6 +1318,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/header.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="26" column="78" selection-start-line="26" selection-start-column="78" selection-end-line="26" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/lang/uz/app.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1113">
@@ -1327,27 +1346,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/header.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="26" column="78" lean-forward="true" selection-start-line="26" selection-start-column="78" selection-end-line="26" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/cabinet/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="8" column="29" lean-forward="true" selection-start-line="8" selection-start-column="29" selection-end-line="8" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="38" column="29" lean-forward="true" selection-start-line="33" selection-start-column="24" selection-end-line="38" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1357,8 +1355,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="68" column="29" lean-forward="true" selection-start-line="63" selection-start-column="23" selection-end-line="68" selection-end-column="29" />
+        <state relative-caret-position="564">
+          <caret line="113" selection-start-line="113" selection-end-line="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="798">
+          <caret line="38" column="29" selection-start-line="33" selection-start-column="24" selection-end-line="38" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/cabinet/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="294">
+          <caret line="14" column="30" lean-forward="true" selection-start-line="14" selection-start-column="30" selection-end-line="14" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/info.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="82">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>

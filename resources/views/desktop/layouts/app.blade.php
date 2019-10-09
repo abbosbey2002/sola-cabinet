@@ -111,7 +111,7 @@
 <section class="section1">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center bb1px">
-            <p class="menu_p">@lang('app.cabinet.account'): {{ request()->cookie('account') }} </p>
+            <p class="menu_p">@lang('app.cabinet.account'): {{ request()->cookie('account') }} | @lang('app.cabinet.status') {{ $info['body']['status'] }} </p>
             <p class="menu_p">
                 @lang('app.menu.call')
                 <a href="tel:{{ env('CALL_CENTER') }}">{{ env('CALL_CENTER') }}</a>
