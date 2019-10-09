@@ -1,7 +1,7 @@
 <section class="section1">
     <div class="mycontainer">
         <h4>@lang('app.cabinet.account'): {{ request()->cookie('account') }} </h4>
-        <h4>@lang('app.cabinet.status') {{ $info['body']['status'] }} </h4>
+        <h4>@lang('app.cabinet.status'): {{ $info['body']['status'] }} </h4>
 
         <div class="myborder_bottom info_block">
             <img src="/vendor/mobile/images/purse.png" alt="">
