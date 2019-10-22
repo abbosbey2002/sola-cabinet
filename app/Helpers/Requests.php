@@ -196,6 +196,35 @@ class Requests
     }
 
     /**
+     * @param int $acc_id
+     * @param string $method
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function abonentInfoSelect(int $acc_id, string $method = 'POST')
+    {
+        $url = "{$this->url}/abonent/info";
+
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => App::getLocale()
+        ];
+
+        $response = $this->client->request($method, $url, [
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $data = $this->setData($response);
+        return $data;
+    }
+
+    /**
      * @param string $method
      * @return array
      * @throws \GuzzleHttp\Exception\GuzzleException

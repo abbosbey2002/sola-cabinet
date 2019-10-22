@@ -119,7 +119,7 @@ class Controller extends BaseController
         $this->cookie->AbonentType($type);
 
         try {
-            $info = $this->request->abonentInfo();
+            $info = $this->request->abonentInfoSelect($acc_id);
         } catch (Exception $exception) {
             return abort(403);
         }
