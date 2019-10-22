@@ -77,7 +77,8 @@ class Requests
         $url = "{$this->url}/identify";
         $json = [
             'phn' => $request->getLogin(),
-            'lang' => App::getLocale()
+            'lang' => App::getLocale(),
+            'sendsms' => 1
         ];
 
         $response = $this->client->request($method, $url, [
@@ -116,7 +117,8 @@ class Requests
         $url = "{$this->url}/identify";
         $json = [
             'phn' => $this->cookie->getPhone(),//$request->getLogin(),
-            'lang' => App::getLocale()
+            'lang' => App::getLocale(),
+            'sendsms' => 0
         ];
 
         $response = $this->client->request($method, $url, [
