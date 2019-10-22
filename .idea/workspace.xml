@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Helpers/Requests.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Helpers/Requests.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,14 +25,35 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="86" column="39" lean-forward="true" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
+            <state relative-caret-position="598">
+              <caret line="203" column="37" selection-start-line="203" selection-start-column="20" selection-end-line="203" selection-end-column="37" />
               <folding>
                 <element signature="e#30#64#0#PHP" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="534">
+              <caret line="130" column="8" selection-start-line="130" selection-start-column="8" selection-end-line="130" selection-end-column="8" />
+              <folding>
+                <element signature="e#50#85#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Helpers/SetCookie.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="79" column="49" lean-forward="true" selection-start-line="79" selection-start-column="49" selection-end-line="79" selection-end-column="49" />
             </state>
           </provider>
         </entry>
@@ -46,23 +67,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
-              <folding>
-                <element signature="e#50#85#0#PHP" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>шыЬ</find>
       <find>&quot;images</find>
       <find>&quot;css/</find>
       <find>tariff/available</find>
@@ -92,6 +100,7 @@
       <find>setPhon</find>
       <find>get</find>
       <find>&quot;js/</find>
+      <find>abo</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;/vendor/mobile/css/</replace>
@@ -139,7 +148,6 @@
         <option value="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" />
         <option value="$PROJECT_DIR$/public/vendor/desktop/css/style.css" />
         <option value="$PROJECT_DIR$/app/Helpers/SetCookie.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Controller.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Cabinet/Controller.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Payment/Controller.php" />
@@ -163,6 +171,7 @@
         <option value="$PROJECT_DIR$/resources/views/mobile/trafic/month.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/header.blade.php" />
         <option value="$PROJECT_DIR$/app/Helpers/Requests.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php" />
       </list>
     </option>
   </component>
@@ -610,7 +619,7 @@
       <workItem from="1570625217796" duration="137000" />
       <workItem from="1570626186156" duration="319000" />
       <workItem from="1570627010041" duration="409000" />
-      <workItem from="1571653988035" duration="10917000" />
+      <workItem from="1571653988035" duration="11526000" />
     </task>
     <task id="LOCAL-00001" summary="Login &amp;&amp; Verify Requests &amp;&amp; Cookie Set AccountType">
       <created>1565211779766</created>
@@ -885,11 +894,25 @@
       <option name="project" value="LOCAL" />
       <updated>1571741176158</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="bugs fixed">
+      <created>1571741648811</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1571741648811</updated>
+    </task>
+    <task id="LOCAL-00041" summary="bugs fixed">
+      <created>1571743032957</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1571743032957</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107256000" />
+    <option name="totallyTimeSpent" value="107865000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -966,9 +989,9 @@
     <MESSAGE value="Add Status client" />
     <MESSAGE value="Servicess OFF" />
     <MESSAGE value="Status redesign" />
-    <MESSAGE value="bugs fixed" />
     <MESSAGE value="Multi account added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Multi account added" />
+    <MESSAGE value="bugs fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="bugs fixed" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php">
@@ -1294,30 +1317,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/header.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="819">
-          <caret line="39" column="34" lean-forward="true" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers/SetCookie.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="98" column="37" selection-start-line="98" selection-start-column="28" selection-end-line="98" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="119" lean-forward="true" selection-start-line="119" selection-end-line="119" />
-          <folding>
-            <element signature="e#50#85#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Login.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="523">
@@ -1327,10 +1326,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="86" column="39" lean-forward="true" selection-start-line="86" selection-start-column="39" selection-end-line="86" selection-end-column="39" />
+        <state relative-caret-position="598">
+          <caret line="203" column="37" selection-start-line="203" selection-start-column="20" selection-end-line="203" selection-end-column="37" />
           <folding>
             <element signature="e#30#64#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/header.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="819">
+          <caret line="39" column="34" lean-forward="true" selection-start-line="39" selection-start-column="34" selection-end-line="39" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helpers/SetCookie.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="79" column="49" lean-forward="true" selection-start-line="79" selection-start-column="49" selection-end-line="79" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="534">
+          <caret line="130" column="8" selection-start-line="130" selection-start-column="8" selection-end-line="130" selection-end-column="8" />
+          <folding>
+            <element signature="e#50#85#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

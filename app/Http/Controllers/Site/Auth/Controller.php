@@ -125,7 +125,9 @@ class Controller extends BaseController
         }
 
         //return $info;
-        $this->cookie->setFullName($info['body']['name']);
+        if ($info['status'] == 200) {
+            $this->cookie->setFullName($info['body']['name']);
+        }
 
         return redirect()->route('cabinet');
     }
