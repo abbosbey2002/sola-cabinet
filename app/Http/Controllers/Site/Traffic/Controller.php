@@ -51,7 +51,9 @@ class Controller extends ExController
                     return $q['traffic_output'];
                 }, $detail['body']['detail']))/ 1024 / 1024;
 
-            return $this->view('trafic.index', compact('info', 'detail', 'output', 'input', 'months'));
+            $accounts = $this->getAccounts();
+
+            return $this->view('trafic.index', compact('info', 'detail', 'output', 'input', 'months', 'accounts'));
         }
 
         return abort(403);
@@ -82,6 +84,7 @@ class Controller extends ExController
 
         $month = $request->getMonth();
         $months = $this->month();
+        $accounts = $this->getAccounts();
 
         if($detail['status'] == 200) {
             $input = array_sum(array_map(function ($q) {
@@ -92,7 +95,7 @@ class Controller extends ExController
                     return $q['traffic_output'];
                 }, $detail['body']['detail']))/ 1024 / 1024;
 
-            return $this->view('trafic.month', compact('info', 'detail', 'output', 'input', 'months', 'month'));
+            return $this->view('trafic.month', compact('info', 'detail', 'output', 'input', 'months', 'month', 'accounts'));
         }
 
         return abort(403);

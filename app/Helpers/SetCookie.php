@@ -16,6 +16,7 @@ class SetCookie
         //0 - временный
         //1 - разовый
         //2 - постоянный
+        Cookie::queue(Cookie::forget('data'));
 
         $data = json_encode([
             'type' => $type
@@ -76,7 +77,26 @@ class SetCookie
      */
     public function setAccID($id)
     {
+        Cookie::queue(Cookie::forget('account'));
         Cookie::queue('account', $id, 1000);
+    }
+
+
+    /**
+     * @param $full_name
+     */
+    public function setFullName($full_name)
+    {
+        Cookie::queue(Cookie::forget('full_name'));
+        Cookie::queue('full_name', $full_name, 1000);
+    }
+
+    /**
+     * @return string
+     */
+    public function getFullName(): string
+    {
+        return Cookie::get('full_name');
     }
 
     /**
@@ -88,11 +108,29 @@ class SetCookie
     }
 
     /**
+     * @param int $phone
+     */
+    public function setPhone(int $phone)
+    {
+        Cookie::queue('phone', $phone, 1000);
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhone(): int
+    {
+        return (int) Cookie::get('phone');
+    }
+
+    /**
      *
      */
     public function logout()
     {
         Cookie::queue(Cookie::forget('account'));
+        Cookie::queue(Cookie::forget('full_name'));
+        Cookie::queue(Cookie::forget('phone'));
         Cookie::queue(Cookie::forget('login'));
         Cookie::queue(Cookie::forget('verify'));
         Cookie::queue(Cookie::forget('data'));

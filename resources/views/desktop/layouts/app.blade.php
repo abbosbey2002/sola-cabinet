@@ -25,7 +25,7 @@
 
 <nav class="touch-side-swipe responsive-nav py-3">
 
-    <div class="container p-0">
+    <div class="container p-0 position-relative">
         <div id="menu">
             <div class="mr-4">
                 <a href="{{ route('cabinet') }}">
@@ -98,9 +98,80 @@
                 </div>
             </div>
 
-            <span class="text-white pt-1 mt-2 mx-2">|</span>
-            <a href="{{ route('logout') }}" class="main_color  px-0 mx-0">@lang('app.menu.logout')</a>
+{{--            <span class="text-white pt-1 mt-2 mx-2">|</span>--}}
+{{--            <a href="{{ route('logout') }}" class="main_color  px-0 mx-0">@lang('app.menu.logout')</a>--}}
+            @if(count($accounts['body']['accs']) != 1 )
+                <div class="drop">
+                <div class="drop-btn">
+                    <div class="user__item active">
+                        <a href="#">
+                            <div class="user__info">
+                                <div class="user__full-name">
+                                    {{ request()->cookie('full_name') }}
+                                </div>
+                                <div class="user__email">
+                                    @lang('app.accounts.personal'): {{ request()->cookie('account') }}
+                                </div>
+                            </div>
+                            <div class="user__type">
+                                @if(SetCookie::getTypee() == 0)
+                                    @lang('app.accounts.tempary')
+                                @elseif(SetCookie::getTypee() == 1)
+                                    @lang('app.accounts.one_time')
+                                @else
+                                    @lang('app.accounts.current')
+                                @endif
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="drop-down">
+                    <div class="user">
 
+                        @foreach($accounts['body']['accs'] as $account)
+                            @if($account['accId'] != request()->cookie('account'))
+                                <div class="user__item">
+                                    <a href="{{ route('set.account', [$account['accId'], $account['abonType']]) }}">
+                                        <div class="user__info">
+                                            <div class="user__full-name">
+                                                @if($account['abonType'] == 0)
+                                                    (@lang('app.accounts.tempary'))
+                                                @elseif($account['abonType'] == 1)
+                                                    (@lang('app.accounts.one_time'))
+                                                @else
+                                                    {{ $account['abonName'] }}
+                                                @endif
+                                            </div>
+                                            <div class="user__email">
+                                                @lang('app.accounts.personal'): {{ $account['accId'] }}
+                                            </div>
+                                        </div>
+                                        <div class="user__type">
+                                            @if($account['abonType'] == 0)
+                                                @lang('app.accounts.tempary')
+                                            @elseif($account['abonType'] == 1)
+                                                @lang('app.accounts.one_time')
+                                            @else
+                                                @lang('app.accounts.current')
+                                            @endif
+                                        </div>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="sign-out">
+                        <a href="{{ route('logout') }}" class="my-btn main_color px-0 mx-0">
+                            @lang('app.menu.logout')
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            @else
+                <span class="text-white pt-1 mt-2 mx-2">|</span>
+                <a href="{{ route('logout') }}" class="main_color  px-0 mx-0">@lang('app.menu.logout')</a>
+            @endif
 
         </div> <!-- #menu -->
 
@@ -108,7 +179,7 @@
 
 </nav> <!-- touch-side-swipe responsive-nav -->
 
-<section class="section1">
+<section class="section1 pt-5 mt-4">
     <div class="container">
         <div class="d-flex justify-content-between align-items-center bb1px">
             <p class="menu_p">@lang('app.cabinet.account'): {{ request()->cookie('account') }} | @lang('app.cabinet.status'): {{ $info['body']['status'] }} </p>

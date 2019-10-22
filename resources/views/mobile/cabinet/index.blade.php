@@ -2,7 +2,7 @@
 @section('title', trans('app.cabinet.title'). ' - ')
 @section('content')
 
-    @include('mobile.include.header')
+    @include('mobile.include.header', ['accounts' => $accounts] )
 
     <!-- MOBILE MENU -->
 

@@ -1,7 +1,7 @@
 @extends('mobile.layouts.app')
 @section('title', trans('app.traffic.title'))
 @section('content')
-    @include('mobile.include.header')
+    @include('mobile.include.header', ['accounts' => $accounts])
 
     <!-- MOBILE MENU -->
 

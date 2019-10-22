@@ -1024,3 +1024,180 @@ footer a:hover {
   padding-top: 0;
   padding-left: 10px;
 }
+
+
+.lang {
+  position: absolute;
+  right: 250px;
+  top: 50%;
+  transform: translateY(-60%) scale(.7);;
+}
+
+/* Lang Auth */
+.lang-auth {
+  top: unset !important;
+  bottom: 20px !important;
+  left: 50% !important;
+  transform: translateX(-50%) scale(.75) !important;
+}
+
+
+.user__title {
+  font-size: 24px;
+  font-family: "Museo Sans Cyrl";
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+.user {
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
+
+  height: 270px;
+  overflow-y: auto;
+  width: 600px;
+  margin: 30px auto 0;
+}
+
+.user__item a {
+  transition: .3s ease;
+  margin: 10px 0;
+  width: 400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, .2);
+  padding-bottom: 15px;
+}
+
+.user__full-name {
+  transition: .3s ease;
+
+  font-size: 18px;
+  font-family: "Museo Sans Cyrl";
+  color: rgba(255, 255, 255, .7);
+}
+
+.user__email {
+  transition: .3s ease;
+
+  font-size: 16px;
+  font-family: "Museo Sans Cyrl";
+  color: rgba(255, 255, 255, .7);
+
+}
+
+.user__type {
+  transition: .3s ease;
+
+  font-size: 14px;
+  font-family: "Museo Sans Cyrl";
+  color: rgba(255, 255, 255, .7);
+}
+
+.user__item a:hover {
+  border-bottom: 1px solid rgb(255, 255, 255) !important;
+}
+
+.user__item a:hover * {
+  color: rgb(255, 255, 255) !important;
+}
+
+/* drop */
+.drop {
+  position: relative;
+}
+
+.drop-down {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  top: 50px;
+  z-index: 22;
+  left: -50px;
+}
+
+.drop-down .user {
+
+  height: auto;
+  overflow-y: auto;
+  width: 320px;
+  transition: all .3s ease-in;
+  align-items: flex-start;
+}
+
+.drop-down .user__item {
+  background-color: #414d56;
+  width: 100%;
+  padding: 5px 20px;
+  transition: all .3s ease-in;
+}
+
+.drop-down .user__item a {
+  border: 0 !important;
+}
+
+.drop-btn .user__item a,
+.drop-down .user__item a {
+  flex-direction: column;
+  align-items: flex-start !important;
+  width: 100%;
+  margin: 0;
+}
+
+.drop:hover .drop-down {
+  opacity: 1;
+  visibility: visible;
+}
+
+.user__item.active * {
+  color: white;
+}
+
+.drop-btn .user__item.active * {
+  border-bottom: unset;
+}
+
+.drop {
+  transform: scale(.8);
+  position: relative;
+  z-index: 99999999999;
+}
+
+.drop-down .user__item:hover {
+  background-color: #efefef !important;
+}
+
+.drop-down .user__item:hover * {
+  color: #222 !important;
+}
+
+
+
+.sign-out {
+  padding: 10px 20px;
+  background-color: #414d56;
+  display: flex;
+  justify-content: center;
+}
+
+.my-btn {
+  background-color: #efefef;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(34, 34, 34);
+
+  font-size: 16px;
+  font-family: "Museo Sans Cyrl";
+  color: rgb(34, 34, 34);
+  padding: 10px;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.my-btn:hover {
+  color: rgb(34, 34, 34);
+}
+

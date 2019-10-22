@@ -38,7 +38,8 @@ class Controller extends BaseController
             return abort(500);
         }
 
-        return $this->view('cabinet.index', compact('info'));
+        $accounts = $this->getAccounts();
+        return $this->view('cabinet.index', compact('info', 'accounts'));
     }
 
 }

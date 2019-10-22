@@ -50,6 +50,7 @@ class Controller extends BaseController
             //return abort(403);
         }
 
+        //return $response;
 
         if ($response['status'] == 200) {
             return $this->view('auth.verify', null);
@@ -78,11 +79,55 @@ class Controller extends BaseController
 
 
         if ($response['status'] == 200) {
-            return redirect()->route('cabinet');
+            return $this->selectAccount();
+            //return redirect()->route('cabinet');
         }
 
         $message = $this->errors->message($response['body']['code']);
         return $this->view('auth.verify', null)->withErrors($message);
+    }
+
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View|void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function selectAccount()
+    {
+        try {
+            $response = $this->request->selectUsers();
+        } catch (Exception $exception) {
+            return abort(403);
+        }
+
+        if (count($response['body']['accs']) == 1) {
+            return redirect()->route('cabinet');
+        }
+
+        return $this->view('auth.select_account', compact('response'));
+    }
+
+    /**
+     * @param int $acc_id
+     * @param int $type
+     * @return \Illuminate\Http\RedirectResponse|void
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function selectAccountSet(int $acc_id, int $type)
+    {
+        $this->cookie->setAccID($acc_id);
+        $this->cookie->AbonentType($type);
+
+        try {
+            $info = $this->request->abonentInfo();
+        } catch (Exception $exception) {
+            return abort(403);
+        }
+
+        //return $info;
+        $this->cookie->setFullName($info['body']['name']);
+
+        return redirect()->route('cabinet');
     }
 
     /**

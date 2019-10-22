@@ -37,6 +37,8 @@ Route::group(['prefix' => '/', 'middleware' => ['login', 'setLang'], 'namespace'
         Route::get('/history', 'Controller@index')->name('payment');
         Route::match(['get', 'post'], '/history/month', 'Controller@other_month')->name('payment.month');
     });
+
+    Route::get('/select/account/{acc_id}/{type}', 'Auth\Controller@selectAccountSet')->name('set.account');
 });
 
 Route::get('/change/lang/{lang}', 'Controller@changeLang')->name('change.lang');
@@ -44,4 +46,7 @@ Route::get('/change/lang/{lang}', 'Controller@changeLang')->name('change.lang');
 Route::group(['prefix' => 'auth', 'namespace' => 'Site\Auth', 'middleware' => ['checkCookie', 'setLang'] ], function () {
    Route::match(['get', 'post'], '/login', 'Controller@login')->name('login');
    Route::match(['get', 'post'], '/verify', 'Controller@verify')->name('verify');
+   Route::match(['get'], '/select/account', 'Controller@selectAccount')->name('select.account');
 });
+
+

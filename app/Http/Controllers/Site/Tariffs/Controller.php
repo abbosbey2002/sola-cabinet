@@ -39,7 +39,9 @@ class Controller extends ExController
             abort(403);
         }
 
-        return $this->view('tariffs.index', compact('info', 'tariffs'));
+        $accounts = $this->getAccounts();
+
+        return $this->view('tariffs.index', compact('info', 'tariffs', 'accounts'));
     }
 
     /**

@@ -115,6 +115,17 @@ return [
         Ishlanma va dizayn Usoft'
     ],
 
+
+    'accounts' => [
+        'tempary' => 'Vaqtinchalik foydalanuvchi',
+        'one_time' => 'Bir martalik',
+        'personal' => 'Hisob raqam',
+        'current' => 'Doimiy',
+        'choose' => 'Hisob raqamni tanlang',
+
+    ],
+
+
     'no' => 'Yo\'q',
     'yes' => 'Ha',
 

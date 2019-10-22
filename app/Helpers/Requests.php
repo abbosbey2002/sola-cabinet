@@ -92,12 +92,44 @@ class Requests
 
         $request->session()->put('phone', $request->getLogin());
         $this->cookie->setLogin($request->getLogin());
+        $this->cookie->setPhone($request->getLogin());
         $data = $this->setData($response);
 
         if ($response->getStatusCode() == 200) {
-            $this->cookie->setAccID($data['body']['accs'][0]['accId']);
-            $this->cookie->AbonentType($data['body']['accs'][0]['abonType']);
+            if (count($data['body']['accs']) == 1) {
+                $this->cookie->setAccID($data['body']['accs'][0]['accId']);
+                $this->cookie->AbonentType($data['body']['accs'][0]['abonType']);
+            }
         }
+
+        return $data;
+    }
+
+
+    /**
+     * @param string $method
+     * @return array
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function selectUsers(string $method = 'POST')
+    {
+        $url = "{$this->url}/identify";
+        $json = [
+            'phn' => $this->cookie->getPhone(),//$request->getLogin(),
+            'lang' => App::getLocale()
+        ];
+
+        $response = $this->client->request($method, $url, [
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $data = $this->setData($response);
 
         return $data;
     }

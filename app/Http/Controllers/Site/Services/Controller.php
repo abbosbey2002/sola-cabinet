@@ -42,8 +42,9 @@ class Controller extends ExController
         }
 
         $type = $this->cookie->getType();
+        $accounts = $this->getAccounts();
 
-        return $this->view('services.index', compact('devices', 'info', 'type'));
+        return $this->view('services.index', compact('devices', 'info', 'type', 'accounts'));
     }
 
     /**

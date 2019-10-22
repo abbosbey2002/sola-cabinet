@@ -41,9 +41,10 @@ class Controller extends ExController
             abort(403);
         }
         $months = $this->month();
+        $accounts = $this->getAccounts();
 
         //return $months[Carbon::now()->format('n')];
-        return $this->view('payment.index', compact('payments', 'info', 'months'));
+        return $this->view('payment.index', compact('payments', 'info', 'months', 'accounts'));
     }
 
     /**
@@ -71,8 +72,9 @@ class Controller extends ExController
 
         $month = $request->getPayMonth();
         $months = $this->month();
+        $accounts = $this->getAccounts();
 
-        return $this->view('payment.month', compact('payments', 'info', 'month', 'months'));
+        return $this->view('payment.month', compact('payments', 'info', 'month', 'months', 'accounts'));
     }
 
 

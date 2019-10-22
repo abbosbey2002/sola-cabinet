@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\SetCookie;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -112,5 +113,16 @@ class Controller extends BaseController
     {
         $this->cookie->setLang($lang);
         return redirect()->back();
+    }
+
+    public function getAccounts()
+    {
+        try {
+            $accounts = $this->requests->selectUsers();
+        } catch (Exception $exception) {
+            return abort(500);
+        }
+
+        return $accounts;
     }
 }

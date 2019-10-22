@@ -115,6 +115,15 @@ return [
         Usoft development and design'
     ],
 
+    'accounts' => [
+        'tempary' => 'Temporary account',
+        'one_time' => 'One-time account',
+        'personal' => 'Personal account',
+        'current' => 'Constant',
+        'choose' => 'Choose an account',
+
+    ],
+
     'no' => 'No',
     'yes' => 'Yes',
 
