@@ -14,12 +14,14 @@
                             @lang('app.menu.data')
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('tariffs') }}" class="link {{ request()->routeIs('tariffs') ? 'active' : '' }}">
-                            <img src="/vendor/mobile/images/tag.png" class="mr-3" alt="">
-                            @lang('app.menu.tariff')
-                        </a>
-                    </li>
+                    @if(SetCookie::getTypee() ==  2)
+                        <li>
+                            <a href="{{ route('tariffs') }}" class="link {{ request()->routeIs('tariffs') ? 'active' : '' }}">
+                                <img src="/vendor/mobile/images/tag.png" class="mr-3" alt="">
+                                @lang('app.menu.tariff')
+                            </a>
+                        </li>
+                    @endif
                     <li>
                         <a href="{{ route('traffic') }}" class="link {{ request()->routeIs('traffic') ? 'active' : '' }}">
                             <img src="/vendor/mobile/images/link2.png" class="mr-3" alt="">
