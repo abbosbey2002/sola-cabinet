@@ -73,10 +73,18 @@
     </section> <!-- dark_bg -->
 @endsection
 
+@push('css')
+    <style>
+        .noww_modal {
+            z-index: 11111;
+        }
+    </style>
+@endpush
 @push('js')
+
     @if(SetCookie::getTypee() == 2)
         <!-- Change Tarif Modal -->
-        <div class="modal fade" id="change-modal">
+        <div class="modal fade noww_modal" id="change-modal">
             <div class="modal-dialog modal-dialog-centered modal-sm">
                 <div class="modal-content">
 
@@ -90,7 +98,7 @@
                     <div class="modal-body d-flex justify-content-center align-items-center flex-column">
 
                         <button type="button" class="mybtn type_tariff" data-type="now">
-                            @lсеang('app.modal.now')
+                            @lang('app.modal.now')
                         </button>
 
                         <button type="button" class="mybtn mt-4 type_tariff" data-type="month">

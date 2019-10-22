@@ -97,9 +97,16 @@
     @include('mobile.include.footer')
 @endsection
 
+@push('css')
+    <style>
+        .noww_modal {
+            z-index: 11111;
+        }
+    </style>
+@endpush
 @push('js')
     <!-- Change Tarif Modal -->
-    <div class="modal fade" id="change-modal">
+    <div class="modal fade noww_modal" id="change-modal">
         <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
 

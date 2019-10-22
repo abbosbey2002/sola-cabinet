@@ -37,7 +37,7 @@
                 <i class="fa fa-user text-white fa-3x"></i>
             </div>
             <div class="drop-down">
-                <div class="user">
+                <div class="user">x
                     @foreach($accounts['body']['accs'] as $account)
                             <div class="user__item @if($account['accId'] == request()->cookie('account')) active @endif">
                                 <a href="{{ route('set.account', [$account['accId'], $account['abonType']]) }}">
