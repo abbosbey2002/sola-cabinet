@@ -92,7 +92,7 @@ class Requests
 
         $request->session()->put('phone', $request->getLogin());
         $this->cookie->setLogin($request->getLogin());
-        $this->cookie->setPhone(998909989181);
+        $this->cookie->setPhone($request->getLogin());
         $data = $this->setData($response);
 
         if ($response->getStatusCode() == 200) {
