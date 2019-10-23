@@ -42,14 +42,14 @@
                         </a>
                     </li>
 
-                    @if(SetCookie::getTypee() ==  2)
-                        <li class="{{ request()->routeIs('tariffs') ? 'active' : '' }}">
-                            <a href="{{ route('tariffs') }}" class="link">
-                                <div class="mr-2 h_icon"></div>
-                                <span>@lang('app.menu.tariff')</span>
-                            </a>
-                        </li>
-                    @endif
+{{--                    @if(SetCookie::getTypee() ==  2)--}}
+{{--                        <li class="{{ request()->routeIs('tariffs') ? 'active' : '' }}">--}}
+{{--                            <a href="{{ route('tariffs') }}" class="link">--}}
+{{--                                <div class="mr-2 h_icon"></div>--}}
+{{--                                <span>@lang('app.menu.tariff')</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                    @endif--}}
 
                     <li class="{{ request()->routeIs('traffic') ? 'active' : '' }}">
                         <a href="{{ route('traffic') }}" class="link">
