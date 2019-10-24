@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="/vendor/mobile/libs/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/vendor/mobile/libs/touch-sideswipe-master/touch-sideswipe.min.css">
     <link rel="shortcut icon" href="/vendor/mobile/images/bird.png" type="image/x-icon">
-    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css'>
 
     @if($errors->any())
         <link rel="stylesheet" href="/vendor/toastr/build/toastr.min.css">

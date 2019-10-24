@@ -24,11 +24,11 @@
                     </span>
             </div> <!-- d-flex -->
         </div> <!-- info_block -->
-        @if(SetCookie::getTypee() ==  2)
-            @if($tariff)
-                <a href="{{ route('tariffs') }}" class="mybtn mt-4">@lang('app.header.change_tariff')</a>
-            @endif
-        @endif
+{{--        @if(SetCookie::getTypee() ==  2)--}}
+{{--            @if($tariff)--}}
+{{--                <a href="{{ route('tariffs') }}" class="mybtn mt-4">@lang('app.header.change_tariff')</a>--}}
+{{--            @endif--}}
+{{--        @endif--}}
 
         @if(!empty($date))
             <div class="statics-tarif">
