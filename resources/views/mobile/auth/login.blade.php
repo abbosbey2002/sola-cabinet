@@ -5,10 +5,10 @@
         <div class="container h-100">
             <form action="{{ route('login') }}" method="post" class="begin_form">
                 @csrf
-                <img src="/vendor/mobile/images/bird.png" alt="">
+                <img src="/vendor/desktop/images/main-logo.png" width="100" alt="">
 
 
-                <input type="tel" placeholder="@lang('app.auth.phone')" name="login" required="">
+                <input type="tel" placeholder="@lang('app.auth.phone')" value="+" name="login" required="">
 {{--                <input type="password" placeholder="Пароль" required="">--}}
 
                 <button type="submit">@lang('app.auth.next')</button>

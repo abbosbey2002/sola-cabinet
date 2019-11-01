@@ -25,13 +25,13 @@
     <div class="container-fluid h-100 px-0">
         <div class="main-logo">
             <div class="container">
-                <img src="/vendor/desktop/images/main-logo.png" alt="Main Logo">
+                <img src="/vendor/desktop/images/main-logo.png" width="145" alt="Main Logo">
             </div>
         </div>
         <div class="container">
             <form action="{{ route('login') }}" class="begin_form" method="post">
                 @csrf
-                <input type="tel" placeholder="@lang('app.auth.phone')" name="login" required="">
+                <input type="tel" placeholder="@lang('app.auth.phone')" value="+" name="login" required="">
                 <button type="submit">@lang('app.auth.next')</button>
             </form> <!-- begin_form -->
 
