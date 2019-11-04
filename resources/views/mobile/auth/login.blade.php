@@ -13,7 +13,6 @@
 
                 <button type="submit">@lang('app.auth.next')</button>
 
-
             </form> <!-- begin_form -->
         </div> <!-- container -->
 

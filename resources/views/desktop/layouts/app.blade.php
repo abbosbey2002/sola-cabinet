@@ -26,7 +26,7 @@
     <div class="container p-0 position-relative">
         <div id="menu">
             <div class="mr-4">
-                <a href="{{ route('cabinet') }}">
+                <a href="https://sola.uz">
                     <img src="/vendor/desktop/images/main-logo-h.png" alt="{{ env('APP_NAME') }}">
                 </a>
             </div>

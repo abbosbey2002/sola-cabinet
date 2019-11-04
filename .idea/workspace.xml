@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vendor/desktop/images/bird.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/vendor/desktop/images/bird.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vendor/desktop/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/vendor/desktop/images/logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vendor/desktop/images/main-logo-h.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/vendor/desktop/images/main-logo-h.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vendor/desktop/images/main-logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/vendor/desktop/images/main-logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vendor/mobile/images/bird.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/vendor/mobile/images/bird.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/vendor/mobile/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/public/vendor/mobile/images/logo.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,8 +20,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Login.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="587">
-              <caret line="29" column="44" lean-forward="true" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
+            <state relative-caret-position="609">
+              <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -35,8 +29,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4017">
-              <caret line="33" column="38" lean-forward="true" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+            <state relative-caret-position="388">
+              <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="483">
+              <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -44,8 +47,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="353">
-              <caret line="33" column="72" lean-forward="true" selection-start-line="33" selection-start-column="72" selection-end-line="33" selection-end-column="81" />
+            <state relative-caret-position="70">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
             </state>
           </provider>
         </entry>
@@ -53,8 +56,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="21" column="42" lean-forward="true" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+            <state relative-caret-position="294">
+              <caret line="14" selection-start-line="14" selection-end-line="14" />
             </state>
           </provider>
         </entry>
@@ -161,8 +164,8 @@
         <option value="$PROJECT_DIR$/resources/views/mobile/auth/verify.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php" />
       </list>
     </option>
@@ -419,6 +422,21 @@
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="auth" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="mobile" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -530,7 +548,9 @@
       <workItem from="1571822047009" duration="44000" />
       <workItem from="1571824968507" duration="724000" />
       <workItem from="1571908532765" duration="805000" />
-      <workItem from="1572587421126" duration="828000" />
+      <workItem from="1572587421126" duration="1245000" />
+      <workItem from="1572604570181" duration="174000" />
+      <workItem from="1572860023642" duration="618000" />
     </task>
     <task id="LOCAL-00001" summary="Login &amp;&amp; Verify Requests &amp;&amp; Cookie Set AccountType">
       <created>1565211779766</created>
@@ -861,17 +881,23 @@
       <option name="project" value="LOCAL" />
       <updated>1571909801820</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="Logotype change">
+      <created>1572589589402</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1572589589402</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113111000" />
+    <option name="totallyTimeSpent" value="114320000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2932761" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3018598" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -919,7 +945,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="language uzbek added" />
     <MESSAGE value="Payment remove ID" />
     <MESSAGE value="Lang bugs fixed" />
     <MESSAGE value="auth bugs fixed" />
@@ -944,7 +969,8 @@
     <MESSAGE value="Select Users sendsms" />
     <MESSAGE value="Tariff Off" />
     <MESSAGE value="Tariff Off - Fontawesome remove" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tariff Off - Fontawesome remove" />
+    <MESSAGE value="Logotype change" />
+    <option name="LAST_COMMIT_MESSAGE" value="Logotype change" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php">
@@ -1213,13 +1239,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/info.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
@@ -1278,29 +1297,36 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Login.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="587">
-          <caret line="29" column="44" lean-forward="true" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="353">
-          <caret line="33" column="72" lean-forward="true" selection-start-line="33" selection-start-column="72" selection-end-line="33" selection-end-column="81" />
+        <state relative-caret-position="609">
+          <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4017">
-          <caret line="33" column="38" lean-forward="true" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+        <state relative-caret-position="388">
+          <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="21" column="42" lean-forward="true" selection-start-line="21" selection-start-column="42" selection-end-line="21" selection-end-column="42" />
+        <state relative-caret-position="294">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
         </state>
       </provider>
     </entry>
