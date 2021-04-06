@@ -24,11 +24,72 @@
                     </span>
             </div> <!-- d-flex -->
         </div> <!-- info_block -->
-{{--        @if(SetCookie::getTypee() ==  2)--}}
-{{--            @if($tariff)--}}
-{{--                <a href="{{ route('tariffs') }}" class="mybtn mt-4">@lang('app.header.change_tariff')</a>--}}
-{{--            @endif--}}
-{{--        @endif--}}
+
+        @if(SetCookie::getTypee() ==  2)
+            <a href="{{ route('devices.add') }}" onclick="return confirm('@lang('app.header.add_device_sure')')" class="mybtn mt-4">
+                @lang('app.header.add_device')
+            </a>
+        @endif
+
+        @if(!empty($devices) && SetCookie::getTypee() ==  2)
+            <div class="col-lg-12">
+                @if(session()->has('danger'))
+                    <div class="alert alert-danger">
+                        {{ session()->pull('danger') }}
+                    </div>
+                @endif
+
+                @if(session()->has('info'))
+                    <div class="alert alert-info">
+                        {{ session()->pull('info') }}
+                    </div>
+                @endif
+
+                <table class="table mytable table-sm">
+                    <thead>
+                    <tr>
+                        <th scope="col">@lang('app.header.mac')</th>
+                        <th scope="col">@lang('app.header.status')</th>
+                        <th scope="col">@lang('app.header.date_connect')</th>
+                        <th scope="col">@lang('app.actions')</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach($devices as $device)
+                        <tr>
+                            <td>
+                                @if($device['mac'])
+                                    {{ $device['mac'] }}
+                                @else
+                                    @lang('app.header.no_mac')
+                                @endif
+                            </td>
+
+                            <td>
+                                @if ($device['ip'])
+                                    @lang('app.header.online')
+                                @else
+                                    @lang('app.header.offline')
+                                @endif
+                            </td>
+
+                            <td>
+                                {{ Carbon::parse($device['connect_date'])->format('d.m.Y') }}
+                            </td>
+
+                            <td>
+                                @if(!$device['readonly'])
+                                    <a href="{{ route('devices.delete', $device['permit_id']) }}" onclick="return confirm(@lang('app.header.are_you_cancel'))" class="btn btn-danger btn-sm">
+                                        @lang('app.detele')
+                                    </a>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
 
         @if(!empty($date))
             <div class="statics-tarif">

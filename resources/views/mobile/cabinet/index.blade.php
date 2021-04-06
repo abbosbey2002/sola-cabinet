@@ -12,7 +12,7 @@
     </div>
 
 
-    @include('mobile.include.info', ['info' => $info, 'tariff' => true])
+    @include('mobile.include.info', ['info' => $info, 'tariff' => true, 'devices' => $devices])
 
 
     <section class="dark_bg section section2">
