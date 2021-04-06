@@ -235,7 +235,7 @@
                 @endif
             </div>
 
-            @if($devices['devices'])
+            @if($devices)
                 <div class="col-lg-12">
                         <table class="table mytable table-sm">
                             <thead>
