@@ -270,9 +270,11 @@
                                         </td>
 
                                         <td>
-                                            <a href="#" class="btn btn-danger btn-sm">
-                                                <i class="fa fa-trash"></i>
-                                            </a>
+                                            @if(!$device['readonly'])
+                                                <a href="#" class="btn btn-danger btn-sm">
+                                                 @lang('app.detele')
+                                                </a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
