@@ -165,9 +165,7 @@
 
 @push('css')
     <style>
-
-
-        @if(count($devices) == 0 && SetCookie::getTypee() ==  2)
+        @if(count($devices) == 0 || count($devices) == 1)
             header {
                 position: absolute;
                 top: 0;
@@ -198,6 +196,5 @@
                 height: 7vh;
             }
         @endif
-
     </style>
 @endpush
