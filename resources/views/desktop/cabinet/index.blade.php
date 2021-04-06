@@ -165,15 +165,17 @@
 
 @push('css')
     <style>
-        header {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 5vh;
-            z-index: 1;
-        }
+
 
         @if(count($devices) == 0)
+            header {
+                position: absolute;
+                top: 0;
+                width: 100%;
+                height: 5vh;
+                z-index: 1;
+            }
+
             .section1 {
                 position: absolute;
                 top: 80px;
@@ -188,12 +190,14 @@
                 width: 100%;
                 height: 50vh;
             }
+
+            footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                height: 7vh;
+            }
         @endif
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 7vh;
-        }
+
     </style>
 @endpush

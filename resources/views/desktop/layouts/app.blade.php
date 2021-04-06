@@ -237,6 +237,18 @@
 
             @if($devices)
                 <div class="col-lg-12">
+                        @if(session()->has('danger'))
+                            <div class="alert alert-danger">
+                                {{ session()->get('danger') }}
+                            </div>
+                        @endif
+
+                        @if(session()->has('info'))
+                            <div class="alert alert-info">
+                                {{ session()->get('info') }}
+                            </div>
+                        @endif
+
                         <table class="table mytable table-sm">
                             <thead>
                             <tr>
@@ -271,8 +283,8 @@
 
                                         <td>
                                             @if(!$device['readonly'])
-                                                <a href="#" class="btn btn-danger btn-sm">
-                                                 @lang('app.detele')
+                                                <a href="{{ route('devices.delete') }}" class="btn btn-danger btn-sm">
+                                                    @lang('app.detele')
                                                 </a>
                                             @endif
                                         </td>

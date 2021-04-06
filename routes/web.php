@@ -21,6 +21,7 @@ Route::group(['prefix' => '/', 'middleware' => ['login', 'setLang'], 'namespace'
 
     Route::group(['prefix' => '/devices', 'namespace' => 'Devices'], function () {
         Route::get('/add', 'Controller@add')->name('devices.add');
+        Route::get('/delete/{mac_id}', 'Controller@delete')->name('devices.delete');
     });
 
     Route::group(['prefix' => '/services', 'namespace' => 'Services'], function () {

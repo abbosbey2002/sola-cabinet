@@ -26,7 +26,13 @@ class Controller extends BaseController
             return abort(500);
         }
 
+
+        if ($add['status'] == 200) {
+            request()->flash('info', trans('app.header.success_device'));
+        } else {
+            request()->flash('danger', $add['body']['errMsg']);
+        }
+
         return redirect()->route('cabinet');
-//        return $this->view('cabinet.index', compact('info', 'accounts', 'devices'));
     }
 }
