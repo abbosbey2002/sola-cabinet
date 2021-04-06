@@ -496,4 +496,27 @@ class Requests
         $data = $this->setData($response);
         return $data;
     }
+
+    public function deleteDevice($mac_id, string $method = 'POST')
+    {
+        $url = "{$this->url}/device/delete";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => App::getLocale(),
+            'permit_id' => $mac_id
+        ];
+
+        $response = $this->client->request($method, $url, [
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $data = $this->setData($response);
+        return $data;
+    }
 }

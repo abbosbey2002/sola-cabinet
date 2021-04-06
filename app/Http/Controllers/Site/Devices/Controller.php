@@ -35,4 +35,21 @@ class Controller extends BaseController
 
         return redirect()->route('cabinet');
     }
+
+    public function delete($mac_id)
+    {
+        try {
+            $add = $this->requests->deleteDevice($mac_id);
+        } catch (\Exception $exception) {
+            return abort(500);
+        }
+
+        if ($add['status'] == 200) {
+            $this->info(trans('app.header.success_deleted'));
+        } else {
+            $this->danger($add['body']['errMsg']);
+        }
+
+        return redirect()->route('cabinet');
+    }
 }

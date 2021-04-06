@@ -283,7 +283,7 @@
 
                                         <td>
                                             @if(!$device['readonly'])
-                                                <a href="" class="btn btn-danger btn-sm">
+                                                <a href="{{ route('devices.delete', $device['permit_id']) }}" onclick="return confirm(@lang('app.header.are_you_cancel'))" class="btn btn-danger btn-sm">
                                                     @lang('app.detele')
                                                 </a>
                                             @endif
