@@ -229,11 +229,9 @@
 
             <div class="col-lg-4">
                 @if(SetCookie::getTypee() ==  2)
-                    @if(!empty($tariff))
-                        <a href="{{ route('tariffs') }}" class="mybtn mt-2">
-                            @lang('app.header.change_tariff')
-                        </a>
-                    @endif
+                    <a href="{{ route('devices.add') }}" onclick="return confirm('@lang('app.header.add_device_sure')')" class="mybtn mt-2">
+                        @lang('app.header.add_device')
+                    </a>
                 @endif
             </div>
         </div>

@@ -19,10 +19,16 @@ Route::group(['prefix' => '/', 'middleware' => ['login', 'setLang'], 'namespace'
         Route::get('/connect/{id}/{type}', 'Controller@connect')->name('tariff.connect');
     });
 
+    Route::group(['prefix' => '/devices', 'namespace' => 'Devices'], function () {
+        Route::get('/add', 'Controller@add')->name('devices.add');
+    });
+
     Route::group(['prefix' => '/services', 'namespace' => 'Services'], function () {
         Route::get('/', 'Controller@index')->name('services');
         Route::get('/device/add', 'Controller@newDevice')->name('services.device.new');
     });
+
+
 
     Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
         Route::get('/logout', 'Controller@logout')->name('logout');
