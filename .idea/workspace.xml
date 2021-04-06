@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="">
+    <list default="true" id="d1f4c5ba-f25d-4746-90a2-6c4f46857c21" name="Default Changelist" comment="Logotype change">
+      <change beforePath="$PROJECT_DIR$/.idea/laravel-plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/laravel-plugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,46 +18,64 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Login.php">
+        <entry file="file://$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="609">
-              <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="388">
-              <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.env">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="483">
-              <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="70">
-              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="126">
+              <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php">
+        <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
+            <state relative-caret-position="205">
+              <caret line="287" column="52" lean-forward="true" selection-start-line="287" selection-start-column="52" selection-end-line="287" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Cabinet/Controller.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="4" selection-start-line="4" selection-end-line="5" />
+              <folding>
+                <element signature="e#53#88#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Devices/Controller.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="378">
+              <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+              <folding>
+                <element signature="e#53#78#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="34" column="23" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1210">
+              <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+              <folding>
+                <element signature="e#30#64#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,9 +84,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;images</find>
-      <find>&quot;css/</find>
-      <find>tariff/available</find>
       <find>traff</find>
       <find>devi</find>
       <find>getDe</find>
@@ -96,6 +111,9 @@
       <find>get</find>
       <find>&quot;js/</find>
       <find>abo</find>
+      <find>this</find>
+      <find>alert</find>
+      <find>alert</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;/vendor/mobile/css/</replace>
@@ -105,6 +123,7 @@
       <replace>App::getLocale()</replace>
       <replace>&quot;/vendor/desktop/js/</replace>
       <replace>&quot;/vendor/mobile/js/</replace>
+      <replace />
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -116,34 +135,24 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/Http/Middleware/SetLang.php" />
         <option value="$PROJECT_DIR$/app/Http/Kernel.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Auth/Login.php" />
         <option value="$USER_HOME$/Downloads/app (1).php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" />
         <option value="$PROJECT_DIR$/config/app.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php" />
         <option value="$PROJECT_DIR$/resources/lang/uz/errors.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Payment/History.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Traffic/Detail.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/Auth/Verify.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/services/index.blade.php" />
         <option value="$PROJECT_DIR$/.env" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" />
         <option value="$PROJECT_DIR$/public/vendor/desktop/css/style.css" />
         <option value="$PROJECT_DIR$/app/Helpers/SetCookie.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Controller.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Cabinet/Controller.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Payment/Controller.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Services/Controller.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Tariffs/Controller.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Traffic/Controller.php" />
-        <option value="$PROJECT_DIR$/resources/lang/ru/app.php" />
         <option value="$PROJECT_DIR$/resources/lang/uz/app.php" />
         <option value="$PROJECT_DIR$/resources/lang/en/app.php" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/cabinet/index.blade.php" />
         <option value="$PROJECT_DIR$/public/vendor/mobile/css/style.css" />
         <option value="$PROJECT_DIR$/resources/views/mobile/payment/index.blade.php" />
@@ -152,11 +161,9 @@
         <option value="$PROJECT_DIR$/resources/views/mobile/trafic/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/trafic/month.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/header.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php" />
         <option value="$PROJECT_DIR$/storage/logs/laravel-2019-10-22.log" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Auth/Controller.php" />
-        <option value="$PROJECT_DIR$/app/Helpers/Requests.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/auth/select_account.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/auth/verify.blade.php" />
@@ -165,8 +172,20 @@
         <option value="$PROJECT_DIR$/resources/views/mobile/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/include/info.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php" />
+        <option value="$PROJECT_DIR$/app/Helpers/Requests.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/services/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Cabinet/Controller.php" />
+        <option value="$PROJECT_DIR$/resources/lang/ru/app.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Site/Devices/Controller.php" />
+        <option value="$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php" />
       </list>
     </option>
   </component>
@@ -262,8 +281,9 @@
     </include_path>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="x" value="-1920" />
+    <option name="width" value="1920" />
+    <option name="height" value="1080" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -318,15 +338,6 @@
               <item name="Http" type="462c0819:PsiDirectoryNode" />
               <item name="Controllers" type="462c0819:PsiDirectoryNode" />
               <item name="Site" type="462c0819:PsiDirectoryNode" />
-              <item name="Auth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-              <item name="Site" type="462c0819:PsiDirectoryNode" />
               <item name="Cabinet" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -336,80 +347,25 @@
               <item name="Http" type="462c0819:PsiDirectoryNode" />
               <item name="Controllers" type="462c0819:PsiDirectoryNode" />
               <item name="Site" type="462c0819:PsiDirectoryNode" />
-              <item name="Payment" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-              <item name="Site" type="462c0819:PsiDirectoryNode" />
-              <item name="Services" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-              <item name="Site" type="462c0819:PsiDirectoryNode" />
-              <item name="Tariffs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Controllers" type="462c0819:PsiDirectoryNode" />
-              <item name="Site" type="462c0819:PsiDirectoryNode" />
-              <item name="Traffic" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Requests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="Http" type="462c0819:PsiDirectoryNode" />
-              <item name="Requests" type="462c0819:PsiDirectoryNode" />
-              <item name="Auth" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="vendor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="vendor" type="462c0819:PsiDirectoryNode" />
-              <item name="mobile" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="vendor" type="462c0819:PsiDirectoryNode" />
-              <item name="mobile" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
+              <item name="Devices" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="lang" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="lang" type="462c0819:PsiDirectoryNode" />
+              <item name="ru" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
@@ -430,38 +386,52 @@
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="desktop" type="462c0819:PsiDirectoryNode" />
-              <item name="auth" type="462c0819:PsiDirectoryNode" />
+              <item name="cabinet" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="mobile" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="layouts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="mobile" type="462c0819:PsiDirectoryNode" />
-              <item name="auth" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="payment" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="services" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="tariffs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
+              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="desktop" type="462c0819:PsiDirectoryNode" />
+              <item name="trafic" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
               <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
               <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cabinet.sola" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cabinet.sola" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
-              <item name="logs" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -476,6 +446,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="Laravel.SettingsForm" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -551,55 +522,9 @@
       <workItem from="1572587421126" duration="1245000" />
       <workItem from="1572604570181" duration="174000" />
       <workItem from="1572860023642" duration="618000" />
-    </task>
-    <task id="LOCAL-00001" summary="Login &amp;&amp; Verify Requests &amp;&amp; Cookie Set AccountType">
-      <created>1565211779766</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1565211779766</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Controller: LoginPage &amp;&amp; Helpers: Errors &amp;&amp; Requests: Auth\Login bugs fixed">
-      <created>1565212596055</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1565212596055</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Controller Auth &amp;&amp; Function: Verify">
-      <created>1565250526163</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1565250526163</updated>
-    </task>
-    <task id="LOCAL-00004" summary="Controller: Abonent &amp; Cabinet &amp;&amp; Requests: Abonent(EDIT), Payment(History), Wifi(Password) &amp;&amp; View: auth(login, verify) &amp;&amp; Requests More New Functions &amp;&amp; CodeOptimization">
-      <created>1565262464803</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1565262464803</updated>
-    </task>
-    <task id="LOCAL-00005" summary="Helper: Requests 100% &amp;&amp;&amp; Requests: Tariff(SET), Traffic(Detail)">
-      <created>1565265109044</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1565265109045</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Info &amp; Traffic &amp; Tariffs">
-      <created>1568029041882</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1568029041882</updated>
-    </task>
-    <task id="LOCAL-00007" summary="Info &amp;&amp; Traffic &amp;&amp; Payment &amp;&amp; Services &amp;&amp; Auth bugs fixed">
-      <created>1568310540124</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1568310540124</updated>
+      <workItem from="1617690464896" duration="4389000" />
+      <workItem from="1617698273260" duration="10000" />
+      <workItem from="1617701011293" duration="4239000" />
     </task>
     <task id="LOCAL-00008" summary="100% success project">
       <created>1568664485360</created>
@@ -888,16 +813,73 @@
       <option name="project" value="LOCAL" />
       <updated>1572589589402</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="bugs fixed">
+      <created>1617692423172</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1617692423172</updated>
+    </task>
+    <task id="LOCAL-00050" summary="newe features">
+      <created>1617693759709</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1617693759714</updated>
+    </task>
+    <task id="LOCAL-00051" summary="devices">
+      <created>1617694031749</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1617694031750</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Devices">
+      <created>1617704810488</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1617704810489</updated>
+    </task>
+    <task id="LOCAL-00053" summary="bugs fixed">
+      <created>1617705068877</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1617705068877</updated>
+    </task>
+    <task id="LOCAL-00054" summary="bugs fixed">
+      <created>1617705556666</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1617705556666</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Logotype change">
+      <created>1617705713348</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1617705713349</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Alert">
+      <created>1617710642616</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1617710642616</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114320000" />
+    <option name="totallyTimeSpent" value="122958000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="-1920" y="0" width="1920" height="1080" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.3018598" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23216188" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -912,7 +894,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3992629" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.39839035" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -945,10 +927,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Payment remove ID" />
-    <MESSAGE value="Lang bugs fixed" />
-    <MESSAGE value="auth bugs fixed" />
-    <MESSAGE value="Tarif connected change" />
     <MESSAGE value="Change tariff JS code" />
     <MESSAGE value="Change tariff button For Type == 2" />
     <MESSAGE value="web add language drop" />
@@ -964,53 +942,19 @@
     <MESSAGE value="Servicess OFF" />
     <MESSAGE value="Status redesign" />
     <MESSAGE value="Multi account added" />
-    <MESSAGE value="bugs fixed" />
     <MESSAGE value="hidden tariffs for one-time users" />
     <MESSAGE value="Select Users sendsms" />
     <MESSAGE value="Tariff Off" />
     <MESSAGE value="Tariff Off - Fontawesome remove" />
+    <MESSAGE value="newe features" />
+    <MESSAGE value="devices" />
+    <MESSAGE value="Devices" />
+    <MESSAGE value="bugs fixed" />
     <MESSAGE value="Logotype change" />
-    <option name="LAST_COMMIT_MESSAGE" value="Logotype change" />
+    <MESSAGE value="Alert" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alert" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/uz/errors.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="25" column="63" selection-start-line="25" selection-start-column="63" selection-end-line="25" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/ru/errors.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/en/errors.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/Payment/History.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="19" column="8" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Requests/Auth/Verify.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -1033,13 +977,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/services/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="712">
-          <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/vendor/desktop/css/media.css">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1054,26 +991,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="703">
           <caret line="228" column="18" selection-start-line="228" selection-start-column="9" selection-end-line="228" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Cabinet/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="31" column="7" lean-forward="true" selection-start-line="31" selection-start-column="7" selection-end-line="31" selection-end-column="7" />
-          <folding>
-            <element signature="e#53#88#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Controller.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="892">
-          <caret line="125" column="25" selection-start-line="125" selection-start-column="25" selection-end-line="125" selection-end-column="25" />
-          <folding>
-            <element signature="e#40#66#0#PHP" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1108,34 +1025,6 @@
           <folding>
             <element signature="e#53#78#0#PHP" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="472">
-          <caret line="130" column="6" lean-forward="true" selection-start-line="123" selection-start-column="4" selection-end-line="130" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/uz/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
-          <caret line="123" column="34" lean-forward="true" selection-start-line="123" selection-start-column="34" selection-end-line="123" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lang/en/app.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="122" column="40" lean-forward="true" selection-start-line="122" selection-start-column="40" selection-end-line="122" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
         </state>
       </provider>
     </entry>
@@ -1188,20 +1077,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers/SetCookie.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="79" column="49" lean-forward="true" selection-start-line="79" selection-start-column="49" selection-end-line="79" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="541">
-          <caret line="80" column="12" selection-start-line="76" selection-start-column="4" selection-end-line="80" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/mobile/tariffs/index.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -1209,19 +1084,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-10-22.log">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1911">
-          <caret line="104" selection-start-line="104" selection-end-line="104" />
-          <folding>
-            <element signature="e#30#64#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/storage/logs/laravel-2019-10-22.log" />
     <entry file="file://$PROJECT_DIR$/resources/views/mobile/include/menu.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="399">
@@ -1288,10 +1151,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php">
+    <entry file="file://$PROJECT_DIR$/.env" />
+    <entry file="file://$PROJECT_DIR$/resources/lang/en/app.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="15" column="20" selection-start-line="15" selection-start-column="20" selection-end-line="15" selection-end-column="20" />
+        <state relative-caret-position="360">
+          <caret line="51" column="39" lean-forward="true" selection-start-line="51" selection-start-column="39" selection-end-line="51" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="70">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
@@ -1302,31 +1180,134 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.env.example">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/month.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="17" column="57" selection-start-line="17" selection-start-column="57" selection-end-line="17" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="892">
+          <caret line="123" column="9" selection-start-line="123" selection-start-column="9" selection-end-line="123" selection-end-column="9" />
+          <folding>
+            <element signature="e#40#66#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/month.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="26" column="52" selection-start-line="26" selection-start-column="52" selection-end-line="26" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/trafic/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="121" selection-start-column="121" selection-end-column="121" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/tariffs/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="85" selection-start-column="85" selection-end-column="85" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/services/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="84" selection-start-column="84" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/uz/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/payment/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-368">
+          <caret line="17" column="51" selection-start-line="17" selection-start-column="51" selection-end-line="17" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="273">
+          <caret line="22" column="51" selection-start-line="22" selection-start-column="51" selection-end-line="22" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helpers/SetCookie.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="104" column="28" selection-start-line="104" selection-start-column="20" selection-end-line="104" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/desktop/cabinet/index.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Helpers/Requests.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1210">
+          <caret line="19" column="6" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+          <folding>
+            <element signature="e#30#64#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Cabinet/Controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="4" selection-start-line="4" selection-end-line="5" />
+          <folding>
+            <element signature="e#53#88#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Site/Devices/Controller.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="18" column="5" lean-forward="true" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding>
+            <element signature="e#53#78#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lang/ru/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="34" column="23" selection-start-line="34" selection-start-column="9" selection-end-line="34" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/desktop/layouts/app.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="28" column="40" selection-start-line="28" selection-start-column="40" selection-end-line="28" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/desktop/auth/login.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="70">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/mobile/auth/login.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="205">
+          <caret line="287" column="52" lean-forward="true" selection-start-line="287" selection-start-column="52" selection-end-line="287" selection-end-column="52" />
         </state>
       </provider>
     </entry>

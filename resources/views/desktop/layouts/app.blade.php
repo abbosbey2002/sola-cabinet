@@ -283,7 +283,7 @@
 
                                         <td>
                                             @if(!$device['readonly'])
-                                                <a href="{{ route('devices.delete') }}" class="btn btn-danger btn-sm">
+                                                <a href="" class="btn btn-danger btn-sm">
                                                     @lang('app.detele')
                                                 </a>
                                             @endif
