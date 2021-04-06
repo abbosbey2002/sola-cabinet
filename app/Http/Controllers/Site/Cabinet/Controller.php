@@ -46,8 +46,13 @@ class Controller extends BaseController
 
         $accounts = $this->getAccounts();
 
+        if ($devices['status'] == 200) {
+            $devices = $devices['body']['devices'];
+        } else {
+            return abort(500);
+        }
 
-        return $this->view('cabinet.index', compact('info', 'accounts'));
+        return $this->view('cabinet.index', compact('info', 'accounts', 'devices'));
     }
 
 }

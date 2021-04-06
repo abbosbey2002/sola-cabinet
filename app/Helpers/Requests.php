@@ -474,4 +474,26 @@ class Requests
         $data = $this->setData($response);
         return $data;
     }
+
+    public function addDevice(string $method = 'POST')
+    {
+        $url = "{$this->url}/device/new";
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => App::getLocale()
+        ];
+
+        $response = $this->client->request($method, $url, [
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $data = $this->setData($response);
+        return $data;
+    }
 }

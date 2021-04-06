@@ -1,4 +1,4 @@
-@extends('desktop.layouts.app', [ 'info' => $info, 'tariff' => true ])
+@extends('desktop.layouts.app', [ 'info' => $info, 'tariff' => true, 'devices' => [] ])
 @section('title', trans('app.services.title').' - ')
 @section('content')
     <section class="dark_bg section section2">

@@ -234,7 +234,52 @@
                     </a>
                 @endif
             </div>
+
+            @if($devices['devices'])
+                <div class="col-lg-12">
+                        <table class="table mytable table-sm">
+                            <thead>
+                            <tr>
+                                <th scope="col">@lang('app.header.mac')</th>
+                                <th scope="col">@lang('app.header.status')</th>
+                                <th scope="col">@lang('app.header.date_connect')</th>
+                                <th scope="col">@lang('app.actions')</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($devices as $device)
+                                    <tr>
+                                        <td>
+                                            {{ $device['mac'] }}
+                                        </td>
+
+                                        <td>
+                                            @if ($device['ip'])
+                                                @lang('app.header.online')
+                                            @else
+                                                @lang('app.header.offline')
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            {{ $device['mac'] }}
+                                        </td>
+
+                                        <td>
+                                            <a href="#" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                </div>
+            @endif
+
         </div>
+
+
         @if(!empty($date))
             <div class="statics-tarif py-4">
                 <p>

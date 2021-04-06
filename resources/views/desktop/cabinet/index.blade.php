@@ -1,4 +1,4 @@
-@extends('desktop.layouts.app', [ 'info' => $info, 'tariff' => true, 'accounts' => $accounts  ])
+@extends('desktop.layouts.app', [ 'info' => $info, 'tariff' => true, 'accounts' => $accounts, 'devices' => $devices  ])
 @section('title', trans('app.home').' - ')
 @section('content')
     <section class="dark_bg section section2">
@@ -173,21 +173,22 @@
             z-index: 1;
         }
 
-        /*.section1 {*/
-        /*    position: absolute;*/
-        /*    top: 80px;*/
-        /*    width: 100%;*/
-        /*    height: 40vh;*/
-        /*    z-index: 11;*/
-        /*}*/
+        @if(count($devices) == 0)
+            .section1 {
+                position: absolute;
+                top: 80px;
+                width: 100%;
+                height: 40vh;
+                z-index: 11;
+            }
 
-        /*.section2 {*/
-        /*    position: absolute;*/
-        /*    bottom: 30px;*/
-        /*    width: 100%;*/
-        /*    height: 50vh;*/
-        /*}*/
-
+            .section2 {
+                position: absolute;
+                bottom: 30px;
+                width: 100%;
+                height: 50vh;
+            }
+        @endif
         footer {
             position: absolute;
             bottom: 0;
