@@ -239,13 +239,13 @@
                 <div class="col-lg-12">
                         @if(session()->has('danger'))
                             <div class="alert alert-danger">
-                                {{ session()->get('danger') }}
+                                {{ session()->pull('danger') }}
                             </div>
                         @endif
 
                         @if(session()->has('info'))
                             <div class="alert alert-info">
-                                {{ session()->get('info') }}
+                                {{ session()->pull('info') }}
                             </div>
                         @endif
 

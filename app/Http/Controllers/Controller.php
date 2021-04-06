@@ -125,4 +125,24 @@ class Controller extends BaseController
 
         return $accounts;
     }
+
+    protected function info(string $text)
+    {
+        $this->sendAlert('info', $text);
+    }
+
+    protected function success(string $text)
+    {
+        $this->sendAlert('success', $text);
+    }
+
+    protected function danger(string $text)
+    {
+        $this->sendAlert('danger', $text);
+    }
+
+    private function sendAlert(string $type, string $text)
+    {
+        request()->session()->flash($type, $text);
+    }
 }
