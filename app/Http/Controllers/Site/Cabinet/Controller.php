@@ -38,7 +38,15 @@ class Controller extends BaseController
             return abort(500);
         }
 
+        try {
+            $devices = $this->requests->getDevices();
+        } catch (Exception $exception) {
+            return abort(500);
+        }
+
         $accounts = $this->getAccounts();
+
+
         return $this->view('cabinet.index', compact('info', 'accounts'));
     }
 

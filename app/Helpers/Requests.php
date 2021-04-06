@@ -197,6 +197,29 @@ class Requests
         return $data;
     }
 
+    public function getDevicesList(string $method = 'POST')
+    {
+        $url = "{$this->url}/device/list";
+
+        $json = [
+            'acc_id' => $this->cookie->getAccID(),
+            'lang' => App::getLocale()
+        ];
+
+        $response = $this->client->request($method, $url, [
+            'json' => $json,
+            'http_errors' => false,
+            'headers' =>[
+                'X-Access-Token' => $this->generateAuthToken($json),
+                'Authorization' => $this->token,
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+
+        $data = $this->setData($response);
+        return $data;
+    }
+
     /**
      * @param int $acc_id
      * @param string $method
