@@ -21,6 +21,7 @@ return [
         'change_tariff' => 'СМЕНИТЬ ТАРИФ',
         'date_choose' => 'Статистика <span>за :Month</span>',
         'choose' => 'ВЫБРАТЬ МЕСЯЦ',
+        'add_device' => 'Добавить дополнительный MAC адрес'
     ],
 
     'menu' => [

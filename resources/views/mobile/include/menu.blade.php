@@ -33,6 +33,13 @@
                             @lang('app.menu.payments')
                         </a>
                     </li>
+
+ <li><a href="https://sola.speedtestcustom.com/" class="link">
+                            <img src="/vendor/mobile/images/link4.png" class="mr-3" alt="">
+                            Speed Test
+                        </a>
+                    </li>
+
 {{--                    <li>--}}
 {{--                        <a href="{{ route('services') }}" class="link {{ request()->routeIs('services') ? 'active' : '' }}">--}}
 {{--                            <img src="/vendor/mobile/images/link4.png" class="mr-3" alt="">--}}

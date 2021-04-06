@@ -173,20 +173,20 @@
             z-index: 1;
         }
 
-        .section1 {
-            position: absolute;
-            top: 80px;
-            width: 100%;
-            height: 40vh;
-            z-index: 11;
-        }
+        /*.section1 {*/
+        /*    position: absolute;*/
+        /*    top: 80px;*/
+        /*    width: 100%;*/
+        /*    height: 40vh;*/
+        /*    z-index: 11;*/
+        /*}*/
 
-        .section2 {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-            height: 50vh;
-        }
+        /*.section2 {*/
+        /*    position: absolute;*/
+        /*    bottom: 30px;*/
+        /*    width: 100%;*/
+        /*    height: 50vh;*/
+        /*}*/
 
         footer {
             position: absolute;

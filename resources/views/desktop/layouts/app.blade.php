@@ -61,6 +61,15 @@
                             <span>@lang('app.menu.payments')</span>
                         </a>
                     </li>
+
+
+<li class="">
+                        <a href="https://sola.speedtestcustom.com/" target="_blank" class="link">
+                            <div class="mr-2 h_icon"></div>
+                            <span>Speed Test</span>
+                        </a>
+                    </li>
+
 {{--                    <li class="{{ request()->routeIs('services') ? 'active' : '' }}">--}}
 {{--                        <a href="{{ route('services') }}" class="link">--}}
 {{--                            <div class="mr-2 h_icon"></div>--}}
@@ -217,14 +226,15 @@
                     </div> <!-- d-flex -->
                 </div> <!-- info_block -->
             </div>
+
             <div class="col-lg-4">
-{{--                @if(SetCookie::getTypee() ==  2)--}}
-{{--                    @if(!empty($tariff))--}}
-{{--                        <a href="{{ route('tariffs') }}" class="mybtn mt-2">--}}
-{{--                            @lang('app.header.change_tariff')--}}
-{{--                        </a>--}}
-{{--                    @endif--}}
-{{--                @endif--}}
+                @if(SetCookie::getTypee() ==  2)
+                    @if(!empty($tariff))
+                        <a href="{{ route('tariffs') }}" class="mybtn mt-2">
+                            @lang('app.header.change_tariff')
+                        </a>
+                    @endif
+                @endif
             </div>
         </div>
         @if(!empty($date))
