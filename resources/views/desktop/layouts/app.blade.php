@@ -250,7 +250,11 @@
                                 @foreach($devices as $device)
                                     <tr>
                                         <td>
-                                            {{ $device['mac'] }}
+                                            @if($device['mac'])
+                                                {{ $device['mac'] }}
+                                            @else
+                                                @lang('app.header.no_mac')
+                                            @endif
                                         </td>
 
                                         <td>
@@ -262,7 +266,7 @@
                                         </td>
 
                                         <td>
-                                            {{ $device['mac'] }}
+                                            {{ Carbon::parse($device['connect_date'])->format('d.m.Y') }}
                                         </td>
 
                                         <td>
