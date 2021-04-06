@@ -32,7 +32,7 @@
         @endif
 
         @if(!empty($devices) && SetCookie::getTypee() ==  2)
-            <div class="col-lg-12">
+            <div class="col-lg-12 mt-3">
                 @if(session()->has('danger'))
                     <div class="alert alert-danger">
                         {{ session()->pull('danger') }}
