@@ -167,7 +167,7 @@
     <style>
 
 
-        @if(count($devices) == 0)
+        @if(count($devices) == 0 && SetCookie::getTypee() ==  2)
             header {
                 position: absolute;
                 top: 0;

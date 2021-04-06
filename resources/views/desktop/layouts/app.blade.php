@@ -235,7 +235,7 @@
                 @endif
             </div>
 
-            @if($devices)
+            @if($devices && SetCookie::getTypee() ==  2)
                 <div class="col-lg-12">
                         @if(session()->has('danger'))
                             <div class="alert alert-danger">
