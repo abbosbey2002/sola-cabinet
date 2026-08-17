@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bosh sahifa — Sola Kabinet</title>
+<meta name="theme-color" content="#eff1f3">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+
+<!-- Saqlangan tanlovlar stildan OLDIN qo'yiladi, aks holda tizimi qorong'i
+     bo'lgan foydalanuvchi avval oq sahifani ko'rib, keyin qorayadi; matn
+     hajmi esa sahifa yuklangach sakrab kattalashadi.
+     Hech narsa saqlanmagan bo'lsa atribut umuman qo'yilmaydi — "tizim
+     bo'yicha" va "oddiy hajm" haqiqiy standart holat bo'lib qoladi. -->
+<script>
+    (() => {
+        const t = localStorage.getItem('sola-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+
+        const s = localStorage.getItem('sola-text');
+        if (s === 'lg' || s === 'xl') document.documentElement.setAttribute('data-text', s);
+    })();
+</script>
+
+<script src="assets/tokens.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-dvh">
+<script src="assets/icons.js"></script>
+
+<a href="#content"
+   class="sr-only z-[80] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-full focus:border-2 focus:border-action focus:bg-surface focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-ink">
+    Asosiy qismga o'tish
+</a>
+
+<div class="u-ambient flex min-h-dvh flex-col">
+
+    <header class="relative z-40 u-no-print">
+        <div class="mx-auto max-w-[1240px] px-4 sm:px-6">
+
+            <!-- flex-wrap — oxirgi himoya tor ekranlar uchun: o'ng guruh
+                 ikkinchi qatorga tushadi, gorizontal scroll esa paydo bo'lmaydi.
+                 lg dan boshlab nowrap: uzun ism qator buzmasin, dd dagi
+                 truncate ishga tushsin — wrap qilinadigan flex avval qatorga
+                 bo'ladi, siqishni esa keyin qiladi, ya'ni wrap yoqilgan holda
+                 truncate hech qachon ishlamaydi.
+                 140% matnda qator baribir sig'maydi; u holat u-id-row /
+                 u-id-facts qoidalari bilan hal qilinadi (tokens.js oxiri). -->
+            <div class="u-id-row flex min-h-[4.5rem] flex-wrap items-center gap-3 py-2 lg:flex-nowrap">
+                <button type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-drawer"
+                        class="-ml-2 grid size-12 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-surface-2 lg:hidden">
+                    <svg class="size-6" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
+                    <span class="sr-only">Menyuni ochish</span>
+                </button>
+
+                <a href="index.html" class="shrink-0 no-underline">
+                    <span class="u-logo">
+                        <img src="assets/logo-wordmark.png" alt="Sola" width="164" height="52"
+                             class="hidden h-9 w-auto sm:block">
+                        <img src="assets/logo-bird.png" alt="Sola" width="131" height="112"
+                             class="h-9 w-auto sm:hidden">
+                    </span>
+                </a>
+
+                <dl class="u-id-facts ml-5 hidden min-w-0 items-center gap-x-7 2xl:flex">
+                    <div class="flex min-w-0 items-baseline gap-2">
+                        <dt class="u-label">F.I.SH.</dt>
+                        <dd class="truncate text-sm font-semibold text-ink">Alisher Karimov</dd>
+                    </div>
+                    <div class="flex min-w-0 items-baseline gap-2">
+                        <dt class="u-label">Shartnoma</dt>
+                        <dd class="truncate text-sm font-semibold text-ink">D-100145</dd>
+                    </div>
+                </dl>
+
+                <div class="ml-auto flex shrink-0 items-center gap-2">
+                    <a href="tel:1130"
+                       class="hidden min-h-[3rem] items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-ink no-underline transition-colors hover:bg-surface-2 sm:flex">
+                        <svg class="size-5" style="color: var(--c-action)" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>1130
+                    </a>
+
+                    <div data-view-mount></div>
+
+                    <!-- Telefonda tepa qatorga sig'maydi va drawer ichida beriladi.
+                         "Ko'rinish" esa yorlig'i bilan qoladi: matnni kattalashtirish
+                         ehtiyoji tilni almashtirishdan tez-tez uchraydi va uning
+                         ikonkasi o'z-o'zidan tushunarli emas. -->
+                    <button type="button" aria-haspopup="menu" aria-expanded="false"
+                            class="hidden min-h-[3rem] rounded-full px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-surface-2 sm:block">
+                        <span class="sr-only">Til: </span>UZ
+                    </button>
+
+                    <!-- Telefonda tepa qatorga sig'maydi — drawer ichida beriladi. -->
+                    <a href="accounts.html"
+                       class="hidden min-h-[3rem] items-center gap-2 rounded-full py-1.5 pl-1.5 pr-3 no-underline transition-colors hover:bg-surface-2 sm:flex">
+                        <span class="sr-only">Hisob raqam 1001 — almashtirish</span>
+                        <span class="u-display grid size-9 place-items-center rounded-full text-xs"
+                              style="background: var(--c-action-soft); color: var(--c-action)" aria-hidden="true">AK</span>
+                        <span class="hidden text-left sm:block">
+                            <span class="block text-xs text-muted">Hisob</span>
+                            <span class="block text-sm font-semibold text-ink">1001</span>
+                        </span>
+                        <svg class="size-4 text-muted" aria-hidden="true" focusable="false"><use href="#i-down"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <nav class="hidden flex-wrap items-center gap-1.5 pb-2.5 lg:flex" aria-label="Asosiy menyu">
+                <a href="index.html" class="u-nav-link" aria-current="page">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-home"/></svg>Bosh sahifa
+                </a>
+                <a href="tariff.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg>Tarif
+                </a>
+                <a href="devices.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-router"/></svg>Qurilmalar
+                </a>
+                <a href="statistics.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-chart"/></svg>Statistika
+                </a>
+                <a href="payments.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg>To'lovlar
+                </a>
+                <a href="services.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-gift"/></svg>Xizmatlar
+                </a>
+                <a href="https://sola.speedtestcustom.com/" target="_blank" rel="noopener" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-speed"/></svg>Tezlikni tekshirish
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Telefon uchun drawer -->
+    <div id="nav-drawer" data-nav-drawer hidden class="fixed inset-0 z-[65] lg:hidden"
+         role="dialog" aria-modal="true" aria-label="Menyu">
+        <div data-nav-scrim class="absolute inset-0 bg-black/60"></div>
+
+        <div class="u-rise absolute inset-y-0 left-0 flex w-[min(21rem,88vw)] flex-col overflow-y-auto border-r-2 border-line bg-surface">
+            <div class="flex items-center justify-between px-5 py-4">
+                <span class="u-logo">
+                        <img src="assets/logo-wordmark.png" alt="Sola" width="164" height="52"
+                             class="hidden h-9 w-auto sm:block">
+                        <img src="assets/logo-bird.png" alt="Sola" width="131" height="112"
+                             class="h-9 w-auto sm:hidden">
+                    </span>
+                <button type="button" data-nav-close
+                        class="grid size-12 place-items-center rounded-full text-ink transition-colors hover:bg-surface-2">
+                    <svg class="size-6" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+                    <span class="sr-only">Menyuni yopish</span>
+                </button>
+            </div>
+
+            <dl class="mx-3 mb-3 space-y-2.5 rounded-xl bg-surface-2 px-4 py-3.5">
+                <div>
+                    <dt class="u-label">F.I.SH.</dt>
+                    <dd class="text-base font-semibold text-ink">Alisher Karimov</dd>
+                </div>
+                <div>
+                    <dt class="u-label">Hisob raqam</dt>
+                    <dd class="text-base font-semibold text-ink">1001</dd>
+                </div>
+            </dl>
+
+            <a href="accounts.html"
+               class="mx-3 mb-3 flex min-h-[3rem] items-center justify-between gap-3 rounded-xl border-2 border-line px-4 py-3 text-base font-semibold text-ink no-underline transition-colors hover:border-action sm:hidden">
+                Hisobni almashtirish
+                <svg class="size-5 shrink-0 text-muted" aria-hidden="true" focusable="false"><use href="#i-right"/></svg>
+            </a>
+
+            <nav class="flex-1 space-y-1.5 px-3" aria-label="Menyu">
+                <a href="index.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base" aria-current="page">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-home"/></svg>Bosh sahifa
+                </a>
+                <a href="tariff.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg>Tarif
+                </a>
+                <a href="devices.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-router"/></svg>Qurilmalar
+                </a>
+                <a href="statistics.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-chart"/></svg>Statistika
+                </a>
+                <a href="payments.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg>To'lovlar
+                </a>
+                <a href="services.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-gift"/></svg>Xizmatlar
+                </a>
+                <a href="https://sola.speedtestcustom.com/" target="_blank" rel="noopener" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-speed"/></svg>Tezlikni tekshirish
+                </a>
+            </nav>
+
+            <div class="border-t-2 border-line px-5 py-5">
+                <p class="u-label mb-2">Til</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" class="u-choice" aria-pressed="true">O'zbekcha</button>
+                    <button type="button" class="u-choice" aria-pressed="false">Русский</button>
+                </div>
+            </div>
+
+            <div class="border-t-2 border-line px-5 py-5">
+                <p class="u-label">Savollar bormi? Qo'ng'iroq qiling:</p>
+                <a href="tel:1130" class="mt-2 flex min-h-[3rem] items-center gap-2.5 text-lg font-semibold text-ink no-underline">
+                    <svg class="size-5" style="color: var(--c-action)" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>1130
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- YER QATLAMI ---------------------------------------------------------
+         Balans varaqning ustida emas, ORTIDA turadi: eng muhim raqam eng
+         yuqori qatlamda emas, eng chuqurida — varaq esa uning ustiga
+         ko'tariladi. Payme'dagi munosabat aynan shu, va u bu yerda mazmunga
+         ham to'g'ri keladi: balans — holat, varaqdagi qatorlar — harakat.
+    -->
+    <section class="px-4 pb-7 pt-2 sm:px-6" aria-labelledby="hero-title" data-hero>
+        <div class="mx-auto w-full max-w-[46rem]">
+            <h1 id="hero-title" class="u-label">Hisobingizda</h1>
+
+            <p class="mt-1 flex flex-wrap items-baseline gap-x-3">
+                <span class="u-figure text-4xl text-ink" data-hero-balance>125 000</span>
+                <span class="text-lg font-semibold text-muted">so'm</span>
+            </p>
+
+            <p class="mt-1 text-sm text-muted">
+                Keyingi yechish
+                <span class="font-semibold text-ink">25 000 so'm</span> · 01.09.2026
+            </p>
+
+            <!-- IMZO ELEMENT: kun o'lchagichi -------------------------------
+                 Abonentning yagona savoli — "hisobim yetadimi?". Foiz chizig'i
+                 bunga javob bermaydi: kerak bo'lgani — keyingi yechim qachon.
+                 Sanaladigan kunlar buni bir qarashda ko'rsatadi.
+                 O'lchagich bezak: aria-hidden, ma'nosi pastda so'z bilan
+                 takrorlanadi. -->
+            <div class="mt-5 u-meter" data-meter aria-hidden="true"></div>
+
+            <div class="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-muted">
+                <span>01.08.2026</span>
+                <span class="font-semibold text-ink" data-hero-days>Yechishgacha 24 kun qoldi</span>
+                <span>01.09.2026</span>
+            </div>
+
+            <p class="mt-4 flex items-start gap-3 rounded-2xl px-4 py-3.5 text-base text-ink"
+               data-hero-note style="background: var(--c-action-soft)">
+                <svg class="mt-1 size-5 shrink-0" style="color: var(--c-action)" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>
+                <span>Balans yetarli — 01.09 dagi 25 000 so'm yechim qoplanadi.</span>
+            </p>
+        </div>
+    </section>
+
+    <!-- VARAQ ----------------------------------------------------------------
+         Kartochkalar to'plami emas, bitta ro'yxat. Telefonda ko'z pastga tik
+         yuradi, har bir qator bir xil kenglikda boshlanadi — to'rtta kartochka
+         to'rt xil joydan boshlanadigan panjaradan tez o'qiladi.
+    -->
+    <main id="content" class="u-sheet flex-1 pb-32">
+        <div class="mx-auto w-full max-w-[46rem]">
+
+            <h2 class="u-label mb-1">Boshqaruv</h2>
+
+            <nav aria-label="Bo'limlar">
+                <a href="tariff.html" class="u-row">
+                    <span class="min-w-0">
+                        <span class="u-row-title">Tarif</span>
+                        <span class="u-row-sub">Home 100 · 100 Mbit/s · 30 kun</span>
+                    </span>
+                    <span class="u-row-icon"><svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg></span>
+                </a>
+
+                <a href="devices.html" class="u-row">
+                    <span class="min-w-0">
+                        <span class="u-row-title">Qurilmalar</span>
+                        <span class="u-row-sub">2 / 3 faol · bittasi oflayn</span>
+                    </span>
+                    <span class="u-row-icon"><svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-router"/></svg></span>
+                </a>
+
+                <a href="payments.html" class="u-row">
+                    <span class="min-w-0">
+                        <span class="u-row-title">To'lovlar</span>
+                        <span class="u-row-sub">Oxirgisi 25 000 so'm · 04.08.2026</span>
+                    </span>
+                    <span class="u-row-icon"><svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg></span>
+                </a>
+
+                <a href="statistics.html" class="u-row">
+                    <span class="min-w-0">
+                        <span class="u-row-title">Statistika</span>
+                        <span class="u-row-sub">Avgustda 15 716 MB</span>
+                    </span>
+                    <span class="u-row-icon"><svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-chart"/></svg></span>
+                </a>
+
+                <a href="services.html" class="u-row">
+                    <span class="min-w-0">
+                        <span class="u-row-title">Xizmatlar va yordam</span>
+                        <span class="u-row-sub">Aksiyalar, sodiqlik dasturi, qo'llab-quvvatlash</span>
+                    </span>
+                    <span class="u-row-icon"><svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-gift"/></svg></span>
+                </a>
+            </nav>
+
+            <!-- Gorizontal rel: e'lonlar va tavsiyalar. Telefonda surilади,
+                 desktopda o'sha holicha qoladi — kenglik yetadi. -->
+            <h2 class="u-label mb-2.5 mt-7">Sizga</h2>
+
+            <div class="u-rail">
+                <article class="rounded-2xl p-5" style="background: var(--c-surface-2)">
+                    <p class="u-label">Tarif</p>
+                    <p class="mt-2 text-lg font-semibold leading-snug text-ink">Home 200 ga o'tsangiz tezlik ikki barobar</p>
+                    <a href="tariff.html" class="mt-3 inline-flex items-center gap-1.5 text-base font-semibold no-underline" style="color: var(--c-action)">
+                        Tariflarni ko'rish
+                        <svg class="size-4" aria-hidden="true" focusable="false"><use href="#i-right"/></svg>
+                    </a>
+                </article>
+
+                <article class="rounded-2xl p-5" style="background: var(--c-surface-2)">
+                    <p class="u-label">Sodiqlik dasturi</p>
+                    <p class="mt-2 text-lg font-semibold leading-snug text-ink">To'lovlaringiz uchun bonus yig'iladi</p>
+                    <a href="services.html" class="mt-3 inline-flex items-center gap-1.5 text-base font-semibold no-underline" style="color: var(--c-action)">
+                        Batafsil
+                        <svg class="size-4" aria-hidden="true" focusable="false"><use href="#i-right"/></svg>
+                    </a>
+                </article>
+
+                <article class="rounded-2xl p-5" style="background: var(--c-surface-2)">
+                    <p class="u-label">Qo'llab-quvvatlash</p>
+                    <p class="mt-2 text-lg font-semibold leading-snug text-ink">Savolingiz bormi? 1130 ga qo'ng'iroq qiling</p>
+                    <a href="tel:1130" class="mt-3 inline-flex items-center gap-1.5 text-base font-semibold no-underline" style="color: var(--c-action)">
+                        Qo'ng'iroq qilish
+                        <svg class="size-4" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
+                    </a>
+                </article>
+            </div>
+
+            <!-- PROTOTIP: Bladega o'tmaydi -->
+            <div class="mt-8 flex flex-wrap items-center gap-2 rounded-2xl border-2 border-dashed border-line-strong p-4 u-no-print">
+                <span class="u-label mr-2">Prototip — balans holati</span>
+                <button type="button" data-state="ok" aria-pressed="true" class="u-choice !min-h-[2.75rem] !px-4">Yetarli</button>
+                <button type="button" data-state="low" aria-pressed="false" class="u-choice !min-h-[2.75rem] !px-4">Kam</button>
+                <button type="button" data-state="neg" aria-pressed="false" class="u-choice !min-h-[2.75rem] !px-4">Manfiy</button>
+            </div>
+
+            <p class="mt-8 text-center text-sm text-muted">
+                Shaxsiy kabinet Sola © 2026. Barcha huquqlar himoyalangan.<br>Ishlanma va dizayn Usoft
+            </p>
+        </div>
+    </main>
+</div>
+
+<!-- SUZUVCHI PANEL --------------------------------------------------------
+     Bosh barmoq zonasi: ekranning pastki uchdan biri. Bitta asosiy harakat
+     ("Hisobni to'ldirish") va ikkita yordamchi — mode-consumer.md dagi "bir
+     ekranda bitta asosiy harakat" qoidasi.
+-->
+<div class="u-dock u-no-print">
+    <a href="tel:1130" class="u-dock-btn" aria-label="Call Center 1130 ga qo'ng'iroq qilish">
+        <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
+    </a>
+
+    <a href="payments.html" class="u-dock-pill">
+        <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>
+        Hisobni to'ldirish
+    </a>
+
+    <a href="https://sola.speedtestcustom.com/" target="_blank" rel="noopener" class="u-dock-btn" aria-label="Tezlikni tekshirish">
+        <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-speed"/></svg>
+    </a>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

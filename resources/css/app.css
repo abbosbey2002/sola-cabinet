@@ -1,0 +1,728 @@
+@import 'tailwindcss';
+
+/* design/ is the standalone prototype (see design/HANDOFF.md). Tailwind's
+   automatic source detection was scanning it, so every class the prototype
+   tried on — and every stray word inside its comments — was being compiled
+   into the production bundle. The prototype builds its own CSS from the CDN;
+   it must not contribute to this one. */
+@source not '../../design';
+
+/* Inter — the whole interface. Cyrillic is not optional: the cabinet ships in
+   Russian, and a latin-only face would fall back mid-sentence.
+   Manrope — headings, the logo word and the big figures only. If it fails to
+   load Inter stands in; the x-heights are close, so the layout barely moves.
+   Both are self-hosted: a CDN link is a render-blocking dependency on a
+   network that, here, regularly is not there. */
+@import '@fontsource-variable/inter/wght.css';
+@import '@fontsource-variable/manrope/wght.css';
+
+/* ---------------------------------------------------------------------------
+   Design tokens
+   ---------------------------------------------------------------------------
+   ONE HUE — THE LOGO'S. The logo green was measured off public/img/logo-mark.png:
+   #8FD400 = OKLCH(0.793 0.211 129.4°). Every green on the page is a lightness
+   step of that same 129.4°, i.e. "the logo itself, darkened". The neutral grey
+   shell this replaced sat outside the hue entirely and the eye never read it
+   as the brand.
+
+   The logo green is a GRAPHIC colour: 1.81:1 on white, so it never carries
+   text on a light surface. It appears only as fill on a dark ground (10.02:1)
+   — the day meter and the logo plate. The readable green in light mode is
+   --c-action #4A7100 (5.75:1); in dark mode the logo's own green becomes
+   legible as text, --c-action #90D600 (9.27:1).
+
+   The audience drives the rest: the cabinet is read by pensioners paying a
+   bill on a phone in daylight, so secondary text is AAA, state is colour +
+   icon + word, and every hit area clears 48px.
+
+   Type size is handled differently from the rest of that list, and the reason
+   matters. This design used to force a 118.75% root — every subscriber got
+   19px whether they asked for it or not. A percentage root MULTIPLIES onto the
+   setting the reader already made in Android or iOS, so the reader who most
+   needed help was the one who ended up with a 24px body and a headline that
+   filled the screen. Enlarging the page on their behalf overrode the choice
+   they had already expressed.
+
+   The root now sits at 100%: whatever the phone says a comfortable size is, is
+   what the cabinet uses. Readers who want more have the explicit control this
+   page already ships (data-text lg/xl in the view-settings panel), which is a
+   decision they make once and keep. Accessibility here is honouring the
+   reader's setting, not overriding it.
+--------------------------------------------------------------------------- */
+
+:root {
+    /* Ground & surfaces — not neutral grey, tinted towards the logo hue */
+    --c-bg: #f1f6ed;
+    --c-surface: #ffffff;
+    --c-surface-2: #e3ebdc;
+    --c-line: #d1dcc7;          /* decorative rule */
+    --c-line-strong: #778966;   /* form-control borders — 3.78:1 */
+
+    /* Text */
+    --c-ink: #141d09;           /* 17.4:1 on white */
+    --c-muted: #505b46;         /* 7.2:1 on white — secondary text is AAA too */
+
+    /* The primary action: the L=0.50 step of the logo green. IDENTICAL in both
+       themes — dark green ground, white label (5.75:1) — so a subscriber
+       recognises the same button whichever theme they run. */
+    --c-primary: #4a7100;
+    --c-primary-hover: #3b5d00;
+    --c-primary-on: #ffffff;
+    --c-primary-rim: #3b5d00;
+
+    /* Links, icons, active menu — the same green, lightened in dark mode
+       because #4a7100 never clears 3.5:1 on a dark ground. */
+    --c-action: #4a7100;
+    --c-action-hover: #3b5d00;
+    --c-action-soft: #e1f5ce;
+
+    /* The logo green itself — GRAPHIC only. Day meter and logo plate, both on
+       a dark ground (10.02:1). Never text, never a button. */
+    --c-lime: #8fd400;
+
+    /* State colours, deliberately off the green hue: a warning inside the
+       brand family is a warning nobody sees. */
+    --c-warn: #8a5a00;
+    --c-warn-soft: #faeed8;
+    --c-danger: #a32014;
+    --c-danger-soft: #fbe7e3;
+
+    /* The meter track — the same dark plate in both themes. That is the
+       relationship the logo itself uses: green on dark. */
+    --c-meter-bg: #101808;
+    --c-meter-idle: #424b3a;
+
+    --shadow-card: 0 1px 2px rgba(20, 29, 9, .06), 0 12px 28px -20px rgba(20, 29, 9, .30);
+}
+
+/* System preference wins unless the subscriber explicitly picked light. */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+        --c-bg: #0d1307;
+        --c-surface: #1b2113;
+        --c-surface-2: #272f1e;
+        --c-line: #343e2a;
+        --c-line-strong: #6b7b5b;
+
+        --c-ink: #e5eddd;
+        --c-muted: #aab69e;
+
+        --c-primary-rim: #73ad00;
+
+        --c-action: #90d600;
+        --c-action-hover: #a2f000;
+        --c-action-soft: #203206;
+
+        --c-warn: #f0c24a;
+        --c-warn-soft: #2c2412;
+        --c-danger: #ff8f79;
+        --c-danger-soft: #31201c;
+
+        --c-meter-bg: #050903;
+        --c-meter-idle: #47513e;
+
+        --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
+    }
+}
+
+/* An explicit choice always beats the system. */
+:root[data-theme='dark'] {
+    --c-bg: #0d1307;
+    --c-surface: #1b2113;
+    --c-surface-2: #272f1e;
+    --c-line: #343e2a;
+    --c-line-strong: #6b7b5b;
+
+    --c-ink: #e5eddd;
+    --c-muted: #aab69e;
+
+    --c-primary-rim: #73ad00;
+
+    --c-action: #90d600;
+    --c-action-hover: #a2f000;
+    --c-action-soft: #203206;
+
+    --c-warn: #f0c24a;
+    --c-warn-soft: #2c2412;
+    --c-danger: #ff8f79;
+    --c-danger-soft: #31201c;
+
+    --c-meter-bg: #050903;
+    --c-meter-idle: #47513e;
+
+    --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
+}
+
+@theme inline {
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --font-display: 'Manrope Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+    /* Mobile first: every px below is what a 360px Android renders, which is
+       the viewport this cabinet is actually read on. Desktop gets the same
+       tokens, and only the three display steps grow.
+
+       Body is 16px exactly — the floor that stops iOS zooming the page when a
+       field takes focus, and the size every phone keyboard and system UI is
+       drawn at. The reading steps (xs…xl) are fixed: a caption that grew with
+       the viewport would be doing nothing for the reader, and the reader who
+       wants larger text has the data-text control.
+
+       The display steps clamp instead. The old scale set them once, so the
+       balance figure was 54.6px at every width — on a 360px screen that is a
+       wall, and it pushed the number and its currency onto separate lines. Now
+       they run 30 → 48px across 360 → 1440px. Both ends of each clamp are in
+       rem, so data-text still enlarges them; only the middle term is viewport
+       bound, which is what makes it a mobile-first curve rather than a desktop
+       design shrunk down.
+
+       Line-height loosens as the size drops — the inverse of the old scale,
+       which was tuned for type that no longer exists here. */
+    --text-xs: 0.875rem;          /* 14px */
+    --text-xs--line-height: 1.45;
+    --text-sm: 0.9375rem;         /* 15px */
+    --text-sm--line-height: 1.5;
+    --text-base: 1rem;            /* 16px */
+    --text-base--line-height: 1.55;
+    --text-lg: 1.125rem;          /* 18px */
+    --text-lg--line-height: 1.45;
+    --text-xl: 1.25rem;           /* 20px */
+    --text-xl--line-height: 1.35;
+    --text-2xl: clamp(1.375rem, 1.25rem + 0.56vw, 1.75rem);   /* 22 → 28px */
+    --text-2xl--line-height: 1.25;
+    --text-3xl: clamp(1.625rem, 1.417rem + 0.93vw, 2.25rem);  /* 26 → 36px */
+    --text-3xl--line-height: 1.2;
+    --text-4xl: clamp(1.875rem, 1.5rem + 1.67vw, 3rem);       /* 30 → 48px */
+    --text-4xl--line-height: 1.1;
+
+    --color-bg: var(--c-bg);
+    --color-surface: var(--c-surface);
+    --color-surface-2: var(--c-surface-2);
+    --color-line: var(--c-line);
+    --color-line-strong: var(--c-line-strong);
+
+    --color-ink: var(--c-ink);
+    --color-muted: var(--c-muted);
+
+    --color-action: var(--c-action);
+    --color-action-hover: var(--c-action-hover);
+    --color-action-soft: var(--c-action-soft);
+
+    --color-primary: var(--c-primary);
+    --color-primary-hover: var(--c-primary-hover);
+    --color-primary-on: var(--c-primary-on);
+    --color-lime: var(--c-lime);
+
+    --color-warn: var(--c-warn);
+    --color-warn-soft: var(--c-warn-soft);
+    --color-danger: var(--c-danger);
+    --color-danger-soft: var(--c-danger-soft);
+
+    --color-meter-bg: var(--c-meter-bg);
+    --color-meter-idle: var(--c-meter-idle);
+
+    --radius-card: 1.125rem;
+    --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------------------------------------------------------------------------
+   Base
+--------------------------------------------------------------------------- */
+@layer base {
+    /* 100%, so the phone's own text setting comes through at 1:1 instead of
+       being multiplied by a number this stylesheet picked. The steps below are
+       the subscriber's own escalation, chosen in the view-settings panel and
+       remembered — 18px and 20px bodies, still comfortably readable rather
+       than the 23px the old scale reached. */
+    html {
+        font-size: 100%;
+        -webkit-text-size-adjust: 100%;
+        color-scheme: light;
+    }
+
+    :root[data-text='lg'] { font-size: 112.5%; }
+    :root[data-text='xl'] { font-size: 125%; }
+
+    /* color-scheme drives the native controls — scrollbars, date pickers, the
+       widgets we do not draw ourselves. */
+    :root[data-theme='dark'] { color-scheme: dark; }
+
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) { color-scheme: dark; }
+    }
+
+    body {
+        background-color: var(--c-bg);
+        color: var(--c-ink);
+        font-family: var(--font-sans);
+        font-size: var(--text-base);
+        line-height: 1.6;
+        /* ss02 — Inter's "disambiguation" set: 1, l and I stop looking alike.
+           For a reader with tired eyes that is half of reading a contract
+           number. */
+        font-feature-settings: 'ss02' 1;
+        /* Every screen here is a column of numbers; lining figures keep the
+           balance and the MB totals from jittering row to row. */
+        font-variant-numeric: tabular-nums;
+        /* Uzbek sets long agglutinative words ("Qo'llab-quvvatlash") that
+           overrun a 320px column at this type size, and Russian strings run
+           15–40% longer again. break-word is the last resort, applied only
+           when nothing else fits. */
+        overflow-wrap: break-word;
+        -webkit-font-smoothing: antialiased;
+        transition: background-color .3s var(--ease-out-soft), color .3s var(--ease-out-soft);
+    }
+
+    /* Thick and offset, so the ring reads on any surface. */
+    :focus-visible {
+        outline: 3px solid var(--c-action);
+        outline-offset: 3px;
+        border-radius: 8px;
+    }
+
+    table { border-collapse: separate; border-spacing: 0; }
+
+    ::selection { background: var(--c-primary); color: var(--c-primary-on); }
+}
+
+/* ---------------------------------------------------------------------------
+   Components
+   Only patterns that repeat across five-plus templates earn a class here; one
+   source of truth for spacing beats a utility string copied eleven times.
+--------------------------------------------------------------------------- */
+@layer components {
+    /* Caption above a value or a group: small LETTERS, sentence case. The old
+       11px uppercase labels are gone — all-caps Cyrillic loses word-shape and
+       eats width, and 11px was invisible to the audience this cabinet serves.
+       Weight carries the emphasis instead. */
+    .u-label {
+        @apply text-xs font-semibold text-muted;
+    }
+
+    .u-display {
+        font-family: var(--font-display);
+        @apply font-extrabold tracking-[-0.02em];
+    }
+
+    .u-figure {
+        font-family: var(--font-display);
+        @apply font-extrabold tracking-[-0.01em] tabular-nums;
+    }
+
+    .u-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: var(--c-line-strong) transparent;
+    }
+
+    .u-card {
+        @apply rounded-card border border-line bg-surface p-5 sm:p-6;
+        box-shadow: var(--shadow-card);
+    }
+
+    /* Buttons ----------------------------------------------------------
+       The shared shape is written once through the selector list: @apply of
+       another custom class is not composition in Tailwind v4.
+       min-height 3rem — 48px at the 100% root, past the 44px touch minimum
+       with room to spare, and it grows again on the data-text steps. */
+    .u-btn-primary, .u-btn-ghost, .u-btn-danger {
+        @apply inline-flex min-h-[3rem] select-none items-center justify-center gap-2.5
+               rounded-full px-6 py-3 text-base font-semibold leading-tight no-underline
+               transition-[background-color,color,border-color,box-shadow,transform] duration-200;
+        transition-timing-function: var(--ease-out-soft);
+    }
+
+    .u-btn-primary:active, .u-btn-ghost:active, .u-btn-danger:active { @apply translate-y-px; }
+
+    /* The primary button is identical in both themes: #4a7100 ground, white
+       label (5.75:1). The rim only marks the edge — on a dark page the dark
+       green ground drops to 3.4:1 against it, while the rim (#73ad00) holds
+       6.92:1, so the button's boundary survives the dark theme. */
+    .u-btn-primary {
+        background: var(--c-primary);
+        color: var(--c-primary-on);
+        border: 2px solid var(--c-primary-rim);
+    }
+
+    .u-btn-primary:hover { background: var(--c-primary-hover); }
+
+    .u-btn-ghost {
+        @apply border-2 border-line-strong bg-surface text-ink hover:border-action hover:text-action;
+    }
+
+    .u-btn-danger {
+        background: var(--c-danger-soft);
+        color: var(--c-danger);
+        border: 2px solid transparent;
+    }
+
+    .u-btn-danger:hover { border-color: var(--c-danger); }
+
+    /* The confirming button inside a destructive dialog: filled, because at
+       that point it IS the destructive action, not a link to it. */
+    .u-btn-danger-solid {
+        background: var(--c-danger);
+        color: #ffffff;
+        border-color: var(--c-danger);
+    }
+
+    /* The compact variant: 44px, the published touch minimum. Pagination and
+       the permit-delete button are drawn with it, and on a phone those are the
+       two most mis-tapped controls in the cabinet — so on a touch pointer it
+       takes the full 48px the rest of the interface promises, and stays
+       compact only where there is a mouse to aim with. */
+    .u-btn-sm { @apply min-h-[2.75rem] px-4 py-2 text-sm; }
+
+    @media (pointer: coarse) {
+        .u-btn-sm { @apply min-h-[3rem]; }
+    }
+
+    /* Fields ----------------------------------------------------------- */
+    .u-field {
+        @apply w-full min-h-[3rem] rounded-xl border-2 border-line-strong bg-surface px-4 py-3
+               text-base text-ink transition-[border-color,box-shadow] duration-200
+               focus:border-action focus:outline-none focus:ring-4 focus:ring-action/25;
+    }
+
+    .u-field::placeholder { color: var(--c-muted); opacity: 1; }
+
+    /* Tables ----------------------------------------------------------- */
+    .u-table { @apply w-full text-left text-sm; }
+
+    .u-table thead th {
+        @apply whitespace-nowrap px-4 py-3 text-left text-xs font-semibold text-muted;
+    }
+
+    .u-table tbody td {
+        @apply border-t border-line px-4 py-4 align-middle text-ink;
+    }
+
+    .u-table tbody tr { @apply transition-colors duration-150; }
+    .u-table tbody tr:hover td { @apply bg-surface-2/60; }
+
+    /* The table measures its own wrapper, not the viewport — @container, not
+       @media. Two reasons:
+         1. the devices table can sit in a narrow column on a 1920px screen;
+         2. when the subscriber puts text at 145% the table grows while the
+            screen does not — the breakpoint is in rem, so @container accounts
+            for that on its own and @media never can.
+       Below the breakpoint each row becomes a card and every cell prints its
+       own header from data-label, so a phone never scrolls sideways. */
+    .u-table-wrap {
+        container-type: inline-size;
+        @apply overflow-x-auto;
+    }
+
+    @container (max-width: 40rem) {
+        .u-table-cards { min-width: 0; }
+
+        .u-table-cards thead { @apply sr-only; }
+
+        .u-table-cards tbody tr {
+            @apply mb-2.5 block rounded-xl border-2 border-line bg-surface p-1.5 last:mb-0;
+        }
+
+        .u-table-cards tbody td {
+            @apply flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1
+                   border-0 px-3 py-2 text-right;
+        }
+
+        .u-table-cards tbody td::before {
+            content: attr(data-label);
+            @apply shrink-0 text-left text-xs font-semibold text-muted;
+        }
+
+        /* The actions column is often empty in real data — without this a
+           phone shows an "Actions" label with nothing under it. */
+        .u-table-cards tbody td:empty { @apply hidden; }
+
+        .u-table-cards tbody tr:hover td { @apply bg-transparent; }
+    }
+
+    /* Sortable headers ------------------------------------------------- */
+    .u-sortable {
+        @apply cursor-pointer select-none transition-colors hover:text-ink;
+    }
+
+    .u-sortable::after {
+        content: '';
+        display: inline-block;
+        width: 0.5rem;
+        height: 0.5rem;
+        margin-left: 0.375rem;
+        vertical-align: middle;
+        opacity: 0.35;
+        background: currentColor;
+        /* A neutral up/down chevron pair until a direction is chosen. */
+        clip-path: polygon(50% 0, 100% 38%, 0 38%, 50% 0, 50% 100%, 100% 62%, 0 62%);
+    }
+
+    .u-sortable[aria-sort='ascending']::after {
+        opacity: 1;
+        clip-path: polygon(50% 12%, 100% 78%, 0 78%);
+    }
+
+    .u-sortable[aria-sort='descending']::after {
+        opacity: 1;
+        clip-path: polygon(0 22%, 100% 22%, 50% 88%);
+    }
+
+    /* Status pills ------------------------------------------------------
+       Each is colour + icon + word. A subscriber who cannot tell the colours
+       apart still has the icon; one who does not read the icon still has the
+       word.
+       whitespace-nowrap is deliberately absent: at 320px with text at 145%
+       "To'lov kutilmoqda" does not fit on one line, and nowrap would push the
+       whole page sideways. */
+    .u-pill-ok, .u-pill-warn, .u-pill-off, .u-pill-neutral {
+        @apply inline-flex max-w-full items-center gap-1.5 rounded-full
+               px-3 py-1.5 text-xs font-semibold;
+    }
+
+    .u-pill-ok { background: var(--c-action-soft); color: var(--c-action); }
+    .u-pill-warn { background: var(--c-warn-soft); color: var(--c-warn); }
+    .u-pill-off { background: var(--c-danger-soft); color: var(--c-danger); }
+    .u-pill-neutral { @apply bg-surface-2 text-muted; }
+
+    /* Navigation --------------------------------------------------------
+       shrink-0 + whitespace-nowrap: a label never breaks inside its own pill.
+       Without them, text at 145% squeezed the row and "Bosh sahifa" and
+       "Tezlikni tekshirish" wrapped to two lines, leaving pills of unequal
+       height. When space runs out the nav wraps BETWEEN pills instead. */
+    .u-nav-link {
+        @apply relative flex min-h-[3rem] shrink-0 items-center gap-2.5 whitespace-nowrap
+               rounded-full px-4 py-2.5
+               text-sm font-semibold text-muted no-underline
+               transition-colors duration-200 hover:bg-surface-2 hover:text-ink;
+    }
+
+    .u-nav-link[aria-current='page'] {
+        background: var(--c-action-soft);
+        color: var(--c-action);
+    }
+
+    /* SIGNATURE: the day meter ------------------------------------------
+       The subscriber has one question — "will my balance last?". A percentage
+       bar does not answer it; countable days do. The track is dark in both
+       themes: green on dark is the relationship the logo itself uses. */
+    .u-meter {
+        @apply flex items-end gap-[2px] rounded-xl px-3 py-3;
+        background: var(--c-meter-bg);
+    }
+
+    .u-tick {
+        @apply min-w-[3px] flex-1 rounded-[2px];
+        height: 1.25rem;
+        background: var(--c-meter-idle);
+    }
+
+    .u-tick[data-t='past'] { background: var(--c-lime); }
+    .u-tick[data-t='today'] { background: #ffffff; height: 1.75rem; }
+    /* Charge day: different colour AND different height — never colour alone. */
+    .u-tick[data-t='charge'] { background: #f0c24a; height: 2.25rem; }
+
+    /* Logo --------------------------------------------------------------
+       The logo files (public/img/logo-*.png) were drawn for a dark ground:
+       the "SOLA" word and the bird's body are WHITE, so on a light theme they
+       simply vanish on a white card. The logo therefore carries its own
+       ground — the same dark plate as the day meter. In dark mode that plate
+       nearly merges with the page, so one rule is correct in both themes and
+       no theme-conditional markup is needed.
+
+       Once the client supplies a dark-lettered variant for light grounds this
+       background can be dropped in light mode. */
+    /* No ground of its own. The mark used to sit on a dark plate because both
+       files on hand were drawn in white and vanished on a light card; the fix
+       for that is the right file, not a rectangle behind the wrong one.
+       x-logo ships both lockups and these rules choose one.
+
+       Same three states as the colour tokens: light is the default, the system
+       preference applies only while no explicit choice is stored, and an
+       explicit choice wins in both directions. */
+    .u-logo {
+        @apply inline-flex shrink-0 items-center no-underline;
+    }
+
+    .u-logo-on-dark { @apply hidden; }
+
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) .u-logo-on-light { @apply hidden; }
+        :root:not([data-theme='light']) .u-logo-on-dark { @apply block; }
+    }
+
+    :root[data-theme='dark'] .u-logo-on-light { @apply hidden; }
+    :root[data-theme='dark'] .u-logo-on-dark { @apply block; }
+
+    /* Choice chips — the theme, text-size and language pickers.
+       The radio is visually hidden and the label carries the whole state, so
+       the hit area is the full 48px chip rather than a 16px dot. */
+    .u-choice {
+        @apply flex min-h-[3rem] cursor-pointer select-none items-center justify-center gap-2
+               rounded-xl border-2 border-line px-3 py-2 text-sm font-semibold text-ink
+               transition-colors duration-200 hover:bg-surface-2;
+    }
+
+    .u-choice input { @apply sr-only; }
+
+    /* Three shapes — a radio (theme, text size), a toggle button
+       (aria-pressed), and a link to the current locale (aria-current). The
+       selected look is the same in all three. */
+    .u-choice:has(input:checked),
+    .u-choice[aria-pressed='true'],
+    .u-choice[aria-current='true'] {
+        border-color: var(--c-action);
+        background: var(--c-action-soft);
+        color: var(--c-action);
+    }
+
+    /* The ring has to be drawn by the label: the input it belongs to is
+       sr-only, so its own focus ring would be invisible. */
+    .u-choice:has(input:focus-visible) {
+        outline: 3px solid var(--c-action);
+        outline-offset: 3px;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Motion — one orchestrated load-in, then nothing that moves on its own.
+--------------------------------------------------------------------------- */
+@layer utilities {
+    @keyframes rise {
+        from { opacity: 0; transform: translateY(.6rem); }
+        to { opacity: 1; transform: none; }
+    }
+
+    .u-rise {
+        animation: rise .45s var(--ease-out-soft) both;
+        animation-delay: calc(var(--i, 0) * 55ms);
+    }
+
+    /* The traffic arc draws itself once on load. The dash geometry is set
+       inline per-instance by the arc component. */
+    @keyframes draw {
+        from { stroke-dashoffset: var(--arc-len); }
+        to { stroke-dashoffset: var(--arc-offset, 0); }
+    }
+
+    .u-draw {
+        stroke-dasharray: var(--arc-len) 360;
+        animation: draw 1s var(--ease-out-soft) .15s both;
+    }
+
+    /* An AJAX block mid-refresh: dimmed and inert, never removed — swapping in
+       a spinner would collapse the layout under the cursor. */
+    .is-busy {
+        @apply pointer-events-none opacity-50 transition-opacity duration-150;
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   The identity row at large text sizes
+   ---------------------------------------------------------------------------
+   rem inside a media query is always tied to the browser's initial 16px, while
+   the content grows with the root font-size — 20px at the 125% step. So the
+   "2xl" breakpoint still opens at 1536px, by which point the row is already
+   1.25× larger. The row is capped at max-w-[1240px], so a wider screen does not
+   help either: the facts get ~341px and need more than that.
+
+   At 112.5%/125% the facts are therefore neither truncated nor hidden — a
+   clipped "Shartnoma D…" is useless and the contract number appears nowhere
+   else on desktop — but moved onto their own full-width line. The logo and the
+   controls stay on the first row.
+
+   Written outside @layer on purpose: these rules must beat Tailwind's
+   lg:flex-nowrap and ml-5 utilities.
+--------------------------------------------------------------------------- */
+:root[data-text] .u-id-row {
+    flex-wrap: wrap;
+}
+
+:root[data-text] .u-id-facts {
+    order: 1;
+    flex-basis: 100%;
+    margin-left: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Subscribers print their payment history — it is the one printed screen. */
+@media print {
+    /* A4, because that is what is in the tray. The margins leave the browser
+       its own header and footer line — that is where the page number and the
+       date come from, and reproducing them here would print them twice. */
+    @page {
+        size: A4;
+        margin: 16mm 14mm;
+    }
+
+    /* Paper is white whichever theme the screen was running. The tokens are
+       reset rather than each component overridden: everything already draws
+       from them, so one block turns the cabinet into ink on paper — and
+       without it a subscriber on the dark theme prints pale grey text and
+       near-black rules onto a white sheet.
+
+       All three selectors are listed because the dark values are set from
+       three places, and :root alone loses to :root:not([data-theme='light'])
+       on specificity. This block is last in the file, so at equal specificity
+       it wins. */
+    :root,
+    :root:not([data-theme='light']),
+    :root[data-theme='dark'] {
+        --c-bg: #fff;
+        --c-surface: #fff;
+        --c-surface-2: #fff;
+        --c-line: #b4b4b4;
+        --c-line-strong: #767676;
+        --c-ink: #000;
+        --c-muted: #3f3f3f;
+        --shadow-card: none;
+    }
+
+    /* 11pt body, the document size. Everything downstream is in rem, so the
+       whole scale follows this one line instead of being restated. */
+    html { font-size: 11pt; }
+
+    body {
+        background: #fff;
+        color: #000;
+    }
+
+    .u-no-print { display: none !important; }
+
+    .u-card {
+        border: 1px solid #b4b4b4;
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    /* The rows are the one thing allowed to run past a page edge — the table
+       is the document. The header repeats itself at the top of each sheet so
+       page three still says which column is the amount. */
+    .u-table-wrap { overflow: visible; }
+    .u-table thead { display: table-header-group; }
+    .u-table tr { break-inside: avoid; }
+    .u-card:has(.u-table) { break-inside: auto; }
+
+    /* The container query puts the table into cards on a narrow container;
+       print gives it the full page, but a phone printing straight from the
+       cabinet can still land inside the query. Undo it either way. */
+    .u-table-cards thead { position: static !important; width: auto !important; height: auto !important; clip: auto !important; }
+    .u-table-cards tbody tr { display: table-row; border: 0; }
+    .u-table-cards tbody td { display: table-cell; text-align: left; }
+    .u-table-cards tbody td::before { content: none; }
+
+    /* Status is a word and an icon on paper, not a filled chip: a solid pill
+       per row is toner spent on decoration, and it greys into unreadability
+       on a mono printer. */
+    .u-pill-ok, .u-pill-warn, .u-pill-off, .u-pill-neutral {
+        background: none !important;
+        color: #000 !important;
+        border: 0;
+        padding-left: 0;
+    }
+}

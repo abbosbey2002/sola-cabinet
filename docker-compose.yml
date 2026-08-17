@@ -1,0 +1,44 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+      args:
+        UID: "${UID:-1000}"
+        GID: "${GID:-1000}"
+    container_name: cabinet_php
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - cabinet
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: cabinet_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - php
+    networks:
+      - cabinet
+
+networks:
+  cabinet:
+    # The subnet is pinned, not left to Docker.
+    #
+    # Docker's default pool is 172.17.0.0/16 … 172.31.0.0/16, and the SOLA
+    # billing API this app talks to lives at 172.19.1.101 (see API_IP in .env)
+    # — inside that pool. When Docker handed this project 172.19.0.0/16 the
+    # container's own route table claimed the API's address as a link-scope
+    # neighbour on its bridge: every request ARPed into the void and died with
+    # "cURL error 28: Connection timed out after 3002 milliseconds".
+    #
+    # 10.123.0.0/24 is outside 172.16.0.0/12 (SOLA's internal range), outside
+    # 10.8.0.0/24 (the local OpenVPN interface) and outside 192.168.0.0/16, so
+    # packets for the billing network leave the container and follow the host's
+    # routing table — including any VPN route — as they should.
+    ipam:
+      config:
+        - subnet: 10.123.0.0/24

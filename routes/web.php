@@ -1,59 +1,91 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CabinetController;
+use App\Http\Controllers\DeviceController;
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TariffController;
+use App\Http\Controllers\TrafficController;
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Cabinet
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| Everything behind the SMS check. There is no Laravel auth guard: the
+| "verify" cookie set after a successful SMS confirmation is the session.
 |
 */
 
-Route::group(['prefix' => '/', 'middleware' => ['login', 'setLang'], 'namespace' => 'Site'], function () {
-    Route::get('/', 'Cabinet\Controller@index')->name('cabinet');
+Route::middleware('abonent.verified')->group(function (): void {
+    // One page per section of the top navigation. The POST beside each one
+    // re-renders just that page's result block, so the period controls update
+    // without a full reload.
+    Route::get('/', [CabinetController::class, 'index'])->name('cabinet');
+    Route::get('/services', [CabinetController::class, 'services'])->name('services');
 
-    Route::group(['prefix' => '/tariffs', 'namespace' => 'Tariffs'], function () {
-        Route::get('/', 'Controller@index')->name('tariffs');
-        Route::get('/connect/{id}/{type}', 'Controller@connect')->name('tariff.connect');
+    Route::get('/statistics', [TrafficController::class, 'index'])->name('traffic');
+    Route::post('/statistics', [TrafficController::class, 'filter'])->name('traffic.filter');
+
+    Route::get('/finance', [PaymentController::class, 'index'])->name('payment');
+    Route::post('/finance', [PaymentController::class, 'filter'])->name('payment.filter');
+
+    /*
+     * The three write actions below were GET. A GET request carries no CSRF
+     * token, and all three change state — two of them spend the subscriber's
+     * money. A third-party page opened in the same browser only had to redirect
+     * to /devices/add for a permit to be billed. They are POST now, and the
+     * tariff's id and timing moved from route segments into a validated body
+     * (TariffConnectRequest).
+     */
+    Route::prefix('tariffs')->group(function (): void {
+        Route::get('/', [TariffController::class, 'index'])->name('tariff');
+        Route::post('/connect', [TariffController::class, 'connect'])->name('tariff.connect');
     });
 
-    Route::group(['prefix' => '/devices', 'namespace' => 'Devices'], function () {
-        Route::get('/add', 'Controller@add')->name('devices.add');
-        Route::get('/delete/{mac_id}', 'Controller@delete')->name('devices.delete');
+    Route::prefix('devices')->group(function (): void {
+        Route::get('/', [DeviceController::class, 'index'])->name('devices');
+        Route::post('/add', [DeviceController::class, 'store'])->name('devices.add');
+        Route::post('/delete/{permitId}', [DeviceController::class, 'destroy'])->name('devices.delete');
     });
 
-    Route::group(['prefix' => '/services', 'namespace' => 'Services'], function () {
-        Route::get('/', 'Controller@index')->name('services');
-        Route::get('/device/add', 'Controller@newDevice')->name('services.device.new');
-    });
+    // The old URLs are in bookmarks and in the links billing texts out.
+    Route::redirect('/traffic/detail', '/statistics');
+    Route::redirect('/payment/history', '/finance');
 
-
-
-    Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
-        Route::get('/logout', 'Controller@logout')->name('logout');
-    });
-
-    Route::group(['prefix' => 'traffic', 'namespace' => 'Traffic'], function () {
-        Route::get('/detail', 'Controller@index')->name('traffic');
-        Route::match(['get', 'post'], '/detail/month/', 'Controller@other_month')->name('traffic.month');
-    });
-
-    Route::group(['prefix' => 'payment', 'namespace' => 'Payment'], function () {
-        Route::get('/history', 'Controller@index')->name('payment');
-        Route::match(['get', 'post'], '/history/month', 'Controller@other_month')->name('payment.month');
-    });
-
-    Route::get('/select/account/{acc_id}/{type}', 'Auth\Controller@selectAccountSet')->name('set.account');
+    Route::get('/select/account/{accountId}', [AuthController::class, 'switchAccount'])->name('set.account');
+    Route::get('/auth/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::get('/change/lang/{lang}', 'Controller@changeLang')->name('change.lang');
+/*
+|--------------------------------------------------------------------------
+| Login
+|--------------------------------------------------------------------------
+*/
 
-Route::group(['prefix' => 'auth', 'namespace' => 'Site\Auth', 'middleware' => ['checkCookie', 'setLang'] ], function () {
-   Route::match(['get', 'post'], '/login', 'Controller@login')->name('login');
-   Route::match(['get', 'post'], '/verify', 'Controller@verify')->name('verify');
-   Route::match(['get'], '/select/account', 'Controller@selectAccount')->name('select.account');
+Route::prefix('auth')->middleware('abonent.guest')->group(function (): void {
+    // Unmetered, these two endpoints let anyone bomb a subscriber with SMS or
+    // brute-force a short confirmation code. The GET side is the plain form,
+    // so only the submissions are throttled.
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])
+        ->middleware('throttle:5,1');
+
+    Route::get('/verify', [AuthController::class, 'verify'])->name('verify');
+    Route::post('/verify', [AuthController::class, 'verify'])
+        ->middleware('throttle:10,1');
+
+    Route::get('/select/account', [AuthController::class, 'accountChoice'])->name('select.account');
 });
 
+/*
+|--------------------------------------------------------------------------
+| Locale
+|--------------------------------------------------------------------------
+*/
 
+Route::get('/change/lang/{locale}', [LocaleController::class, 'update'])->name('change.lang');

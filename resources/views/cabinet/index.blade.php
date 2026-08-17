@@ -1,0 +1,189 @@
+@extends('layouts.app')
+@section('title', trans('app.nav.home').' - ')
+@section('heading', trans('app.nav.home'))
+
+@section('content')
+    @php
+        // The subscriber asks one question on this page and the whole card is
+        // built to answer it: will the balance cover the next charge?
+        //
+        // Three states, and all three must look designed — a layout that only
+        // works when everything is fine is not a design. Each one changes
+        // colour AND icon AND wording together, so the difference survives
+        // without colour vision.
+        $balance = $profile->balance();
+        $cost = $profile->currentTariffCost();
+        $contract = $profile->contractNumber();
+
+        $state = match (true) {
+            $balance < 0 => 'negative',
+            $cost !== null && $balance < $cost => 'low',
+            $cost !== null => 'ok',
+            // No tariff cost from billing means no verdict can honestly be
+            // given. The balance is still shown; the sentence is not invented.
+            default => null,
+        };
+
+        $tone = match ($state) {
+            'ok' => ['bg' => 'var(--c-action-soft)', 'fg' => 'var(--c-action)', 'icon' => 'check'],
+            'low' => ['bg' => 'var(--c-warn-soft)', 'fg' => 'var(--c-warn)', 'icon' => 'alert'],
+            'negative' => ['bg' => 'var(--c-danger-soft)', 'fg' => 'var(--c-danger)', 'icon' => 'alert'],
+            default => null,
+        };
+
+        $money = fn (float $value): string => number_format($value, 0, '', ' ');
+        // A true minus sign, not a hyphen: at these sizes and in tabular
+        // figures a hyphen reads as a dash between two numbers.
+        $signed = fn (float $value): string => str_replace('-', '−', $money($value));
+
+        $note = match ($state) {
+            'ok' => __('app.dash.balance_ok', [
+                'date' => $cycle?->end->format('d.m'),
+                'amount' => $money((float) $cost),
+            ]),
+            'low' => __('app.dash.balance_low', [
+                'date' => $cycle?->end->format('d.m'),
+                'amount' => $money((float) $cost - $balance),
+            ]),
+            'negative' => __('app.dash.balance_negative', [
+                'amount' => $money(abs($balance) + (float) ($cost ?? 0)),
+            ]),
+            default => null,
+        };
+
+        $active = $profile->activeDeviceCount();
+        $total = $profile->deviceCount();
+        $offline = max(0, $total - $active);
+    @endphp
+
+    <section class="u-card u-rise" aria-labelledby="hero-title">
+        <h2 id="hero-title" class="sr-only">@lang('app.dash.account_state')</h2>
+
+        <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-5">
+            <div>
+                <p class="u-label">@lang('app.header.balance')</p>
+                <p class="mt-1.5 flex flex-wrap items-baseline gap-x-2.5">
+                    <span class="u-figure text-4xl" @if ($balance < 0) style="color: var(--c-danger)" @endif>{{ $signed($balance) }}</span>
+                    <span class="text-lg font-semibold text-muted">@lang('app.ye')</span>
+                </p>
+            </div>
+
+            @if ($cycle !== null)
+                <div class="sm:text-right">
+                    <p class="u-label">@lang('app.dash.next_charge')</p>
+                    <p class="mt-1.5 flex flex-wrap items-baseline gap-x-2.5 sm:justify-end">
+                        @if ($cost !== null)
+                            <span class="u-figure text-xl text-ink">{{ $money($cost) }}</span>
+                            <span class="text-base text-muted">@lang('app.ye') · {{ $cycle->end->format('d.m.Y') }}</span>
+                        @else
+                            <span class="u-figure text-xl text-ink">{{ $cycle->end->format('d.m.Y') }}</span>
+                        @endif
+                    </p>
+                </div>
+            @endif
+        </div>
+
+        @if ($cycle !== null)
+            <x-day-meter :cycle="$cycle" class="mt-6"/>
+
+            <div class="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-muted">
+                <span>{{ $cycle->start->format('d.m.Y') }}</span>
+                <span class="font-semibold text-ink">
+                    @if ($cycle->isOverdue())
+                        @lang('app.dash.charge_passed')
+                    @elseif ($cycle->isChargeDay())
+                        {{-- daysLeft is 0 here too, but "the charge date has
+                             passed" on the morning the money comes off is
+                             simply wrong. --}}
+                        @lang('app.dash.charge_today')
+                    @else
+                        {{ trans_choice('app.dash.days_left', $cycle->daysLeft, ['days' => $cycle->daysLeft]) }}
+                    @endif
+                </span>
+                <span>{{ $cycle->end->format('d.m.Y') }}</span>
+            </div>
+        @endif
+
+        @if ($note !== null)
+            <p class="mt-5 flex items-start gap-3 rounded-xl px-4 py-3.5 text-base text-ink"
+               style="background: {{ $tone['bg'] }}">
+                <x-icon :name="$tone['icon']" class="mt-1" style="color: {{ $tone['fg'] }}"/>
+                <span>
+                    {{ $note }}
+                    @if ($state !== 'ok' && filled($contract))
+                        {{ __('app.dash.pay_with_contract', ['contract' => $contract]) }}
+                    @endif
+                </span>
+            </p>
+        @endif
+    </section>
+
+    {{-- Three questions, three links. Each one leads to its own page, which is
+         why no detail is kept here. --}}
+    <div class="mt-4 grid gap-4 md:grid-cols-3">
+        @php
+            $cards = [
+                [
+                    'route' => 'tariff',
+                    'label' => __('app.dash.current_tariff'),
+                    'value' => $profile->currentTariff() ?: __('app.header.no_tariff'),
+                    'hint' => $cost !== null ? $money($cost).' '.__('app.ye') : null,
+                ],
+                [
+                    'route' => 'devices',
+                    'label' => __('app.nav.devices'),
+                    'value' => __('app.dash.active_of', ['active' => $active, 'total' => $total]),
+                    'hint' => $offline > 0
+                        ? trans_choice('app.dash.offline_count', $offline, ['count' => $offline])
+                        : __('app.dash.all_online'),
+                ],
+                [
+                    'route' => 'payment',
+                    'label' => __('app.dash.last_payment'),
+                    // A "no payments this month" sentence is not a value, so it
+                    // is not set at value size: three cards side by side, one
+                    // of them a headline-sized sentence, read as an error.
+                    'value' => $lastPayment !== null
+                        ? $money((float) $lastPayment['amount'] / 100).' '.__('app.ye')
+                        : null,
+                    'hint' => $lastPayment !== null
+                        ? \Carbon\Carbon::parse($lastPayment['payment_date'])->format('d.m.Y').' · '.$lastPayment['payment_system']
+                        : __('app.empty.payments'),
+                ],
+            ];
+        @endphp
+
+        @foreach ($cards as $i => $card)
+            <a href="{{ route($card['route']) }}"
+               class="u-card u-rise group flex items-start justify-between gap-4 no-underline transition-[border-color,transform] hover:-translate-y-px hover:border-action"
+               style="--i:{{ $i + 1 }}">
+                <span class="min-w-0">
+                    <span class="u-label block">{{ $card['label'] }}</span>
+                    @if ($card['value'])
+                        <span class="mt-1.5 block text-xl font-semibold text-ink">{{ $card['value'] }}</span>
+                    @endif
+                    @if ($card['hint'])
+                        <span class="mt-1.5 block text-sm text-muted">{{ $card['hint'] }}</span>
+                    @endif
+                </span>
+                <x-icon name="chevron-right" class="mt-1 text-muted transition-transform group-hover:translate-x-0.5"/>
+            </a>
+        @endforeach
+    </div>
+
+    <a href="{{ route('services') }}"
+       class="u-card u-rise mt-4 flex items-center justify-between gap-4 no-underline transition-[border-color] hover:border-action"
+       style="--i:4">
+        <span class="flex min-w-0 items-center gap-4">
+            <span class="grid size-12 shrink-0 place-items-center rounded-xl"
+                  style="background: var(--c-action-soft); color: var(--c-action)">
+                <x-icon name="gift" size="size-6"/>
+            </span>
+            <span class="min-w-0">
+                <span class="block text-lg font-semibold text-ink">@lang('app.services.entry_title')</span>
+                <span class="mt-1 block text-sm text-muted">@lang('app.services.entry_text')</span>
+            </span>
+        </span>
+        <x-icon name="chevron-right" class="shrink-0 text-muted"/>
+    </a>
+@endsection

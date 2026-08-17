@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hisob tanlash — Sola Kabinet</title>
+<meta name="theme-color" content="#f1f6ed">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+
+<!-- Saqlangan tanlovlar stildan OLDIN qo'yiladi, aks holda tizimi qorong'i
+     bo'lgan foydalanuvchi avval oq sahifani ko'rib, keyin qorayadi; matn
+     hajmi esa sahifa yuklangach sakrab kattalashadi.
+     Hech narsa saqlanmagan bo'lsa atribut umuman qo'yilmaydi — "tizim
+     bo'yicha" va "oddiy hajm" haqiqiy standart holat bo'lib qoladi. -->
+<script>
+    (() => {
+        const t = localStorage.getItem('sola-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+
+        const s = localStorage.getItem('sola-text');
+        if (s === 'lg' || s === 'xl') document.documentElement.setAttribute('data-text', s);
+    })();
+</script>
+
+<script src="assets/tokens.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-dvh">
+<script src="assets/icons.js"></script>
+
+<a href="#content"
+   class="sr-only z-[80] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-full focus:border-2 focus:border-action focus:bg-surface focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-ink">
+    Asosiy qismga o'tish
+</a>
+
+<div class="mx-auto flex min-h-dvh w-full max-w-[32rem] flex-col justify-center px-4 py-10">
+
+    <!-- relative z-20: u-rise opacity/transform ni animatsiya qiladi, ya'ni bu
+         qator o'z stacking kontekstini yaratadi va ichidagi "Ko'rinish" panelining
+         z-50 i shu kontekstdan tashqariga chiqa olmaydi. Kontekst z-index siz
+         qolsa, keyinroq turgan (u ham u-rise li) karta panelni bosib qoladi. -->
+    <div class="u-rise relative z-20 mb-6 flex flex-wrap items-center justify-between gap-3">
+        <span class="u-logo">
+                        <img src="assets/logo-wordmark.png" alt="Sola" width="164" height="52"
+                             class="hidden h-10 w-auto sm:block">
+                        <img src="assets/logo-bird.png" alt="Sola" width="131" height="112"
+                             class="h-10 w-auto sm:hidden">
+                    </span>
+        <div data-view-mount></div>
+    </div>
+
+    <main id="content">
+
+        <div class="u-rise mb-4">
+            <h1 class="u-display text-2xl text-ink">Hisob raqamni tanlang</h1>
+            <p class="mt-2.5 text-base text-muted">Telefoningizga ikkita hisob biriktirilgan.</p>
+        </div>
+
+        <div class="space-y-3">
+            <a href="index.html"
+               class="u-card u-rise group flex items-center gap-4 no-underline transition-[border-color,transform] hover:-translate-y-px hover:border-action"
+               style="--i:1">
+                <span class="u-display grid size-12 shrink-0 place-items-center rounded-xl text-base"
+                      style="background: var(--c-action-soft); color: var(--c-action)" aria-hidden="true">AK</span>
+                <span class="min-w-0 flex-1">
+                    <span class="block text-lg font-semibold text-ink">Alisher Karimov</span>
+                    <span class="mt-1 flex flex-wrap items-center gap-2">
+                        <span class="text-sm text-muted">Hisob raqam 1001</span>
+                        <span class="u-pill-ok">
+                            <svg class="size-4" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Doimiy
+                        </span>
+                    </span>
+                </span>
+                <svg class="size-5 shrink-0 text-muted transition-transform group-hover:translate-x-0.5" aria-hidden="true" focusable="false"><use href="#i-right"/></svg>
+            </a>
+
+            <a href="index.html"
+               class="u-card u-rise group flex items-center gap-4 no-underline transition-[border-color,transform] hover:-translate-y-px hover:border-action"
+               style="--i:2">
+                <span class="u-display grid size-12 shrink-0 place-items-center rounded-xl bg-surface-2 text-base text-muted" aria-hidden="true">NY</span>
+                <span class="min-w-0 flex-1">
+                    <span class="block text-lg font-semibold text-ink">Nodira Yusupova</span>
+                    <span class="mt-1 flex flex-wrap items-center gap-2">
+                        <span class="text-sm text-muted">Hisob raqam 1002</span>
+                        <span class="u-pill-neutral">
+                            <svg class="size-4" aria-hidden="true" focusable="false"><use href="#i-clock"/></svg>Bir martalik
+                        </span>
+                    </span>
+                </span>
+                <svg class="size-5 shrink-0 text-muted transition-transform group-hover:translate-x-0.5" aria-hidden="true" focusable="false"><use href="#i-right"/></svg>
+            </a>
+        </div>
+
+    </main>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

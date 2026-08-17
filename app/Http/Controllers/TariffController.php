@@ -1,0 +1,99 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers;
+
+use App\Http\Requests\TariffConnectRequest;
+use App\Support\AbonentProfile;
+use App\Support\ConnectedTariff;
+use Carbon\CarbonImmutable;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+
+/**
+ * "Тариф" — the current plan, and the list of plans it can be swapped for.
+ *
+ * This used to be a block on the dashboard. It has a page of its own now: the
+ * dashboard was one long screen of everything and a subscriber looking for
+ * their tariff had to scroll past their balance, their devices and their
+ * payments to find it.
+ */
+final class TariffController extends Controller
+{
+    public function index(): View
+    {
+        $accountId = $this->accountId();
+
+        $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
+
+        // A third round trip, for one field: /abonent/info reports the current
+        // tariff without the date it started, and this is the only endpoint
+        // that carries it. The page is read-only and already makes two calls,
+        // so the cost is a page that loads ~200 ms slower rather than a
+        // subscriber who cannot see when their plan began.
+        $connected = ConnectedTariff::current(
+            $this->sola->connectedTariffs($accountId),
+            $profile->currentTariffId(),
+        );
+
+        return $this->view->make('cabinet.tariff', [
+            'profile' => $profile,
+            'accounts' => $this->accounts(),
+            'tariffs' => (array) $this->sola->availableTariffs($accountId)->get('tariffs', []),
+            'startedAt' => $connected?->startedAt(),
+        ]);
+    }
+
+    /**
+     * Connect a tariff, either immediately or from the 1st of next month.
+     *
+     * POST, not GET: this charges the subscriber. The previous version was a
+     * link, so the request carried no CSRF token and any third-party page could
+     * fire it from inside an authenticated session.
+     *
+     * Everything the page decides in Blade is decided again here. The view's
+     * conditions are a courtesy to the subscriber, not a control: the form is
+     * reachable with a valid CSRF token by anyone signed in, whatever their
+     * account type and whatever tariff id they put in the body.
+     */
+    public function connect(TariffConnectRequest $request): RedirectResponse
+    {
+        $accountId = $this->accountId();
+        $isPermanent = $this->session->isPermanent();
+
+        // The same rule cabinet/tariff.blade.php gates the form on: only a
+        // permanent subscriber may switch, unless there is no tariff at all yet.
+        $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
+
+        abort_unless($isPermanent || blank($profile->currentTariff()), 403);
+
+        // The tariff has to be one billing actually offers THIS account.
+        // Without this the request is "any positive integer", and which plans a
+        // given account may hold is not something this cabinet can infer.
+        $offered = collect((array) $this->sola->availableTariffs($accountId)->get('tariffs', []))
+            ->contains(fn (array $tariff): bool => (int) $tariff['tariff_id'] === $request->tariffId());
+
+        abort_unless($offered, 403);
+
+        // Only a permanent subscriber is offered the timing dialog; for anyone
+        // else the page posts "now", so that is what the server honours rather
+        // than trusting a hand-edited body.
+        $timing = $isPermanent ? $request->timing() : 'now';
+
+        $date = match ($timing) {
+            'now' => CarbonImmutable::now(),
+            default => CarbonImmutable::now()->addMonth()->firstOfMonth(),
+        };
+
+        $response = $this->sola->connectTariff($accountId, $request->tariffId(), $date->format('Y-m-d'));
+
+        if ($response->failed()) {
+            $this->flashDanger($response->errorMessage() ?? trans('errors.unknown'));
+        } else {
+            $this->flashInfo(trans('app.modal.success_tariff'));
+        }
+
+        return redirect()->route('tariff');
+    }
+}

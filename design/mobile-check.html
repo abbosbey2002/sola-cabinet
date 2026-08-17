@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sola Kabinet — telefon ko'rinishi</title>
+<style>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 24px;
+        background: #272f1e;
+        font: 15px/1.5 system-ui, sans-serif;
+        color: #fff;
+    }
+    .bar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0 auto 20px; max-width: 840px; }
+    label { font-weight: 600; }
+    select {
+        font: inherit; padding: 8px 12px; border-radius: 10px;
+        border: 2px solid #6b7b5b; background: #1b2113; color: #fff;
+    }
+    .frames { display: flex; gap: 28px; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+    figure { margin: 0; }
+    figcaption { margin: 0 0 8px; font-size: 13px; opacity: .85; }
+    /* Iframe o'z viewport'iga ega — media va container so'rovlar haqiqiy
+       390px da ishlaydi, bu kod o'qib "to'g'ri ko'rinadi" deyishdan farqli
+       o'laroq real render. */
+    iframe {
+        width: 390px; height: 844px; border: 0; border-radius: 22px;
+        background: #fff; box-shadow: 0 18px 50px -12px rgba(0,0,0,.6);
+    }
+</style>
+</head>
+<body>
+
+<div class="bar">
+    <label for="page">Sahifa:</label>
+    <select id="page">
+        <option value="index.html">Bosh sahifa</option>
+        <option value="tariff.html">Tarif</option>
+        <option value="devices.html">Qurilmalar</option>
+        <option value="statistics.html">Statistika</option>
+        <option value="payments.html">To'lovlar</option>
+        <option value="services.html">Xizmatlar</option>
+        <option value="login.html">Kirish</option>
+        <option value="verify.html">SMS kod</option>
+        <option value="accounts.html">Hisob tanlash</option>
+    </select>
+
+    <label for="size">Matn hajmi:</label>
+    <select id="size">
+        <option value="">Oddiy</option>
+        <option value="lg">Katta</option>
+        <option value="xl">Eng katta</option>
+    </select>
+</div>
+
+<div class="frames">
+    <figure>
+        <figcaption>390 × 844 — yorug'</figcaption>
+        <iframe data-theme="light" title="Yorug' mavzu"></iframe>
+    </figure>
+    <figure>
+        <figcaption>390 × 844 — qorong'i</figcaption>
+        <iframe data-theme="dark" title="Qorong'i mavzu"></iframe>
+    </figure>
+</div>
+
+<script>
+const frames = document.querySelectorAll('iframe');
+const page = document.getElementById('page');
+const size = document.getElementById('size');
+
+// Mavzu va matn hajmi iframe ichida majburan qo'yiladi, localStorage orqali
+// emas — ikkala ramka bir vaqtda ikki xil holatni ko'rsatishi kerak.
+function paint(frame) {
+    const root = frame.contentDocument.documentElement;
+
+    root.setAttribute('data-theme', frame.dataset.theme);
+    size.value ? root.setAttribute('data-text', size.value) : root.removeAttribute('data-text');
+}
+
+function load() {
+    frames.forEach(frame => { frame.src = page.value; });
+}
+
+frames.forEach(frame => frame.addEventListener('load', () => paint(frame)));
+page.addEventListener('change', load);
+size.addEventListener('change', () => frames.forEach(paint));
+
+load();
+</script>
+</body>
+</html>

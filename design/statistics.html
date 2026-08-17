@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistika — Sola Kabinet</title>
+<meta name="theme-color" content="#f1f6ed">
+<link rel="icon" href="assets/favicon.png" type="image/png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+
+<!-- Saqlangan tanlovlar stildan OLDIN qo'yiladi, aks holda tizimi qorong'i
+     bo'lgan foydalanuvchi avval oq sahifani ko'rib, keyin qorayadi; matn
+     hajmi esa sahifa yuklangach sakrab kattalashadi.
+     Hech narsa saqlanmagan bo'lsa atribut umuman qo'yilmaydi — "tizim
+     bo'yicha" va "oddiy hajm" haqiqiy standart holat bo'lib qoladi. -->
+<script>
+    (() => {
+        const t = localStorage.getItem('sola-theme');
+        if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+
+        const s = localStorage.getItem('sola-text');
+        if (s === 'lg' || s === 'xl') document.documentElement.setAttribute('data-text', s);
+    })();
+</script>
+
+<script src="assets/tokens.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="min-h-dvh">
+<script src="assets/icons.js"></script>
+
+<a href="#content"
+   class="sr-only z-[80] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-full focus:border-2 focus:border-action focus:bg-surface focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-ink">
+    Asosiy qismga o'tish
+</a>
+
+<div class="flex min-h-dvh flex-col">
+
+    <header class="sticky top-0 z-40 border-b-2 border-line bg-bg/90 backdrop-blur-md u-no-print">
+        <div class="mx-auto max-w-[1240px] px-4 sm:px-6">
+
+            <!-- flex-wrap — oxirgi himoya tor ekranlar uchun: o'ng guruh
+                 ikkinchi qatorga tushadi, gorizontal scroll esa paydo bo'lmaydi.
+                 lg dan boshlab nowrap: uzun ism qator buzmasin, dd dagi
+                 truncate ishga tushsin — wrap qilinadigan flex avval qatorga
+                 bo'ladi, siqishni esa keyin qiladi, ya'ni wrap yoqilgan holda
+                 truncate hech qachon ishlamaydi.
+                 140% matnda qator baribir sig'maydi; u holat u-id-row /
+                 u-id-facts qoidalari bilan hal qilinadi (tokens.js oxiri). -->
+            <div class="u-id-row flex min-h-[4.5rem] flex-wrap items-center gap-3 py-2 lg:flex-nowrap">
+                <button type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-drawer"
+                        class="-ml-2 grid size-12 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-surface-2 lg:hidden">
+                    <svg class="size-6" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
+                    <span class="sr-only">Menyuni ochish</span>
+                </button>
+
+                <a href="index.html" class="shrink-0 no-underline">
+                    <span class="u-logo">
+                        <img src="assets/logo-wordmark.png" alt="Sola" width="164" height="52"
+                             class="hidden h-9 w-auto sm:block">
+                        <img src="assets/logo-bird.png" alt="Sola" width="131" height="112"
+                             class="h-9 w-auto sm:hidden">
+                    </span>
+                </a>
+
+                <dl class="u-id-facts ml-5 hidden min-w-0 items-center gap-x-7 2xl:flex">
+                    <div class="flex min-w-0 items-baseline gap-2">
+                        <dt class="u-label">F.I.SH.</dt>
+                        <dd class="truncate text-sm font-semibold text-ink">Alisher Karimov</dd>
+                    </div>
+                    <div class="flex min-w-0 items-baseline gap-2">
+                        <dt class="u-label">Shartnoma</dt>
+                        <dd class="truncate text-sm font-semibold text-ink">D-100145</dd>
+                    </div>
+                </dl>
+
+                <div class="ml-auto flex shrink-0 items-center gap-2">
+                    <a href="tel:1130"
+                       class="hidden min-h-[3rem] items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-ink no-underline transition-colors hover:bg-surface-2 sm:flex">
+                        <svg class="size-5" style="color: var(--c-action)" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>1130
+                    </a>
+
+                    <div data-view-mount></div>
+
+                    <!-- Telefonda tepa qatorga sig'maydi va drawer ichida beriladi.
+                         "Ko'rinish" esa yorlig'i bilan qoladi: matnni kattalashtirish
+                         ehtiyoji tilni almashtirishdan tez-tez uchraydi va uning
+                         ikonkasi o'z-o'zidan tushunarli emas. -->
+                    <button type="button" aria-haspopup="menu" aria-expanded="false"
+                            class="hidden min-h-[3rem] rounded-full px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-surface-2 sm:block">
+                        <span class="sr-only">Til: </span>UZ
+                    </button>
+
+                    <!-- Telefonda tepa qatorga sig'maydi — drawer ichida beriladi. -->
+                    <a href="accounts.html"
+                       class="hidden min-h-[3rem] items-center gap-2 rounded-full py-1.5 pl-1.5 pr-3 no-underline transition-colors hover:bg-surface-2 sm:flex">
+                        <span class="sr-only">Hisob raqam 1001 — almashtirish</span>
+                        <span class="u-display grid size-9 place-items-center rounded-full text-xs"
+                              style="background: var(--c-action-soft); color: var(--c-action)" aria-hidden="true">AK</span>
+                        <span class="hidden text-left sm:block">
+                            <span class="block text-xs text-muted">Hisob</span>
+                            <span class="block text-sm font-semibold text-ink">1001</span>
+                        </span>
+                        <svg class="size-4 text-muted" aria-hidden="true" focusable="false"><use href="#i-down"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <nav class="hidden flex-wrap items-center gap-1.5 pb-2.5 lg:flex" aria-label="Asosiy menyu">
+                <a href="index.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-home"/></svg>Bosh sahifa
+                </a>
+                <a href="tariff.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg>Tarif
+                </a>
+                <a href="devices.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-router"/></svg>Qurilmalar
+                </a>
+                <a href="statistics.html" class="u-nav-link" aria-current="page">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-chart"/></svg>Statistika
+                </a>
+                <a href="payments.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg>To'lovlar
+                </a>
+                <a href="services.html" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-gift"/></svg>Xizmatlar
+                </a>
+                <a href="https://sola.speedtestcustom.com/" target="_blank" rel="noopener" class="u-nav-link">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-speed"/></svg>Tezlikni tekshirish
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Telefon uchun drawer -->
+    <div id="nav-drawer" data-nav-drawer hidden class="fixed inset-0 z-[65] lg:hidden"
+         role="dialog" aria-modal="true" aria-label="Menyu">
+        <div data-nav-scrim class="absolute inset-0 bg-black/60"></div>
+
+        <div class="u-rise absolute inset-y-0 left-0 flex w-[min(21rem,88vw)] flex-col overflow-y-auto border-r-2 border-line bg-surface">
+            <div class="flex items-center justify-between px-5 py-4">
+                <span class="u-logo">
+                        <img src="assets/logo-wordmark.png" alt="Sola" width="164" height="52"
+                             class="hidden h-9 w-auto sm:block">
+                        <img src="assets/logo-bird.png" alt="Sola" width="131" height="112"
+                             class="h-9 w-auto sm:hidden">
+                    </span>
+                <button type="button" data-nav-close
+                        class="grid size-12 place-items-center rounded-full text-ink transition-colors hover:bg-surface-2">
+                    <svg class="size-6" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+                    <span class="sr-only">Menyuni yopish</span>
+                </button>
+            </div>
+
+            <dl class="mx-3 mb-3 space-y-2.5 rounded-xl bg-surface-2 px-4 py-3.5">
+                <div>
+                    <dt class="u-label">F.I.SH.</dt>
+                    <dd class="text-base font-semibold text-ink">Alisher Karimov</dd>
+                </div>
+                <div>
+                    <dt class="u-label">Hisob raqam</dt>
+                    <dd class="text-base font-semibold text-ink">1001</dd>
+                </div>
+            </dl>
+
+            <a href="accounts.html"
+               class="mx-3 mb-3 flex min-h-[3rem] items-center justify-between gap-3 rounded-xl border-2 border-line px-4 py-3 text-base font-semibold text-ink no-underline transition-colors hover:border-action sm:hidden">
+                Hisobni almashtirish
+                <svg class="size-5 shrink-0 text-muted" aria-hidden="true" focusable="false"><use href="#i-right"/></svg>
+            </a>
+
+            <nav class="flex-1 space-y-1.5 px-3" aria-label="Menyu">
+                <a href="index.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-home"/></svg>Bosh sahifa
+                </a>
+                <a href="tariff.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-tag"/></svg>Tarif
+                </a>
+                <a href="devices.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-router"/></svg>Qurilmalar
+                </a>
+                <a href="statistics.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base" aria-current="page">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-chart"/></svg>Statistika
+                </a>
+                <a href="payments.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-receipt"/></svg>To'lovlar
+                </a>
+                <a href="services.html" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-gift"/></svg>Xizmatlar
+                </a>
+                <a href="https://sola.speedtestcustom.com/" target="_blank" rel="noopener" class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-speed"/></svg>Tezlikni tekshirish
+                </a>
+            </nav>
+
+            <div class="border-t-2 border-line px-5 py-5">
+                <p class="u-label mb-2">Til</p>
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" class="u-choice" aria-pressed="true">O'zbekcha</button>
+                    <button type="button" class="u-choice" aria-pressed="false">Русский</button>
+                </div>
+            </div>
+
+            <div class="border-t-2 border-line px-5 py-5">
+                <p class="u-label">Savollar bormi? Qo'ng'iroq qiling:</p>
+                <a href="tel:1130" class="mt-2 flex min-h-[3rem] items-center gap-2.5 text-lg font-semibold text-ink no-underline">
+                    <svg class="size-5" style="color: var(--c-action)" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>1130
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main id="content" class="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-16 pt-7 sm:px-6">
+
+        <div class="u-rise mb-5 flex flex-wrap items-end justify-between gap-5">
+            <h1 class="u-display text-3xl text-ink">Statistika</h1>
+            <form method="get" action="#" class="flex flex-wrap items-end gap-3 u-no-print">
+                <div>
+                    <label for="p-from" class="u-label mb-1.5 block">Davr, dan</label>
+                    <input id="p-from" type="date" value="2026-08-01" class="u-field !text-sm sm:w-[10.5rem]">
+                </div>
+                <div>
+                    <label for="p-to" class="u-label mb-1.5 block">gacha</label>
+                    <input id="p-to" type="date" value="2026-08-08" class="u-field !text-sm sm:w-[10.5rem]">
+                </div>
+                <button type="submit" class="u-btn-primary">
+                    <svg class="size-5" aria-hidden="true" focusable="false"><use href="#i-refresh"/></svg>Shakllantirish
+                </button>
+            </form>
+        </div>
+
+        <div class="grid gap-4 lg:grid-cols-[21rem_1fr]">
+
+            <!-- Trafik ulushi: logotipdagi ))) yoyi bilan bir shakl tili -->
+            <section class="u-card u-rise flex min-w-0 flex-col items-center lg:self-start" aria-labelledby="share-title">
+                <h2 id="share-title" class="sr-only">Trafik ulushi</h2>
+
+                <!-- Yozuv yoyning markaziga absolut qo'yiladi, manfiy margin
+                     bilan emas — manfiy margin bir shrift o'lchamiga moslab
+                     tanlanadi va foydalanuvchi matnni kattalashtirsa yozuv
+                     yoydan chiqib ketadi. -->
+                <div class="relative w-full max-w-[15rem]">
+                    <svg viewBox="0 0 200 150" class="w-full" aria-hidden="true" focusable="false">
+                        <circle cx="100" cy="100" r="58" fill="none" stroke="var(--c-line-strong)" stroke-width="1.5"
+                                stroke-dasharray="0.8 5.5" stroke-linecap="round"/>
+                        <circle cx="100" cy="100" r="78" fill="none" pathLength="360"
+                                stroke="var(--c-surface-2)" stroke-width="18" stroke-linecap="round"
+                                stroke-dasharray="240 360" transform="rotate(150 100 100)"/>
+                        <!-- kiruvchi: 92% dan 240 daraja -->
+                        <circle cx="100" cy="100" r="78" fill="none" pathLength="360" class="u-draw"
+                                stroke="var(--c-action)" stroke-width="18" stroke-linecap="round"
+                                transform="rotate(150 100 100)" style="--arc-len:220.8"/>
+                        <!-- chiquvchi: qolgan 8% -->
+                        <circle cx="100" cy="100" r="78" fill="none" pathLength="360" class="u-draw"
+                                stroke="var(--c-warn)" stroke-width="18" stroke-linecap="round"
+                                transform="rotate(370.8 100 100)" style="--arc-len:19.2;animation-delay:.3s"/>
+                    </svg>
+
+                    <!-- 100/150 = yoy markazining viewBox dagi nisbiy o'rni -->
+                    <div class="absolute inset-x-0 top-[66.7%] -translate-y-1/2 text-center">
+                        <p class="u-label">Umumiy trafik</p>
+                        <p class="u-figure mt-0.5 text-2xl text-ink">15 716</p>
+                        <p class="text-sm text-muted">Mb</p>
+                    </div>
+                </div>
+
+                <dl class="mt-8 grid w-full grid-cols-2 gap-4 border-t-2 border-line pt-5">
+                    <div>
+                        <dt class="flex items-center gap-2 text-sm text-muted">
+                            <svg class="size-4" style="color: var(--c-action)" aria-hidden="true" focusable="false"><use href="#i-in"/></svg>Kiruvchi
+                        </dt>
+                        <dd class="u-figure mt-1 text-xl text-ink">14 440</dd>
+                    </div>
+                    <div>
+                        <dt class="flex items-center gap-2 text-sm text-muted">
+                            <svg class="size-4" style="color: var(--c-warn)" aria-hidden="true" focusable="false"><use href="#i-out"/></svg>Chiquvchi
+                        </dt>
+                        <dd class="u-figure mt-1 text-xl text-ink">1 276</dd>
+                    </div>
+                </dl>
+            </section>
+
+            <section class="u-card u-rise !p-2 sm:!p-3" style="--i:1" aria-labelledby="daily-title">
+                <h2 id="daily-title" class="sr-only">Kunlik trafik</h2>
+                <div class="u-table-wrap">
+                    <table class="u-table u-table-cards">
+                        <thead>
+                            <tr>
+                                <th scope="col">Trafik sanasi</th>
+                                <th scope="col" class="text-right">Qabul qilindi (Mb)</th>
+                                <th scope="col" class="text-right">Yuborildi (Mb)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td data-label="Trafik sanasi">07.08.2026 10:41</td><td data-label="Qabul qilindi" class="text-right font-semibold">2 333,00</td><td data-label="Yuborildi" class="text-right">148,00</td></tr>
+                            <tr><td data-label="Trafik sanasi">06.08.2026 15:23</td><td data-label="Qabul qilindi" class="text-right font-semibold">1 720,00</td><td data-label="Yuborildi" class="text-right">232,00</td></tr>
+                            <tr><td data-label="Trafik sanasi">05.08.2026 17:24</td><td data-label="Qabul qilindi" class="text-right font-semibold">1 318,00</td><td data-label="Yuborildi" class="text-right">268,00</td></tr>
+                            <tr><td data-label="Trafik sanasi">04.08.2026 04:18</td><td data-label="Qabul qilindi" class="text-right font-semibold">2 163,00</td><td data-label="Yuborildi" class="text-right">112,00</td></tr>
+                            <tr><td data-label="Trafik sanasi">03.08.2026 04:39</td><td data-label="Qabul qilindi" class="text-right font-semibold">1 018,00</td><td data-label="Yuborildi" class="text-right">44,00</td></tr>
+                            <tr><td data-label="Trafik sanasi">02.08.2026 09:01</td><td data-label="Qabul qilindi" class="text-right font-semibold">2 975,00</td><td data-label="Yuborildi" class="text-right">304,00</td></tr>
+                            <tr><td data-label="Trafik sanasi">01.08.2026 23:54</td><td data-label="Qabul qilindi" class="text-right font-semibold">2 913,00</td><td data-label="Yuborildi" class="text-right">168,00</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="border-t-2 border-line px-4 py-8 sm:px-6">
+        <p class="mx-auto max-w-[1240px] text-center text-sm text-muted">
+            Shaxsiy kabinet Sola © 2026. Barcha huquqlar himoyalangan.<br>Ishlanma va dizayn Usoft
+        </p>
+    </footer>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

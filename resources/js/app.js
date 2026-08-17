@@ -1,32 +1,30 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+import '../css/app.css';
 
-require('./bootstrap');
-
-window.Vue = require('vue');
-
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+import initAjaxForms from './modules/ajax.js';
+import initConfirm from './modules/confirm.js';
+import initDisclosures from './modules/disclosure.js';
+import initModals from './modules/modal.js';
+import initNav from './modules/nav.js';
+import initPrefs from './modules/prefs.js';
+import initTables from './modules/table.js';
+import initTariff from './modules/tariff.js';
+import initToasts from './modules/toast.js';
 
 /**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
+ * The cabinet is server-rendered; this is the whole client runtime. Every
+ * module is delegation-based or a no-op when its markup is absent, so pages
+ * only pay for what they actually show.
  */
+function boot() {
+    initPrefs();
+    initDisclosures();
+    initModals();
+    initConfirm();
+    initNav();
+    initTables();
+    initAjaxForms();
+    initTariff();
+    initToasts();
+}
 
-const app = new Vue({
-    el: '#app',
-});
+document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', boot) : boot();
