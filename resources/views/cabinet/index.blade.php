@@ -151,6 +151,12 @@
                         : __('app.empty.payments'),
                 ],
             ];
+
+            // A legal entity (yuridik shaxs) is not offered the tariff card —
+            // same rule as partials/topbar.blade.php, see AbonentProfile::isLegalEntity().
+            if ($profile->isLegalEntity()) {
+                $cards = array_values(array_filter($cards, fn (array $card): bool => $card['route'] !== 'tariff'));
+            }
         @endphp
 
         @foreach ($cards as $i => $card)

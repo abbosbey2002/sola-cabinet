@@ -501,23 +501,71 @@
 
     /* SIGNATURE: the day meter ------------------------------------------
        The subscriber has one question — "will my balance last?". A percentage
-       bar does not answer it; countable days do. The track is dark in both
-       themes: green on dark is the relationship the logo itself uses. */
+       bar does not answer it; countable days do, which is why the fill is
+       still measured in days server-side, just drawn as a single scrubber
+       track instead of one span per day. The track is dark in both themes:
+       green on dark is the relationship the logo itself uses. */
     .u-meter {
-        @apply flex items-end gap-[2px] rounded-xl px-3 py-3;
+        @apply rounded-xl px-5 py-6;
         background: var(--c-meter-bg);
     }
 
-    .u-tick {
-        @apply min-w-[3px] flex-1 rounded-[2px];
-        height: 1.25rem;
+    .u-meter-track {
+        position: relative;
+        height: 0.375rem;
+        border-radius: 999px;
         background: var(--c-meter-idle);
     }
 
-    .u-tick[data-t='past'] { background: var(--c-lime); }
-    .u-tick[data-t='today'] { background: #ffffff; height: 1.75rem; }
-    /* Charge day: different colour AND different height — never colour alone. */
-    .u-tick[data-t='charge'] { background: #f0c24a; height: 2.25rem; }
+    .u-meter-fill {
+        position: absolute;
+        inset: 0 auto 0 0;
+        border-radius: 999px;
+        background: var(--c-lime);
+    }
+
+    /* Charge day: a diamond, never just a dot of colour, so it reads apart
+       from the round "today" handle without colour vision. The ring matches
+       the track's own background, cutting the marker out of whatever it
+       sits on — filled or idle. */
+    .u-meter-charge {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 0.625rem;
+        height: 0.625rem;
+        border-radius: 2px;
+        background: #f0c24a;
+        box-shadow: 0 0 0 3px var(--c-meter-bg);
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    /* Today: a round handle, styled like a slider thumb so the card reads as
+       "time moving along a track" — it is not actually draggable, the
+       affordance is purely a picture of one. */
+    .u-meter-handle {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 1.125rem;
+        height: 1.125rem;
+        border-radius: 999px;
+        background: #ffffff;
+        border: 3px solid var(--c-meter-bg);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, .4);
+        transform: translate(-50%, -50%);
+    }
+
+    /* When today IS the charge day the handle becomes the diamond, rather
+       than stacking two markers on the same point — same shape-and-colour
+       rule the two markers already follow apart from each other. */
+    .u-meter-handle[data-t='charge'] {
+        width: 0.875rem;
+        height: 0.875rem;
+        border-radius: 3px;
+        background: #f0c24a;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
 
     /* Logo --------------------------------------------------------------
        The logo files (public/img/logo-*.png) were drawn for a dark ground:
@@ -578,6 +626,30 @@
     .u-choice:has(input:focus-visible) {
         outline: 3px solid var(--c-action);
         outline-offset: 3px;
+    }
+
+    /* Admin ------------------------------------------------------------
+       layouts/admin.blade.php sets data-theme="light" directly (staff at a
+       desk, not a subscriber's phone — the dark theme and the "match my
+       system" toggle are both a subscriber concern, not this one) and
+       [data-app='admin'] on top of it for a plain white page rather than the
+       cabinet's green-tinted --c-bg. Everything else — ink, action, danger,
+       card, table, pill tokens — stays identical on purpose: same product,
+       same brand, just its own white canvas instead of the tinted one. */
+    [data-app='admin'] {
+        --c-bg: #ffffff;
+        --c-surface-2: #f4f6f2;
+    }
+
+    .u-sidebar-link {
+        @apply flex min-h-[2.75rem] items-center gap-3 rounded-xl px-3.5 py-2.5
+               text-sm font-semibold text-muted no-underline
+               transition-colors duration-200 hover:bg-surface-2 hover:text-ink;
+    }
+
+    .u-sidebar-link[aria-current='page'] {
+        background: var(--c-action-soft);
+        color: var(--c-action);
     }
 }
 

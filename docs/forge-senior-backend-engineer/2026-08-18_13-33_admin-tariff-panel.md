@@ -1,0 +1,25 @@
+# Admin tariff panel
+
+- **Date:** 2026-08-18 13:33
+- **Scope:** files created/modified
+  - New: `app/Console/Commands/CreateAdminCommand.php`, `app/Http/Controllers/Admin/{AdminAuthController,AdminTariffController}.php`, `app/Http/Middleware/{EnsureAdminIsAuthenticated,RedirectIfAdminIsAuthenticated}.php`, `app/Http/Requests/Admin/AdminLoginRequest.php`, `app/Support/{AdminSession,TariffVisibility}.php`, `database/migrations/2026_08_18_133337_create_admins_table.php`, `database/migrations/2026_08_18_133338_create_disabled_tariffs_table.php`, `resources/views/admin/{login,tariffs}.blade.php`, `resources/views/layouts/admin.blade.php`, `tests/Feature/Admin/AdminAuthTest.php`, `tests/Unit/TariffVisibilityTest.php`.
+  - Modified: `app/Http/Controllers/TariffController.php` (index()/connect() now filter through TariffVisibility), `bootstrap/app.php` (admin.auth/admin.guest aliases), `routes/web.php` (admin route group), `lang/{uz,ru,en}/app.php` (new 'admin' block), `tests/Feature/CabinetTest.php` (+1 test).
+- **Decisions:**
+  - **Admin auth storage: sqlite `admins` table**, chosen by the user over an `.env`-only single-admin credential — supports multiple admins later without a deploy.
+  - **No Eloquent, no Laravel Auth guards** — this codebase has neither (config/auth.php was removed on purpose, no ORM anywhere). Admin auth mirrors the existing subscriber pattern exactly: `AdminSession` (hand-rolled encrypted cookie) + `EnsureAdminIsAuthenticated`/`RedirectIfAdminIsAuthenticated` middleware, same shape as `AbonentSession`/`EnsureAbonentIsVerified`. Chosen for consistency over introducing a second, unfamiliar auth mechanism into a small codebase.
+  - **`disabled_tariffs` stores only hidden ids** (absence = enabled), not an `enabled` boolean per row — so a tariff billing introduces tomorrow is visible by default, no admin action needed to "activate" it.
+  - **`TariffVisibility::filter()` is the single source of truth**, called from both `TariffController::index()` (what's shown) and `::connect()` (what's connectable) — closes the gap where hiding a tariff from the page would be cosmetic only.
+  - **Admin tariff catalog account is a hardcoded constant (1336708)** with an `?acc_id=` override in the UI, not a config value — it's a "which account do I read the catalog from" convenience, not a deploy-time setting.
+- **Pipeline results:**
+  - `forge-debugger`: full manual verification via live `php artisan serve` + curl — see `docs/forge-debugger/2026-08-18_13-45_admin-tariff-panel-verification.md`. One environment finding (not a code bug): account 1336708 doesn't resolve against the currently active `API_IP` (172.19.1.201) — documented there, not fixed (nothing in this codebase to fix).
+  - `forge-test-writer`: 89 → 102 tests, see `docs/forge-test-writer/2026-08-18_13-52_admin-tariff-panel.md`.
+  - `forge-code-reviewer`: **APPROVE**. Two warnings, both fixed: (1) timing side-channel on unknown-username login (dummy `Hash::check` now runs on that path too) — (2) unnamed POST route nitpick — investigated and reverted, since the existing subscriber login route (`routes/web.php` original code) is unnamed on POST too; naming only the admin one would have been the actual inconsistency.
+  - `forge-security-auditor` (RISK=true): **SHIP**. No critical/high findings. Two medium findings, both confirmed to be the same accepted design tradeoff `AbonentSession` already carries (cookie validity isn't re-checked against the DB per request) — not new regressions, left as-is. Same timing side-channel as the reviewer found, independently — fixed once, covers both reports.
+- **Risks flagged:**
+  - ⚠️ An admin's cookie (8h lifetime) stays valid even if their `admins` row is deleted mid-session — there's no per-request DB re-check or revocation path. Matches the existing subscriber session's design exactly; flagged by both pipeline agents as a pre-existing pattern, not a regression. Worth revisiting if a "revoke this admin now" requirement ever appears.
+  - ⚠️ `TariffVisibility::disable()`/`AdminTariffController::toggle()` are not atomic under concurrent access to the *same* tariff_id — fine for one admin at a time (the only real usage pattern), would need a transaction or unique-constraint-driven retry if multiple admins operate concurrently.
+- **Left for later:** nothing tracked as deferred debt — both agent-gate warnings were either fixed or reverted-as-not-applicable this session.
+- **User must do:**
+  - Migrations already ran locally (`php artisan migrate`) — run it again on any other environment before using the feature there.
+  - Admin account seeded locally: `php artisan admin:create <username>` (already ran once for `admin`; the password was printed once in this session and is not recoverable — use `admin:create <new-username>` for another account, there's no reset flow yet).
+  - Whichever `API_IP` ends up active in `.env` needs a real billing account number for the admin's `?acc_id=` field to load a tariff catalog — 1336708 is only a convenience default, not guaranteed to resolve on every environment (see the debugger note).

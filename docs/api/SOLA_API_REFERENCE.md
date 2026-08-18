@@ -128,7 +128,7 @@ yuritadi.
 
 **200:** `name`, `saldo`, `status`, `curr_tariff_id`, `curr_tariff_name`,
 `contract_date`, `email`, `phone`, `address`, `device_count`,
-`device_active_count`
+`device_active_count`, `legal`, `charge_date`
 
 | Maydon | Manba (`api_pc_aboninfo_t`) | Izoh |
 |---|---|---|
@@ -137,6 +137,8 @@ yuritadi.
 | `address` | `Address` | `iLang` uzatiladi, lekin baribir rus tilida qaytadi |
 | `phone` | `Phone` | Xom holda, bind 100 belgi — vergulli ro'yxat (`"712070807,,"`) |
 | `email` | `Email` | bind 50 belgi |
+| `legal` | — | Mijoz tasdiqladi (2026-08-18): jismoniy shaxsda `"Физическое лицо"` yoki `0`; boshqa har qanday qiymat (masalan `"Юридическое лицо"`) — yuridik shaxs. Yuridik shaxsga tarif bo'limi (menyu, dashboard karta, `/tariffs` sahifasi) butunlay yopiladi — `AbonentProfile::isLegalEntity()`, `TariffController` |
+| `charge_date` | — | Mijoz tasdiqladi (2026-08-18, o'sha kuni tuzatildi): **keyingi** to'lov sanasi (`"2026-09-17"`), oxirgisi emas. Billing individual/yuridik shaxs farqini o'zida hisoblab, tayyor sanani yuboradi — kabinet uni hech qanday arifmetikasiz o'qiydi — `AbonentProfile::nextChargeDate()` |
 
 `abonType` javobga **kirmaydi**, faqat ichki tekshiruvda ishlatiladi:
 `< 0` → `110` · `= 0` → `121` · `> 0` → normal.
@@ -451,8 +453,11 @@ to'lganda (`msg_qnum >= 100`) logging **jimgina o'chadi** — xatolar yo'qoladi.
 Kabinet talab qiladigan, ammo API da **yo'q** narsalar —
 [`docs/task/BILLING_API_TALABLARI.md`](../task/BILLING_API_TALABLARI.md):
 
-- `/abonent/info`: `next_charge_date`, `current_tariff_start_date`,
-  `curr_tariff_cost`, `contract_number`, `next_tariff_name`, `next_tariff_cost`
+- `/abonent/info`: `current_tariff_start_date`, `curr_tariff_cost`,
+  `contract_number`, `next_tariff_name`, `next_tariff_cost` — `next_charge_date`
+  itself closed on 2026-08-18: billing sends `charge_date` (the NEXT payment
+  date already, read straight through) instead, ko'ring 3-bo'lim va
+  `AbonentProfile::nextChargeDate()`
 - `/tariff/history`, `/loyalty/info` — endpointlar umuman yo'q (`109` bilan
   tasdiqlangan)
 - `/acct/payments`: `payment_status_code`

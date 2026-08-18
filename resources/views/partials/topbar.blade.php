@@ -12,6 +12,14 @@
         ['route' => 'services', 'icon' => 'gift', 'label' => __('app.nav.services')],
         ['url' => config('sola.speedtest_url'), 'icon' => 'speed', 'label' => __('app.nav.speedtest'), 'external' => true],
     ];
+
+    // A legal entity (yuridik shaxs) is not offered tariff switching at all —
+    // billing's `legal` field on /abonent/info marks these accounts (see
+    // AbonentProfile::isLegalEntity()). TariffController enforces the same
+    // rule server-side; this only keeps the link from being offered.
+    if (isset($profile) && $profile->isLegalEntity()) {
+        $items = array_values(array_filter($items, fn (array $item): bool => ($item['route'] ?? null) !== 'tariff'));
+    }
 @endphp
 
 <header class="u-no-print sticky top-0 z-40 border-b-2 border-line bg-bg/90 backdrop-blur-md">

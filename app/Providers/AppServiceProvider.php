@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Services\Sola\FakeLoginServer;
 use App\Services\Sola\FakeSolaServer;
 use App\Services\Sola\SolaClient;
 use App\Support\AbonentSession;
@@ -76,15 +77,22 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function installFakeBilling(): void
     {
-        if (! $this->app->environment('local') || ! $this->app->make('config')->get('sola.fake')) {
+        if (! $this->app->environment('local')) {
             return;
         }
 
-        $billing = new FakeSolaServer(
-            $this->app->make(CacheRepository::class),
-            rtrim((string) $this->app->make('config')->get('sola.base_url'), '/'),
-        );
+        $config = $this->app->make('config');
+        $baseUrl = rtrim((string) $config->get('sola.base_url'), '/');
 
-        $billing->install($this->app->make(HttpFactory::class));
+        if ($config->get('sola.fake')) {
+            $billing = new FakeSolaServer($this->app->make(CacheRepository::class), $baseUrl);
+            $billing->install($this->app->make(HttpFactory::class));
+
+            return;
+        }
+
+        if ($config->get('sola.fake_login')) {
+            (new FakeLoginServer($baseUrl))->install($this->app->make(HttpFactory::class));
+        }
     }
 }

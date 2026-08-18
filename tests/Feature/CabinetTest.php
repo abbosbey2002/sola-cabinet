@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Support\Period;
+use App\Support\TariffVisibility;
 use Carbon\Carbon;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
@@ -17,6 +19,11 @@ use Tests\TestCase;
  */
 final class CabinetTest extends TestCase
 {
+    // Only the admin-visibility test below touches the database
+    // (disabled_tariffs); the transaction keeps that write from surviving
+    // into the shared local sqlite file the rest of these tests don't use.
+    use DatabaseTransactions;
+
     private const ACCOUNT_ID = '1001';
 
     protected function setUp(): void
@@ -55,8 +62,9 @@ final class CabinetTest extends TestCase
 
     /**
      * The day meter is the page's whole point, so it has to be built from the
-     * charge date rather than from the day of the month: one tick per day of
-     * the cycle, today marked, the charge day marked.
+     * charge date rather than from the day of the month: the fill and the
+     * handle sit at today's position along the cycle, the charge marker at
+     * the last day.
      */
     #[Test]
     public function the_day_meter_counts_the_days_to_the_next_charge(): void
@@ -74,16 +82,96 @@ final class CabinetTest extends TestCase
 
         $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
 
-        // 01.08 → 01.09 is 31 days; the 8th is day 8, the charge lands on the last.
-        $this->assertSame(31, substr_count($content, 'class="u-tick"'));
-        $this->assertSame(1, substr_count($content, 'data-t="today"'));
-        $this->assertSame(1, substr_count($content, 'data-t="charge"'));
-        $this->assertSame(7, substr_count($content, 'data-t="past"'));
+        // 01.08 → 01.09 is 31 days (span 30); the 8th is day 8, so today sits
+        // at 7/30 = 23.33% along the track, and the charge lands on the last
+        // day, i.e. 100%.
+        $this->assertSame(1, substr_count($content, 'class="u-meter-handle"'));
+        $this->assertSame(1, substr_count($content, 'class="u-meter-charge"'));
+        $this->assertStringContainsString('u-meter-fill" style="width: 23.33%"', $content);
+        $this->assertStringContainsString('u-meter-handle" style="left: 23.33%"', $content);
+        $this->assertStringContainsString('u-meter-charge" style="left: 100%"', $content);
 
         $this->assertStringContainsString(
             trans_choice('app.dash.days_left', 24, ['days' => 24]),
             $content,
         );
+    }
+
+    /**
+     * When today IS the charge day, the handle takes on the charge marker's
+     * own diamond instead of a separate marker being drawn on top of it —
+     * two shapes for the same point would just be visual noise.
+     */
+    #[Test]
+    public function the_handle_becomes_the_charge_marker_when_today_is_the_charge_day(): void
+    {
+        Carbon::setTestNow('2026-09-01');
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'next_charge_date' => '2026-09-01',
+            ]),
+        ]);
+
+        $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
+
+        $this->assertSame(1, substr_count($content, 'class="u-meter-handle"'));
+        $this->assertSame(0, substr_count($content, 'class="u-meter-charge"'));
+        $this->assertSame(1, substr_count($content, 'data-t="charge"'));
+        $this->assertStringContainsString('u-meter-handle" style="left: 100%"', $content);
+    }
+
+    /**
+     * Billing's confirmed field: /abonent/info's `charge_date` IS the upcoming
+     * payment date already — no arithmetic, it is read straight through.
+     */
+    #[Test]
+    public function the_next_charge_date_is_read_directly_from_charge_date(): void
+    {
+        Carbon::setTestNow('2026-07-20');
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'charge_date' => '2026-08-15',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee('u-meter-track', escape: false)
+            ->assertSee('15.08.2026');
+    }
+
+    /**
+     * The same `charge_date`, but a legal entity: billing has already applied
+     * whatever individual/legal-entity rule it uses on its own side, so the
+     * date still passes through unchanged — no end-of-month adjustment here.
+     */
+    #[Test]
+    public function a_legal_entitys_next_charge_date_is_also_read_directly(): void
+    {
+        Carbon::setTestNow('2026-07-20');
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Firma OOO',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'charge_date' => '2026-08-15',
+                'legal' => 'Юридическое лицо',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee('u-meter-track', escape: false)
+            ->assertSee('15.08.2026');
     }
 
     /**
@@ -105,7 +193,7 @@ final class CabinetTest extends TestCase
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
             ->assertSee('125 000')
-            ->assertDontSee('class="u-tick"', escape: false);
+            ->assertDontSee('u-meter-track', escape: false);
     }
 
     /**
@@ -137,7 +225,7 @@ final class CabinetTest extends TestCase
         // — and the cycle it closes opened on 10 August.
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee('class="u-tick"', escape: false)
+            ->assertSee('u-meter-track', escape: false)
             ->assertSee('10.09.2026')
             ->assertSee('10.08.2026');
     }
@@ -679,6 +767,95 @@ final class CabinetTest extends TestCase
         // 9 is the only id the fake offers; 4242 exists nowhere.
         $this->verifiedSubscriber()
             ->post('/tariffs/connect', ['tariff' => 4242, 'timing' => 'now'])
+            ->assertForbidden();
+
+        Http::assertNotSent(fn (Request $request): bool => str_contains($request->url(), '/tariff/connect'));
+    }
+
+    /**
+     * A legal entity (yuridik shaxs) is not offered the tariff section at
+     * all — not merely the switch action, the whole page. Confirmed by the
+     * client on 2026-08-18: `legal` carries "Физическое лицо" or 0 for an
+     * individual, anything else is a legal entity.
+     */
+    #[Test]
+    public function a_legal_entity_cannot_reach_the_tariff_page(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'legal' => 'Юридическое лицо',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/tariffs')->assertForbidden();
+    }
+
+    /**
+     * Hiding the page is not a control by itself — the connect endpoint has
+     * to refuse the same account, or a CSRF-valid POST straight to it would
+     * still switch the tariff.
+     */
+    #[Test]
+    public function a_legal_entity_cannot_connect_a_tariff(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'legal' => 'Юридическое лицо',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()
+            ->post('/tariffs/connect', ['tariff' => 9, 'timing' => 'now'])
+            ->assertForbidden();
+
+        Http::assertNotSent(fn (Request $request): bool => str_contains($request->url(), '/tariff/connect'));
+    }
+
+    /**
+     * Both the top navigation and the dashboard's tariff card are built from
+     * $profile, which every cabinet controller already loads — no extra API
+     * call is needed to keep them in step with the server-side gate above.
+     */
+    #[Test]
+    public function the_tariff_link_and_dashboard_card_are_hidden_for_a_legal_entity(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'legal' => 'Юридическое лицо',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertDontSee(trans('app.nav.tariff'))
+            ->assertDontSee(trans('app.dash.current_tariff'));
+    }
+
+    /**
+     * A tariff the admin has hidden (app/Support/TariffVisibility.php) has to
+     * be refused the same way one billing never offered this account is —
+     * otherwise hiding it from /tariffs is cosmetic, and it stays reachable
+     * by posting its id directly with a valid CSRF token.
+     */
+    #[Test]
+    public function a_tariff_the_admin_disabled_is_refused_even_though_billing_offers_it(): void
+    {
+        $this->fakeSola();
+
+        // 9 is the one id the fake's */tariff/available response offers.
+        (new TariffVisibility)->disable(9);
+
+        $this->verifiedSubscriber()
+            ->post('/tariffs/connect', ['tariff' => 9, 'timing' => 'now'])
             ->assertForbidden();
 
         Http::assertNotSent(fn (Request $request): bool => str_contains($request->url(), '/tariff/connect'));

@@ -27,12 +27,11 @@ final class CabinetController extends Controller
 
         $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
 
-        // Billing sends no charge date of its own, so it is derived: the client's
-        // rule is that a tariff's period ends on the day of the month it started,
-        // and /tariff/connected is the only endpoint carrying that day. One extra
-        // round trip, for the number this page is built around. Should billing
-        // ever send the date itself, that wins — it would know about anything
-        // this arithmetic cannot see.
+        // Billing sends the upcoming payment date directly as /abonent/info's
+        // `charge_date` — see AbonentProfile::nextChargeDate(). The extra round
+        // trip to /tariff/connected only runs for the accounts billing has not
+        // sent `charge_date` for yet, deriving the date from the day the tariff
+        // started instead.
         $charge = $profile->nextChargeDate() ?? ConnectedTariff::current(
             $this->sola->connectedTariffs($accountId),
             $profile->currentTariffId(),

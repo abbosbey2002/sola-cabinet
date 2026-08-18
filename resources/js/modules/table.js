@@ -6,15 +6,20 @@
  *
  * Markup contract:
  *   <div data-table data-page-size="10">
+ *     [data-table-filter] (optional — a group of [data-filter-value] buttons;
+ *       "" matches every row, anything else matches tr[data-status])
  *     <table>
  *       <thead><tr><th data-sort="date|text|number">…</th></tr></thead>
- *       <tbody><tr><td data-label="Дата" data-value="2026-08-01">01.08.2026</td>…
+ *       <tbody><tr data-status="enabled" data-label="Дата" data-value="2026-08-01">01.08.2026</td>…
  *     </table>
  *     [data-table-search] [data-table-print] [data-table-nav]
  *   </div>
  *
  * data-value is the sort key when the visible text is formatted for humans
  * (a d.m.Y date or a thousands-separated number does not sort as a string).
+ *
+ * Search and the status filter narrow the same "visible" set together — a
+ * search term never resurrects a row the filter excluded, and vice versa.
  */
 
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
@@ -49,9 +54,24 @@ function mount(root) {
     const status = root.querySelector('[data-table-status]');
     const search = root.querySelector('[data-table-search]');
     const printButton = root.querySelector('[data-table-print]');
+    const filterButtons = [...root.querySelectorAll('[data-filter-value]')];
 
     let visible = all;
     let page = 1;
+    let searchTerm = '';
+    let statusFilter = '';
+
+    const applyFilters = () => {
+        visible = all.filter((row) => {
+            const matchesSearch = !searchTerm || row.textContent.toLowerCase().includes(searchTerm);
+            const matchesStatus = !statusFilter || row.dataset.status === statusFilter;
+
+            return matchesSearch && matchesStatus;
+        });
+
+        page = 1;
+        render();
+    };
 
     const render = () => {
         const pages = Math.max(1, Math.ceil(visible.length / size));
@@ -128,14 +148,18 @@ function mount(root) {
 
     // Search ------------------------------------------------------------
     search?.addEventListener('input', () => {
-        const needle = search.value.trim().toLowerCase();
+        searchTerm = search.value.trim().toLowerCase();
+        applyFilters();
+    });
 
-        visible = needle
-            ? all.filter((row) => row.textContent.toLowerCase().includes(needle))
-            : all;
+    // Status filter -------------------------------------------------------
+    filterButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            statusFilter = button.dataset.filterValue ?? '';
 
-        page = 1;
-        render();
+            filterButtons.forEach((other) => other.setAttribute('aria-pressed', String(other === button)));
+            applyFilters();
+        });
     });
 
     // Print ---------------------------------------------------------------

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminTariffController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CabinetController;
 use App\Http\Controllers\DeviceController;
@@ -80,6 +82,36 @@ Route::prefix('auth')->middleware('abonent.guest')->group(function (): void {
         ->middleware('throttle:10,1');
 
     Route::get('/select/account', [AuthController::class, 'accountChoice'])->name('select.account');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Admin
+|--------------------------------------------------------------------------
+|
+| A separate world from the cabinet above: its own cookie (AdminSession), its
+| own guard aliases, no SolaClient session or subscriber state involved. Only
+| screen: which tariffs /tariffs is allowed to show.
+|
+*/
+
+Route::prefix('admin')->group(function (): void {
+    Route::middleware('admin.guest')->group(function (): void {
+        Route::get('/login', [AdminAuthController::class, 'login'])->name('admin.login');
+        Route::post('/login', [AdminAuthController::class, 'login'])
+            ->middleware('throttle:5,1');
+    });
+
+    Route::middleware('admin.auth')->group(function (): void {
+        Route::get('/tariffs', [AdminTariffController::class, 'index'])->name('admin.tariffs');
+        Route::post('/tariffs/{tariffId}/toggle', [AdminTariffController::class, 'toggle'])
+            ->whereNumber('tariffId')
+            ->name('admin.tariffs.toggle');
+        Route::post('/tariffs/bulk-toggle', [AdminTariffController::class, 'bulkToggle'])
+            ->name('admin.tariffs.bulk-toggle');
+
+        Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    });
 });
 
 /*

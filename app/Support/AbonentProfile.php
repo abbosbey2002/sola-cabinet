@@ -37,7 +37,17 @@ final class AbonentProfile
     /** Cost of the tariff currently in force. */
     private const CANDIDATE_CURRENT_TARIFF_COST = ['curr_tariff_cost', 'tariff_cost', 'curr_tariff_price', 'abon_cost'];
 
-    /** When the subscriber is next charged — "Дата след. списания". */
+    /**
+     * When the subscriber is next charged — "Дата след. списания".
+     *
+     * None of these have ever been observed in a live response; they were
+     * guesses made before `charge_date` (below) was confirmed as the real
+     * field. Checked first only because they were here first and cost
+     * nothing to check — not because they should outrank `charge_date`. If
+     * one of these ever turns up alongside `charge_date` on a live account,
+     * that is worth investigating rather than trusting silently: `charge_date`
+     * is the confirmed source now.
+     */
     private const CANDIDATE_NEXT_CHARGE = ['next_charge_date', 'next_payment_date', 'next_writeoff_date', 'nextpay_date', 'date_next_pay'];
 
     /** @param array<string, mixed> $body */
@@ -95,6 +105,39 @@ final class AbonentProfile
         return $this->string('curr_tariff_id');
     }
 
+    /**
+     * True when the subscriber is a legal entity (yuridik shaxs) rather than
+     * an individual (jismoniy shaxs), per the API's `legal` field.
+     *
+     * Confirmed by the client on 2026-08-18: an individual reports either the
+     * literal string "Физическое лицо" or 0; any other value — most notably
+     * "Юридическое лицо" — is a legal entity. The tariff section is not
+     * offered to a legal entity at all, not just the switch action: see
+     * TariffController and partials/topbar.blade.php.
+     *
+     * The field is missing on accounts billing has not migrated yet — absent,
+     * nothing is restricted, the same as every account behaved before this
+     * field existed.
+     */
+    public function isLegalEntity(): bool
+    {
+        $value = $this->body['legal'] ?? null;
+
+        if ($value === null) {
+            return false;
+        }
+
+        if (is_string($value) && trim($value) === 'Физическое лицо') {
+            return false;
+        }
+
+        if (is_numeric($value) && (float) $value === 0.0) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function deviceCount(): int
     {
         return (int) ($this->body['device_count'] ?? 0);
@@ -141,23 +184,30 @@ final class AbonentProfile
             }
         }
 
-        return null;
+        return $this->date('charge_date');
     }
 
     /*
-     * There is deliberately no fallback HERE, in the profile. Deriving the
-     * charge date from contract_date was tried on 2026-08-10 and reverted the
-     * same day: the charge does not fall on the contract day at all, it follows
-     * the last tariff change.
+     * `charge_date` was first read as the LAST charge, with the next one
+     * derived from it (individual: +1 month same day; legal entity: end of
+     * that month). The client corrected this the same day (2026-08-18): the
+     * field IS the upcoming payment date already — billing has already done
+     * the individual/legal-entity math on its side. Reading it straight
+     * through is the whole rule; no arithmetic belongs here any more, and
+     * `isLegalEntity()` above is unrelated to this field now — it only gates
+     * the tariff section (TariffController, topbar).
+     *
+     * There is deliberately no fallback beyond `charge_date`, in the profile.
+     * Deriving the charge date from contract_date was tried on 2026-08-10 and
+     * reverted the same day: the charge does not fall on the contract day at
+     * all, it follows the last tariff change.
      *
      * That change date turned up on 2026-08-13 — /tariff/connected carries it
-     * as date_begin — and the client stated the rule the same day: the period
+     * as date_begin — and the client stated a rule the same day: the period
      * ends on the day of the month the tariff started. The derivation therefore
      * lives in App\Support\ConnectedTariff::nextChargeDate(), beside the date it
-     * is built from, and CabinetController falls back to it.
-     *
-     * This method stays as the preferred source: if billing ever sends a charge
-     * date, it knows things the arithmetic cannot see and should win.
+     * is built from, and CabinetController falls back to it when this method
+     * returns null — an account billing has not sent `charge_date` for yet.
      */
 
     /**

@@ -38,6 +38,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Login Bypass
+    |--------------------------------------------------------------------------
+    |
+    | Skips the SMS step only — /identify and /verify are answered in process,
+    | always into the same test account (see FakeLoginServer::ACCOUNT_ID).
+    | Every other endpoint still hits the real API, so the VPN must be up.
+    | Ignored when SOLA_FAKE is also on, which fakes the whole API instead.
+    |
+    */
+
+    'fake_login' => (bool) env('SOLA_FAKE_LOGIN', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Transport
     |--------------------------------------------------------------------------
     |

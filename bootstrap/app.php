@@ -2,7 +2,9 @@
 
 use App\Exceptions\SolaUnavailableException;
 use App\Http\Middleware\EnsureAbonentIsVerified;
+use App\Http\Middleware\EnsureAdminIsAuthenticated;
 use App\Http\Middleware\RedirectIfAbonentIsVerified;
+use App\Http\Middleware\RedirectIfAdminIsAuthenticated;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -29,6 +31,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'abonent.verified' => EnsureAbonentIsVerified::class,
             'abonent.guest' => RedirectIfAbonentIsVerified::class,
+            'admin.auth' => EnsureAdminIsAuthenticated::class,
+            'admin.guest' => RedirectIfAdminIsAuthenticated::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

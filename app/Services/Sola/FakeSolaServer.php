@@ -181,7 +181,11 @@ final class FakeSolaServer
             'device_active_count' => count(array_filter($devices, fn (array $device): bool => filled($device['ip']))),
             'next_tariff_name' => $next['tariff_name'] ?? null,
             'next_tariff_cost' => $next['cost'] ?? null,
-            'next_charge_date' => CarbonImmutable::now()->addMonth()->startOfMonth()->format('Y-m-d'),
+            // `charge_date` is the UPCOMING payment date, per billing's
+            // confirmed field — AbonentProfile::nextChargeDate() reads it
+            // straight through. The 1st of next month matches the fake's
+            // "next charge" landing from before this field was named.
+            'charge_date' => CarbonImmutable::now()->startOfMonth()->addMonthNoOverflow()->format('Y-m-d'),
         ]);
     }
 

@@ -1,6 +1,7 @@
 import '../css/app.css';
 
 import initAjaxForms from './modules/ajax.js';
+import initBulkSelect from './modules/bulk-select.js';
 import initConfirm from './modules/confirm.js';
 import initDisclosures from './modules/disclosure.js';
 import initModals from './modules/modal.js';
@@ -22,6 +23,7 @@ function boot() {
     initConfirm();
     initNav();
     initTables();
+    initBulkSelect();
     initAjaxForms();
     initTariff();
     initToasts();

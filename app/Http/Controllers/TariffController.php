@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TariffConnectRequest;
 use App\Support\AbonentProfile;
 use App\Support\ConnectedTariff;
+use App\Support\TariffVisibility;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -21,11 +22,16 @@ use Illuminate\Http\RedirectResponse;
  */
 final class TariffController extends Controller
 {
-    public function index(): View
+    public function index(TariffVisibility $visibility): View
     {
         $accountId = $this->accountId();
 
         $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
+
+        // A legal entity (yuridik shaxs) is not offered this page at all —
+        // the nav link and dashboard card are already hidden for them, this
+        // is the control the hiding is a courtesy for.
+        abort_if($profile->isLegalEntity(), 403);
 
         // A third round trip, for one field: /abonent/info reports the current
         // tariff without the date it started, and this is the only endpoint
@@ -37,10 +43,12 @@ final class TariffController extends Controller
             $profile->currentTariffId(),
         );
 
+        $tariffs = $visibility->filter((array) $this->sola->availableTariffs($accountId)->get('tariffs', []));
+
         return $this->view->make('cabinet.tariff', [
             'profile' => $profile,
             'accounts' => $this->accounts(),
-            'tariffs' => (array) $this->sola->availableTariffs($accountId)->get('tariffs', []),
+            'tariffs' => $tariffs,
             'startedAt' => $connected?->startedAt(),
         ]);
     }
@@ -57,7 +65,7 @@ final class TariffController extends Controller
      * reachable with a valid CSRF token by anyone signed in, whatever their
      * account type and whatever tariff id they put in the body.
      */
-    public function connect(TariffConnectRequest $request): RedirectResponse
+    public function connect(TariffConnectRequest $request, TariffVisibility $visibility): RedirectResponse
     {
         $accountId = $this->accountId();
         $isPermanent = $this->session->isPermanent();
@@ -66,12 +74,17 @@ final class TariffController extends Controller
         // permanent subscriber may switch, unless there is no tariff at all yet.
         $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
 
+        abort_if($profile->isLegalEntity(), 403);
+
         abort_unless($isPermanent || blank($profile->currentTariff()), 403);
 
-        // The tariff has to be one billing actually offers THIS account.
-        // Without this the request is "any positive integer", and which plans a
-        // given account may hold is not something this cabinet can infer.
-        $offered = collect((array) $this->sola->availableTariffs($accountId)->get('tariffs', []))
+        // The tariff has to be one billing actually offers THIS account, and
+        // not one the admin has hidden — the same filter /tariffs itself
+        // renders through, so a hidden id can never be connected by posting
+        // it directly.
+        $available = $visibility->filter((array) $this->sola->availableTariffs($accountId)->get('tariffs', []));
+
+        $offered = collect($available)
             ->contains(fn (array $tariff): bool => (int) $tariff['tariff_id'] === $request->tariffId());
 
         abort_unless($offered, 403);
