@@ -9,6 +9,7 @@ use App\Http\Middleware\SetLocale;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -22,6 +23,19 @@ return Application::configure(basePath: dirname(__DIR__))
             'curr_password',
             'new_password',
         ]);
+
+        // lk.sola.uz's TLS terminates at SOLA's internal gateway, which
+        // reverse-proxies plain HTTP to this box -- nginx here has no
+        // certificate of its own. Without this, X-Forwarded-Proto is
+        // ignored and every generated URL (redirects, asset links) comes
+        // back as http://, which the browser then has to upgrade itself.
+        $middleware->trustProxies(
+            at: '*',
+            headers: Request::HEADER_X_FORWARDED_FOR
+                | Request::HEADER_X_FORWARDED_HOST
+                | Request::HEADER_X_FORWARDED_PORT
+                | Request::HEADER_X_FORWARDED_PROTO,
+        );
 
         // The locale lives in a cookie, so this has to run after cookie decryption.
         $middleware->web(append: [
