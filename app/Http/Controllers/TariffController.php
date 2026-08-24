@@ -79,9 +79,9 @@ final class TariffController extends Controller
         abort_unless($isPermanent || blank($profile->currentTariff()), 403);
 
         // The tariff has to be one billing actually offers THIS account, and
-        // not one the admin has hidden — the same filter /tariffs itself
-        // renders through, so a hidden id can never be connected by posting
-        // it directly.
+        // one the admin has opted in to /tariffs — the same filter that page
+        // renders through, so an id nobody enabled can never be connected by
+        // posting it directly.
         $available = $visibility->filter((array) $this->sola->availableTariffs($accountId)->get('tariffs', []));
 
         $offered = collect($available)

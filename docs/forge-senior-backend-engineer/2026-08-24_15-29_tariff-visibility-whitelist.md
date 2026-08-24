@@ -1,0 +1,24 @@
+# Tariff visibility: blacklist → whitelist
+
+- **Date:** 2026-08-24 15:29
+- **Scope:**
+  - `database/migrations/2026_08_24_152948_replace_disabled_tariffs_with_enabled_tariffs_table.php` (new) — drops `disabled_tariffs`, creates `enabled_tariffs`
+  - `app/Support/TariffVisibility.php` — `enabledIds()`/`isEnabled()`/`enable()`/`disable()`/`filter()` now query `enabled_tariffs`; presence of a row is the new "visible" signal
+  - `app/Http/Controllers/Admin/AdminTariffController.php` — `index()` passes `enabledIds` to the view instead of `disabled`
+  - `resources/views/admin/tariffs.blade.php` — per-row visibility now `in_array($tariffId, $enabledIds, true)`
+  - `tests/Unit/TariffVisibilityTest.php` — rewritten for whitelist semantics
+  - `tests/Feature/CabinetTest.php` — tests that exercise a successful tariff switch now explicitly `enable()` the tariff id they use; the "admin disabled" test now enables-then-disables to prove `disable()` still works (previously the default state alone would have made it pass trivially); added a new regression test, `a_tariff_never_enabled_by_the_admin_is_refused_even_though_billing_offers_it`
+- **Not changed:** `app/Http/Controllers/TariffController.php` (subscriber-facing) — it already called `TariffVisibility::filter()`/`isEnabled()` by name; only what those methods do internally flipped, so no call-site changes were needed. `app/Http/Requests/Admin/BulkToggleTariffsRequest.php` — `enable`/`disable` action semantics are unchanged, only which table they touch.
+- **Decisions:**
+  - User explicitly chose (asked via AskUserQuestion) to start `enabled_tariffs` **empty** rather than backfilling it with whatever was visible under the old blacklist — so immediately after this deploys, `/tariffs` shows nothing until an admin opts tariffs in one by one, exactly as requested ("faqat admin ruxsat etgan tariflar chiqsin").
+  - `disabled_tariffs` is dropped, not renamed/repurposed — its rows named the *hidden* set under the old model, which is the wrong seed data for a whitelist (would have re-enabled exactly what was supposed to stay hidden).
+  - Kept method names (`enable`/`disable`/`isEnabled`/`filter`) identical across the flip so every call site (`AdminTariffController::toggle()`/`bulkToggle()`, `TariffController::index()`/`connect()`) needed no logic changes — only the admin view's variable name (`disabled` → `enabledIds`) changed, to avoid a `$enabled` name collision with the per-row boolean already computed in the blade loop.
+- **Pipeline results:**
+  - `forge-code-reviewer` → **APPROVE**. One warning fixed: `app/Http/Controllers/TariffController.php:81-84` had a stale comment still describing the old blacklist model ("not one the admin has hidden") — reworded to the whitelist framing ("one the admin has opted in to /tariffs ... an id nobody enabled can never be connected"). One nitpick left as-is (deploy runbook note, see Risks below).
+  - `forge-security-auditor` → **SHIP**. No critical/high/medium findings. Verified: IDOR-safe (`connect()` still gates on the same flipped `filter()`), strict int comparison (no loose-comparison bypass), admin routes still behind `admin.auth` middleware, fail-closed default direction confirmed correct.
+- **Verified:** `php artisan migrate` / `migrate:rollback` round-trip cleanly; full suite green (118 passed, 493 assertions) both before and after re-migrating forward.
+- **Risks flagged:**
+  - ⚠️ On deploy, if migrations run before the app code swap completes, a brief window exists where old code (still referencing `disabled_tariffs`) could error against the new schema. Same risk profile as the original `disabled_tariffs` migration (no existing multi-deploy expand/contract pattern in this repo) — not a new class of risk, just calling it out.
+  - ⚠️ This local dev DB's `disabled_tariffs` held 120 rows before this migration ran; they are gone (table dropped) per the user's explicit "start empty" decision. If this repo has other environments (staging/prod) with real admin-curated `disabled_tariffs` data, deploying this migration there will make **every** tariff disappear from `/tariffs` until an admin re-enables them one by one — confirm that is acceptable for those environments before deploying, or the visible tariff list goes to zero with no warning to end users.
+- **Left for later:** deploy-runbook note (from code review, non-blocking) — right after `php artisan migrate` runs in any shared environment, bulk-enable the current production tariff set via `/admin/tariffs` (select all + bulk enable is a two-click operation) so there isn't a window where no subscriber can switch tariffs.
+- **User must do:** run `php artisan migrate` on any other environment before this ships, then go to `/admin/tariffs` and enable whichever tariffs should be offered — nothing shows to subscribers until that happens.

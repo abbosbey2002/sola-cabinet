@@ -13,8 +13,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 /**
- * Lets an admin hide a tariff from /tariffs without billing ever knowing —
- * the hiding happens in this app, not upstream. See TariffVisibility.
+ * Lets an admin opt a tariff into /tariffs without billing ever knowing —
+ * a tariff stays hidden until enabled here, and the gating happens in this
+ * app, not upstream. See TariffVisibility.
  */
 final class AdminTariffController
 {
@@ -42,12 +43,12 @@ final class AdminTariffController
             session()->flash('danger', $response->errorMessage() ?? trans('errors.unknown'));
         }
 
-        $disabled = $this->visibility->disabledIds();
+        $enabledIds = $this->visibility->enabledIds();
 
         return $this->view->make('admin.tariffs', [
             'accountId' => $accountId,
             'tariffs' => (array) $response->get('tariffs', []),
-            'disabled' => $disabled,
+            'enabledIds' => $enabledIds,
         ]);
     }
 

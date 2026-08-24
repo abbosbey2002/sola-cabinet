@@ -116,7 +116,7 @@ return [
         'entry_text' => 'Aksiyalar, sodiqlik dasturi, qo\'llab-quvvatlash',
         'intro' => 'Qo\'shimcha imkoniyatlar va yordam.',
         'call_title' => 'Qo\'ng\'iroq qiling',
-        'call_hours' => 'Har kuni 08:00 dan 22:00 gacha ishlaymiz.',
+        'call_hours' => 'Kunning 24 soati, haftaning barcha kunlari ishlaymiz (24/7).',
         'call_action' => ':number ga qo\'ng\'iroq qilish',
     ],
 

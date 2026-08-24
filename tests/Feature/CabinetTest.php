@@ -19,8 +19,8 @@ use Tests\TestCase;
  */
 final class CabinetTest extends TestCase
 {
-    // Only the admin-visibility test below touches the database
-    // (disabled_tariffs); the transaction keeps that write from surviving
+    // Only the tariff-visibility tests below touch the database
+    // (enabled_tariffs); the transaction keeps those writes from surviving
     // into the shared local sqlite file the rest of these tests don't use.
     use DatabaseTransactions;
 
@@ -354,6 +354,11 @@ final class CabinetTest extends TestCase
             ]),
         ]);
 
+        // Both rows have to be admin-enabled to reach the page at all — the
+        // id-matching this test targets happens downstream of that filter.
+        (new TariffVisibility)->enable(839);
+        (new TariffVisibility)->enable(9);
+
         $content = (string) $this->verifiedSubscriber()->get('/tariffs')->getContent();
 
         // The option already in force is the unselectable one, and the padded
@@ -685,6 +690,7 @@ final class CabinetTest extends TestCase
     public function the_chosen_timing_decides_the_connection_date_sent_to_billing(): void
     {
         Carbon::setTestNow('2026-08-08 12:00:00');
+        (new TariffVisibility)->enable(9);
 
         foreach (['now' => '2026-08-08', 'month' => '2026-09-01'] as $timing => $expected) {
             $this->fakeSola();
@@ -732,6 +738,7 @@ final class CabinetTest extends TestCase
     public function a_permanent_subscriber_is_not_only_type_two(): void
     {
         $this->fakeSola();
+        (new TariffVisibility)->enable(9);
 
         foreach ([2, 3, 4] as $type) {
             $this->verifiedSubscriber($type)
@@ -764,7 +771,11 @@ final class CabinetTest extends TestCase
     {
         $this->fakeSola();
 
-        // 9 is the only id the fake offers; 4242 exists nowhere.
+        // 9 is the only id the fake offers; 4242 exists nowhere. Enabling 9
+        // isolates the assertion to "billing never offered it" rather than
+        // letting it pass merely because nothing is admin-enabled.
+        (new TariffVisibility)->enable(9);
+
         $this->verifiedSubscriber()
             ->post('/tariffs/connect', ['tariff' => 4242, 'timing' => 'now'])
             ->assertForbidden();
@@ -841,10 +852,29 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * A tariff the admin has hidden (app/Support/TariffVisibility.php) has to
-     * be refused the same way one billing never offered this account is —
-     * otherwise hiding it from /tariffs is cosmetic, and it stays reachable
-     * by posting its id directly with a valid CSRF token.
+     * A tariff no admin has ever opted in (app/Support/TariffVisibility.php)
+     * has to be refused the same way one billing never offered this account
+     * is — otherwise the whitelist is cosmetic, and any id billing knows
+     * about stays reachable by posting it directly with a valid CSRF token.
+     */
+    #[Test]
+    public function a_tariff_never_enabled_by_the_admin_is_refused_even_though_billing_offers_it(): void
+    {
+        $this->fakeSola();
+
+        // 9 is the one id the fake's */tariff/available response offers, but
+        // no admin has ever enabled it — the whitelist starts empty.
+        $this->verifiedSubscriber()
+            ->post('/tariffs/connect', ['tariff' => 9, 'timing' => 'now'])
+            ->assertForbidden();
+
+        Http::assertNotSent(fn (Request $request): bool => str_contains($request->url(), '/tariff/connect'));
+    }
+
+    /**
+     * Once enabled, explicitly disabling a tariff again has to withdraw it —
+     * proving disable() actually removes the whitelist row rather than the
+     * refusal above simply being the empty-whitelist default.
      */
     #[Test]
     public function a_tariff_the_admin_disabled_is_refused_even_though_billing_offers_it(): void
@@ -852,7 +882,9 @@ final class CabinetTest extends TestCase
         $this->fakeSola();
 
         // 9 is the one id the fake's */tariff/available response offers.
-        (new TariffVisibility)->disable(9);
+        $visibility = new TariffVisibility;
+        $visibility->enable(9);
+        $visibility->disable(9);
 
         $this->verifiedSubscriber()
             ->post('/tariffs/connect', ['tariff' => 9, 'timing' => 'now'])

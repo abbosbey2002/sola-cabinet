@@ -90,7 +90,7 @@
                         @foreach ($tariffs as $tariff)
                             @php
                                 $tariffId = (int) $tariff['tariff_id'];
-                                $enabled = ! in_array($tariffId, $disabled, true);
+                                $enabled = in_array($tariffId, $enabledIds, true);
                                 $name = trim((string) $tariff['tariff_name']);
                             @endphp
                             <tr data-status="{{ $enabled ? 'enabled' : 'disabled' }}">

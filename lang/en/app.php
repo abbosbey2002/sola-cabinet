@@ -116,7 +116,7 @@ return [
         'entry_text' => 'Offers, loyalty programme, support',
         'intro' => 'Extra features and help.',
         'call_title' => 'Give us a call',
-        'call_hours' => 'We answer every day from 08:00 to 22:00.',
+        'call_hours' => 'We are available 24/7, every day of the week.',
         'call_action' => 'Call :number',
     ],
 
