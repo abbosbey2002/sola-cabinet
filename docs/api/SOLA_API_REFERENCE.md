@@ -69,7 +69,7 @@ qolgani ma'qul, lekin bu server kafolati emas.
 | 4 | `/abonent/edit` | `acc_id`, `email`, `phone` | *bo'sh* | ✎ | `abonentEdit` |
 | 5 | `/acct/balance` | `acc_id` | `{saldo}` | | `acctBalance` |
 | 6 | `/acct/wifipassword` | `acc_id`, `curr_password`, `new_password` | *bo'sh* | ✎ | `acctWifiPassword` |
-| 7 | `/acct/payments` | `acc_id`, `pay_month` | `payments[]` | | `acctPayments` |
+| 7 | `/acct/payments` | `acc_id`, `pay_begin`, `pay_end` ¹ | `payments[]` | | `acctPayments` |
 | 8 | `/traffic/detail` | `acc_id`, `detail_month` | `detail[]` | | `TrafficDetail` |
 | 9 | `/device/list` | `acc_id` | `devices[]`, `connect_cost` | | `DeviceList` |
 | 10 | `/device/new` | `acc_id` | *bo'sh* | ✎⇄ | `DeviceNew` |
@@ -85,6 +85,13 @@ qolgani ma'qul, lekin bu server kafolati emas.
 
 Barchasida `lang` ixtiyoriy. `acc_id` talab qiladigan endpointlarda u **butun son
 > 0** bo'lishi shart (aks holda `114`).
+
+¹ Mijoz aytdi (2026-08-19): `/acct/payments` endi bitta `pay_month` o'rniga
+`pay_begin`/`pay_end` (`YYYY-MM-DD`, ikkalasi ham majburiy, filtrlash
+oralig'i) qabul qiladi — §7 ga qarang. Bu yerdagi `docs/task/apipc/main.php`
+nusxasi hali eski `pay_month`-only variantni ko'rsatadi (server tomonidagi
+o'zgarish live probe/yangi apipc export bilan hali qayta tasdiqlanmagan);
+xato kodlari (`115` va h.k.) shu sabab eski holicha qoldirilgan.
 
 **`/service/disconnect` yo'q.** Tarif uchun `disconnect` bor, xizmat uchun yo'q —
 `API_PC` da `DelAddSrv` ochilmagan.
@@ -127,7 +134,7 @@ yuritadi.
 ### 3. `/abonent/info` — abonent kartochkasi
 
 **200:** `name`, `saldo`, `status`, `curr_tariff_id`, `curr_tariff_name`,
-`contract_date`, `email`, `phone`, `address`, `device_count`,
+`contract_date`, `contract_id` ², `email`, `phone`, `address`, `device_count`,
 `device_active_count`, `legal`, `charge_date`
 
 | Maydon | Manba (`api_pc_aboninfo_t`) | Izoh |
@@ -137,8 +144,13 @@ yuritadi.
 | `address` | `Address` | `iLang` uzatiladi, lekin baribir rus tilida qaytadi |
 | `phone` | `Phone` | Xom holda, bind 100 belgi — vergulli ro'yxat (`"712070807,,"`) |
 | `email` | `Email` | bind 50 belgi |
+| `contract_id` ² | — | Shartnomaning ichki billing id'si — `contract_number` ("Договор №" satri) dan boshqa maydon, biri ikkinchisiga zaxira bo'lmaydi. `AbonentProfile::contractId()` |
 | `legal` | — | Mijoz tasdiqladi (2026-08-18): jismoniy shaxsda `"Физическое лицо"` yoki `0`; boshqa har qanday qiymat (masalan `"Юридическое лицо"`) — yuridik shaxs. Yuridik shaxsga tarif bo'limi (menyu, dashboard karta, `/tariffs` sahifasi) butunlay yopiladi — `AbonentProfile::isLegalEntity()`, `TariffController` |
 | `charge_date` | — | Mijoz tasdiqladi (2026-08-18, o'sha kuni tuzatildi): **keyingi** to'lov sanasi (`"2026-09-17"`), oxirgisi emas. Billing individual/yuridik shaxs farqini o'zida hisoblab, tayyor sanani yuboradi — kabinet uni hech qanday arifmetikasiz o'qiydi — `AbonentProfile::nextChargeDate()` |
+
+² Mijoz aytdi (2026-08-19): `/abonent/info` javobiga `contract_id` qo'shildi.
+Manba ustuni (`api_pc_aboninfo_t` maydoni) hali aniqlanmagan — mijoz maydon
+nomini bergan, lekin ichki Oracle ustuni probe qilinmagan.
 
 `abonType` javobga **kirmaydi**, faqat ichki tekshiruvda ishlatiladi:
 `< 0` → `110` · `= 0` → `121` · `> 0` → normal.
@@ -184,8 +196,12 @@ Parol murakkabligi **tekshirilmaydi** — bu Oracle tomonida.
 
 ### 7. `/acct/payments` — to'lovlar
 
-`pay_month` — `YYYY-MM`, **majburiy** (`115`). Format `checkRequestMonth()` bilan
-tekshiriladi: 7 belgi, haqiqiy oy.
+`pay_begin`, `pay_end` — `YYYY-MM-DD`, ikkalasi ham **majburiy**, inklyuziv
+oraliq (mijoz, 2026-08-19). Eski `pay_month` (`YYYY-MM`, `checkRequestMonth()`
+bilan tekshirilardi) endi yuborilmaydi — `SolaClient::payments()`,
+`BillingHistory::payments()`. Validatsiya xato kodlari (`115` qatorining
+yangi shakli, min/max oraliq bormi) hali live probe qilinmagan — quyidagi
+`114`/`110`/`121` eski kontraktdan qolgan, ehtiyot bilan o'qing.
 
 **200:** `payments[{payment_id, payment_date, amount, payment_system, payment_status}]`
 
@@ -193,9 +209,11 @@ tekshiriladi: 7 belgi, haqiqiy oy.
 - `payment_system` = `NBANK_KASSA`, lekin `BANK_KASSA == 5` bo'lsa `NOTE`
 - `payment_status` — bazadan erkin matn, `lang` bo'yicha tarjima qilinadi
 
-Sahifalash yo'q, sana oralig'i yo'q.
+Sahifalash yo'q. Sana oralig'i endi bor (`pay_begin`/`pay_end`) — kabinet
+tomonida `Period::MAX_MONTHS` (12 oy) bilan cheklanadi, serverning o'z
+maksimal oralig'i tasdiqlanmagan.
 
-`114` · `115` · `110` · `121`.
+`114` · `110` · `121` (`115` eski `pay_month` uchun edi — yangi kontraktda hali tasdiqlanmagan).
 
 ### 8. `/traffic/detail` — trafik detalizatsiyasi
 
@@ -388,7 +406,7 @@ ruscha, `uz` va `en` bloklari nusxa. Ya'ni `lang` `errMsg` ga ta'sir qilmaydi.
 | `111` / `112` | Ошибка при отправке СМС | SMS gateway |
 | `113` | Введите номер телефона | `phn` bo'sh |
 | `114` | …(Лицевой счёт) | `acc_id` yo'q yoki ≤ 0 |
-| `115` | …(месяц) | `pay_month` / `detail_month` |
+| `115` | …(месяц) | `detail_month`. Eski `pay_month` uchun ham shu edi — `/acct/payments` endi `pay_begin`/`pay_end` ishlatadi, yangi xato kodi tasdiqlanmagan (§7) |
 | `116` | …(email) | `/abonent/edit` |
 | `117` | …(phone) | `/abonent/edit` |
 | `118` | …(password) | `/acct/wifipassword` |
@@ -435,8 +453,10 @@ qilingani uchun **int**. Batafsil: `SOLA_API.md` §"Muhim: tiplar".
 holda o'tadi — ularda kirill bo'lsa buziladi.
 
 **Sahifalash yo'q.** Hech bir ro'yxat endpointida `limit`/`offset` yo'q.
-`/acct/payments` va `/traffic/detail` bitta **oy** oladi; `date_from`/`date_to`
+`/traffic/detail` bitta **oy** oladi (`detail_month`); `date_from`/`date_to`
 yuborilsa jimgina e'tiborsiz qoldiriladi (o'lchangan — `SOLA_API.md` §10).
+`/acct/payments` endi bundan mustasno: `pay_begin`/`pay_end` bilan haqiqiy
+sana oralig'ini qabul qiladi (mijoz, 2026-08-19) — §7.
 
 **Tranzaksiya.** O'zgartiruvchi 6 ta endpoint `executeDefault()` + aniq
 `commit`/`rollback` ishlatadi. Idempotentlik yo'q: takroriy `/tariff/connect`

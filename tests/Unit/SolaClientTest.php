@@ -48,11 +48,12 @@ final class SolaClientTest extends TestCase
     {
         Http::fake(['*' => Http::response([])]);
 
-        $this->client()->payments('1001', '2026-07');
+        $this->client()->payments('1001', '2026-07-01', '2026-07-31');
 
         Http::assertSent(fn (Request $request): bool => $request->body() === json_encode([
             'acc_id' => '1001',
-            'pay_month' => '2026-07',
+            'pay_begin' => '2026-07-01',
+            'pay_end' => '2026-07-31',
             'lang' => 'ru',
         ]));
     }

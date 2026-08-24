@@ -153,6 +153,15 @@ final class AbonentProfile
         return $this->date('contract_date');
     }
 
+    /**
+     * The contract's internal billing id — distinct from contractNumber(),
+     * which is the human-readable "Договор №" string.
+     */
+    public function contractId(): ?string
+    {
+        return $this->string('contract_id');
+    }
+
     // -- Fields the spec asks for, pending confirmation from billing -----
 
     public function contractNumber(): ?string

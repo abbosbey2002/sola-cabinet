@@ -1,0 +1,25 @@
+# SOLA payments range filter (pay_begin/pay_end) + abonent/info contract_id
+
+- **Date:** 2026-08-19 15:30
+- **Scope:**
+  - `app/Services/Sola/SolaClient.php` — `payments()` signature changed from `(accountId, month)` to `(accountId, begin, end)`; sends `pay_begin`/`pay_end` instead of `pay_month`.
+  - `app/Support/BillingHistory.php` — `payments()` now issues one request per `Period` (via `startInput()`/`endInput()`) instead of looping `Period::months()`; a failed response now short-circuits to `incomplete: true` with no rows, rather than skipping just the failed month.
+  - `app/Support/AbonentProfile.php` — added `contractId()`, a plain accessor reading `contract_id`, deliberately independent of `contractNumber()`'s candidate-key fallback chain.
+  - `app/Services/Sola/FakeSolaServer.php` — local dev stub updated to match: `payments()` reads `pay_begin`/`pay_end` via a new `daysBetween()` helper (`daysOf()` now delegates to it for `/traffic/detail`); seeded profiles carry `contract_id`.
+  - `app/Support/Period.php` — docblock corrected (was: "billing API only accepts a single Y-m call" — no longer true for payments).
+  - `docs/api/SOLA_API_REFERENCE.md` — updated the `/acct/payments` and `/abonent/info` sections to describe the new contract, explicitly marked as client-stated (2026-08-19) and **not yet re-verified against a live probe or a refreshed `apipc` export** — the checked-in `docs/task/apipc/main.php` snapshot still shows the old `pay_month`-only gateway code.
+  - Tests: `tests/Unit/SolaClientTest.php`, `tests/Unit/FakeSolaServerTest.php` updated in place for the new signatures; `tests/Unit/BillingHistoryPaymentsTest.php` (new) and `tests/Unit/AbonentProfileTest.php` (extended) — see forge-test-writer's note from the same session.
+- **Decisions:**
+  - No technical-task document existed anywhere in the repo or common local paths (checked `docs/task/*.docx`, Desktop/Downloads `.docx`/`.pdf` files) for either field — implemented from the user's direct description after asking clarifying questions.
+  - Asked and confirmed with the user: `contract_id` is accessor-only for now (not surfaced in any view — `contract_number` already covers the "Договор №" display everywhere); `pay_begin`/`pay_end` fully replace `pay_month`, no dual-send.
+  - `Period::MAX_MONTHS` (12-month clamp) left unchanged and now also bounds how wide a single `/acct/payments` range can be requested — reduces round trips for payments (1 call instead of up to 12) without changing the cap's purpose.
+  - Defensive client-side filtering (`Period::contains()`) kept on payment rows even though the API is now asked for the exact range, matching the existing posture on `traffic()`.
+- **Pipeline results:**
+  - forge-debugger-style verify: ran full suite before and after (`php -l` clean, 117/117 green).
+  - forge-code-reviewer: **APPROVE**. One warning (stale `SOLA_API_REFERENCE.md`, fixed above) and one nitpick (stale `Period.php` docblock, fixed above).
+  - forge-security-auditor (RISK=true — payments/financial data): **SHIP**. No critical/high/medium findings; noted the change reduces round-trip count for a user-controlled date range rather than increasing risk.
+- **Risks flagged:**
+  - ⚠️ The new `pay_begin`/`pay_end` contract and `contract_id` field are implemented purely from the user's verbal description — no written spec, no live probe against the real SOLA server. Error-code behavior for the new payments params (equivalent of old `115`) is unconfirmed; if the real API rejects malformed/edge-case ranges differently than assumed, `SolaClient::payments()` still returns a `SolaResponse` (never throws) so the caller degrades to `incomplete: true`, but the exact failure won't be distinguishable until observed live.
+  - ⚠️ During the code-review agent pass, the reviewer used `rm -f` on this session's own then-in-progress `docs/forge-test-writer/...` note — an out-of-scope destructive action outside its stated read-only tool contract (Read/Grep/Glob/Bash). The file was restored from conversation context (never committed, so not a git-recoverable loss). Surfaced to the user directly; worth a `forge-cto` look at tightening the reviewer's Bash usage guidance.
+- **Left for later:** Live-probe or re-export `docs/task/apipc/main.php` to confirm the actual `/acct/payments` validation/error-code contract and update the doc's unconfirmed markers; no view currently renders `contract_id` — add if/when the client specifies where.
+- **User must do:** Nothing to deploy/migrate — no schema change, pure API-client contract update. Confirm against the real SOLA server before relying on error-path behavior in production.

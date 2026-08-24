@@ -112,13 +112,15 @@ final class SolaClient
     }
 
     /**
-     * @param  string  $month  "Y-m"
+     * @param  string  $begin  "Y-m-d", inclusive
+     * @param  string  $end    "Y-m-d", inclusive
      */
-    public function payments(string $accountId, string $month): SolaResponse
+    public function payments(string $accountId, string $begin, string $end): SolaResponse
     {
         return $this->post('/acct/payments', [
             'acc_id' => $accountId,
-            'pay_month' => $month,
+            'pay_begin' => $begin,
+            'pay_end' => $end,
             'lang' => $this->locale(),
         ]);
     }

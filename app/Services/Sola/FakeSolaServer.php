@@ -53,6 +53,7 @@ final class FakeSolaServer
             'status' => 'active',
             'contract_date' => '2019-09-05',
             'contract_number' => 'D-100145',
+            'contract_id' => '100145',
             'saldo' => 125000,
             'curr_tariff_id' => '839',
             'curr_tariff_name' => 'Home 100',
@@ -67,6 +68,7 @@ final class FakeSolaServer
             'status' => 'active',
             'contract_date' => '2023-02-17',
             'contract_number' => 'D-204871',
+            'contract_id' => '204871',
             'saldo' => -18500,
             'curr_tariff_id' => '9',
             'curr_tariff_name' => 'Paket 30 kun',
@@ -207,6 +209,7 @@ final class FakeSolaServer
 
         return array_replace(self::PROFILES['1001'], [
             'contract_number' => 'D-'.$accountId,
+            'contract_id' => $accountId,
             'saldo' => (5 + $this->number($accountId, 'saldo') % 90) * 1000,
         ]);
     }
@@ -374,7 +377,10 @@ final class FakeSolaServer
         $accountId = $this->accountId($payload);
         $rows = [];
 
-        foreach ($this->daysOf((string) ($payload['pay_month'] ?? '')) as $day) {
+        $begin = (string) ($payload['pay_begin'] ?? '');
+        $end = (string) ($payload['pay_end'] ?? '');
+
+        foreach ($this->daysBetween($begin, $end) as $day) {
             if ($this->number($accountId, $day, 'pay') % 14 !== 3) {
                 continue;
             }
@@ -429,8 +435,23 @@ final class FakeSolaServer
             return [];
         }
 
-        $cursor = CarbonImmutable::parse($month.'-01')->startOfDay();
-        $last = $cursor->endOfMonth()->startOfDay()->min(CarbonImmutable::now()->startOfDay());
+        return $this->daysBetween($month.'-01', CarbonImmutable::parse($month.'-01')->endOfMonth()->format('Y-m-d'));
+    }
+
+    /**
+     * The days between two "Y-m-d" dates, inclusive, never past today —
+     * billing has no future rows.
+     *
+     * @return list<string>
+     */
+    private function daysBetween(string $begin, string $end): array
+    {
+        if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $begin) !== 1 || preg_match('/^\d{4}-\d{2}-\d{2}$/', $end) !== 1) {
+            return [];
+        }
+
+        $cursor = CarbonImmutable::parse($begin)->startOfDay();
+        $last = CarbonImmutable::parse($end)->startOfDay()->min(CarbonImmutable::now()->startOfDay());
 
         $days = [];
 

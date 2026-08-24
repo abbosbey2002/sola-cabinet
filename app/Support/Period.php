@@ -9,15 +9,17 @@ use Carbon\CarbonImmutable;
 /**
  * A start/end date range, as the spec's "Период: с … по …" controls produce.
  *
- * The billing API only accepts a single "Y-m" per call — there is no range
- * endpoint. So a range is served by asking for each month it touches and
- * trimming the rows back to the exact days requested. That is the whole reason
- * this class exists: to turn one range into the list of months to fetch, and
- * to answer whether a given row falls inside it.
+ * /traffic/detail only accepts a single "Y-m" per call — there is no range
+ * endpoint — so BillingHistory::traffic() asks for each month the range
+ * touches and trims the rows back to the exact days requested. months() and
+ * contains() exist for that. /acct/payments takes a range directly
+ * (pay_begin/pay_end); BillingHistory::payments() uses startInput()/
+ * endInput() instead of months().
  *
- * The month count is capped because each month is a separate HTTP round trip
- * to a billing server that answers in ~250 ms; an unbounded range would let a
- * subscriber hold a PHP worker open for a minute.
+ * The month count is capped because each traffic month is a separate HTTP
+ * round trip to a billing server that answers in ~250 ms; an unbounded range
+ * would let a subscriber hold a PHP worker open for a minute. The same cap
+ * also bounds how wide a single payments range can be requested.
  */
 final class Period
 {

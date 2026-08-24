@@ -49,6 +49,28 @@ final class AbonentProfileTest extends TestCase
     }
 
     /**
+     * contract_id is billing's internal id for the contract, distinct from
+     * contract_number (the "Договор №" string shown to the subscriber) — the
+     * two must not be confused or fall back to each other.
+     */
+    #[Test]
+    public function contract_id_and_contract_number_are_read_independently(): void
+    {
+        $profile = $this->profile(['contract_id' => '100145', 'contract_number' => 'D-100145']);
+
+        $this->assertSame('100145', $profile->contractId());
+        $this->assertSame('D-100145', $profile->contractNumber());
+    }
+
+    #[Test]
+    public function a_missing_contract_id_is_null_rather_than_falling_back_to_contract_number(): void
+    {
+        $profile = $this->profile(['contract_number' => 'D-100145']);
+
+        $this->assertNull($profile->contractId());
+    }
+
+    /**
      * @param  array<string, mixed>  $body
      */
     private function profile(array $body): AbonentProfile

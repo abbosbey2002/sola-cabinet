@@ -86,9 +86,14 @@ final class FakeSolaServerTest extends TestCase
 
         // A month the subscriber has not lived through yet is simply empty.
         $future = now()->addYear()->format('Y-m');
+        $futureStart = CarbonImmutable::parse($future.'-01');
 
         $this->assertSame([], (array) $sola->trafficDetail(self::ACCOUNT_ID, $future)->get('detail'));
-        $this->assertSame([], (array) $sola->payments(self::ACCOUNT_ID, $future)->get('payments'));
+        $this->assertSame([], (array) $sola->payments(
+            self::ACCOUNT_ID,
+            $futureStart->format('Y-m-d'),
+            $futureStart->endOfMonth()->format('Y-m-d'),
+        )->get('payments'));
     }
 
     #[Test]

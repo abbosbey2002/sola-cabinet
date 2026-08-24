@@ -10,10 +10,15 @@ use Carbon\CarbonImmutable;
 /**
  * Traffic and payment history over an arbitrary date range.
  *
- * The API is month-at-a-time, so both readers walk the months a Period covers,
- * concatenate the rows and drop the ones that fall outside the requested days.
- * A failed month is skipped rather than aborting the whole range — a partial
- * answer with the rest of the period intact beats a 502 for the subscriber.
+ * Traffic is still month-at-a-time: traffic() walks the months a Period
+ * covers, concatenates the rows and drops the ones that fall outside the
+ * requested days. A failed month is skipped rather than aborting the whole
+ * range — a partial answer with the rest of the period intact beats a 502
+ * for the subscriber.
+ *
+ * Payments take the range directly (pay_begin/pay_end) in one call — billing
+ * added range filtering to /acct/payments, so there is no month walk there
+ * any more.
  */
 final class BillingHistory
 {
@@ -59,22 +64,19 @@ final class BillingHistory
      */
     public function payments(string $accountId, Period $period): array
     {
+        $response = $this->sola->payments($accountId, $period->startInput(), $period->endInput());
+
+        if ($response->failed()) {
+            return ['rows' => [], 'total' => 0.0, 'incomplete' => true];
+        }
+
         $rows = [];
-        $incomplete = false;
 
-        foreach ($period->months() as $month) {
-            $response = $this->sola->payments($accountId, $month);
-
-            if ($response->failed()) {
-                $incomplete = true;
-
-                continue;
-            }
-
-            foreach ((array) $response->get('payments', []) as $row) {
-                if (is_array($row) && $period->contains($row['payment_date'] ?? null)) {
-                    $rows[] = $row;
-                }
+        // Billing is asked for exactly this range, but the boundary rows are
+        // still trimmed defensively — the same guard traffic() relies on.
+        foreach ((array) $response->get('payments', []) as $row) {
+            if (is_array($row) && $period->contains($row['payment_date'] ?? null)) {
+                $rows[] = $row;
             }
         }
 
@@ -84,7 +86,7 @@ final class BillingHistory
             'rows' => $rows,
             // Amounts arrive in tiyin.
             'total' => self::sum($rows, 'amount') / 100,
-            'incomplete' => $incomplete,
+            'incomplete' => false,
         ];
     }
 
