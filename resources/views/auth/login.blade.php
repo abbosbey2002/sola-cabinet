@@ -11,7 +11,7 @@
             <div>
                 <label for="login" class="u-label mb-2 block">@lang('app.auth.phone')</label>
 
-                <input type="tel" id="login" name="login" required
+                <input type="tel" id="login" name="login" required data-phone-mask
                        value="{{ old('login', '+998') }}"
                        inputmode="tel" autocomplete="tel" autofocus
                        placeholder="+998 90 123 45 67"
