@@ -38,6 +38,8 @@ return [
     'header' => [
         'add_device' => 'Additional MAC',
         'add_device_sure' => 'Add an additional MAC address to this account?',
+        'add_device_sure_priced' => 'The additional MAC address costs :amount. Add it?',
+        'add_device_sure_free' => 'The additional MAC address is free. Add it?',
         'mac' => 'MAC address',
         'status' => 'Status',
         'date_connect' => 'Connected on',
@@ -100,7 +102,6 @@ return [
         'amount' => 'Amount',
         'status' => 'Status',
         'total_between' => 'Total from :start to :end',
-        'how_to_pay' => 'You can top up in the Payme, Click or Uzum app — contract number',
     ],
 
     'services' => [
@@ -221,6 +222,8 @@ return [
         'devices_hint_guest' => 'Device lists are not kept for this account type.',
         'tariffs' => 'No tariffs available right now',
         'tariffs_hint' => 'New tariffs appear here as they are published. Call support if you need one sooner.',
+        'services' => 'No extra services yet',
+        'services_hint' => 'Contact details have not been configured yet.',
     ],
 
     'ui' => [
@@ -230,6 +233,8 @@ return [
         'menu' => 'Menu',
         'skip' => 'Skip to content',
         'page' => ':page / :pages',
+        'copy' => 'Copy',
+        'copied' => 'Copied',
     ],
 
     'actions' => 'Actions',
@@ -251,7 +256,7 @@ return [
         'balance_ok' => 'Your balance covers it — the :amount sum charge on :date is funded.',
         'balance_low' => 'You are :amount sum short of the charge on :date.',
         'balance_negative' => 'Your account is in the red. Top up :amount sum to keep the connection on.',
-        'pay_with_contract' => 'In the Payme, Click or Uzum app enter contract number :contract.',
+        'pay_hint' => 'Enter this number in the Payme, Click or Uzum app.',
         'devices_count' => 'Devices',
         'not_selected' => 'Not selected',
         'unknown' => 'No data',
@@ -276,7 +281,6 @@ return [
         'data' => 'Data',
         'search' => 'Search',
         'print' => 'PDF / Print',
-        'clamped' => 'Period trimmed to :months months',
         'incomplete' => 'Some months could not be loaded',
         'total' => 'Total',
         'refresh' => 'Refresh',

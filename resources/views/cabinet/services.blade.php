@@ -53,6 +53,13 @@
         </div>
     @endif
 
+    {{-- If nothing above is configured and there's no call center either, this
+         page — reached specifically by someone looking for help — must not
+         render as a dead end. --}}
+    @if (! $cards && ! config('sola.call_center'))
+        <x-empty icon="chat" :title="__('app.empty.services')" :hint="__('app.empty.services_hint')"/>
+    @endif
+
     @if (config('sola.call_center'))
         <section class="u-card u-rise mt-4" style="--i:5" aria-labelledby="call-title">
             <h2 id="call-title" class="text-xl font-bold text-ink">@lang('app.services.call_title')</h2>

@@ -108,15 +108,18 @@
             <p class="mt-5 flex items-start gap-3 rounded-xl px-4 py-3.5 text-base text-ink"
                style="background: {{ $tone['bg'] }}">
                 <x-icon :name="$tone['icon']" class="mt-1" style="color: {{ $tone['fg'] }}"/>
-                <span>
-                    {{ $note }}
-                    @if ($state !== 'ok' && filled($contract))
-                        {{ __('app.dash.pay_with_contract', ['contract' => $contract]) }}
-                    @endif
-                </span>
+                <span>{{ $note }}</span>
             </p>
         @endif
     </section>
+
+    {{-- The one actionable thing when the balance needs attention: the
+         contract number, sized and copyable rather than folded into the
+         sentence above. Not shown for $state === null (no tariff cost to
+         judge the balance against) — that's "no verdict", not "trouble". --}}
+    @if (in_array($state, ['low', 'negative'], true) && filled($contract))
+        <x-pay-card :contract="$contract" :tone="$state === 'negative' ? 'danger' : 'warn'" class="mt-4"/>
+    @endif
 
     {{-- Three questions, three links. Each one leads to its own page, which is
          why no detail is kept here. --}}

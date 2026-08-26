@@ -16,6 +16,18 @@
         // not documented — so it is passed over rather than guessed at.
         $connect = is_numeric($connectCost ?? null) ? (float) $connectCost : null;
         $hasPrice = $connect !== null && $connect >= 0;
+
+        // The price belongs inside the decision, not below it: the button
+        // this confirms sits at the top of the card, and on a phone the one
+        // place the cost was shown (further down, past the device table) can
+        // already have scrolled out of view by the time it's tapped.
+        $addDeviceConfirm = match (true) {
+            ! $hasPrice => __('app.header.add_device_sure'),
+            $connect > 0 => __('app.header.add_device_sure_priced', [
+                'amount' => number_format($connect / 100, 0, '', ' ').' '.__('app.ye'),
+            ]),
+            default => __('app.header.add_device_sure_free'),
+        };
     @endphp
 
     <section class="u-card u-rise" aria-labelledby="devices-title">
@@ -29,7 +41,7 @@
                 <form method="post" action="{{ route('devices.add') }}" class="u-no-print">
                     @csrf
                     <button type="submit" class="u-btn-ghost u-btn-sm"
-                            data-confirm="{{ __('app.header.add_device_sure') }}"
+                            data-confirm="{{ $addDeviceConfirm }}"
                             data-confirm-action="{{ __('app.dash.connect') }}">
                         <x-icon name="plus" size="size-4"/>@lang('app.services.add_devices')
                     </button>

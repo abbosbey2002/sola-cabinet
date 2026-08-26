@@ -38,6 +38,8 @@ return [
     'header' => [
         'add_device' => 'Qo\'shimcha MAC',
         'add_device_sure' => 'Qo\'shimcha MAC manzil qo\'shishni istaysizmi?',
+        'add_device_sure_priced' => 'Qo\'shimcha MAC manzil narxi — :amount. Qo\'shishni istaysizmi?',
+        'add_device_sure_free' => 'Qo\'shimcha MAC manzil bepul qo\'shiladi. Davom etamizmi?',
         'mac' => 'MAC manzil',
         'status' => 'Holat',
         'date_connect' => 'Ulanish sanasi',
@@ -100,7 +102,6 @@ return [
         'amount' => 'Summa',
         'status' => 'Holat',
         'total_between' => ':start — :end oralig\'ida jami',
-        'how_to_pay' => 'Hisobni Payme, Click yoki Uzum ilovasida to\'ldirishingiz mumkin — shartnoma raqami',
     ],
 
     'services' => [
@@ -221,6 +222,8 @@ return [
         'devices_hint_guest' => 'Bu turdagi hisob uchun qurilmalar ro\'yxati yuritilmaydi.',
         'tariffs' => 'Hozircha mavjud tarif yo\'q',
         'tariffs_hint' => 'Tariflar yangilanganda shu yerda paydo bo\'ladi. Savol bo\'lsa qo\'llab-quvvatlashga qo\'ng\'iroq qiling.',
+        'services' => 'Hozircha qo\'shimcha xizmatlar yo\'q',
+        'services_hint' => 'Administratsiya bilan bog\'lanish uchun ma\'lumotlar hozircha kiritilmagan.',
     ],
 
     'ui' => [
@@ -230,6 +233,8 @@ return [
         'menu' => 'Menyu',
         'skip' => 'Asosiy qismga o\'tish',
         'page' => ':page / :pages',
+        'copy' => 'Nusxalash',
+        'copied' => 'Nusxalandi',
     ],
 
     'actions' => 'Amallar',
@@ -251,7 +256,7 @@ return [
         'balance_ok' => 'Balans yetarli — :date dagi :amount so\'m yechim qoplanadi.',
         'balance_low' => ':date dagi yechim uchun :amount so\'m yetishmaydi.',
         'balance_negative' => 'Hisobingiz manfiy. Internet uzilib qolmasligi uchun :amount so\'m to\'lang.',
-        'pay_with_contract' => 'Payme, Click yoki Uzum ilovasida :contract shartnoma raqamini kiriting.',
+        'pay_hint' => 'Ushbu raqamni Payme, Click yoki Uzum ilovasida kiriting.',
         'devices_count' => 'Qurilmalar soni',
         'not_selected' => 'Tanlanmagan',
         'unknown' => 'Ma\'lumot yo\'q',
@@ -276,7 +281,6 @@ return [
         'data' => 'Ma\'lumotlar',
         'search' => 'Qidirish',
         'print' => 'PDF / Chop etish',
-        'clamped' => 'Davr :months oygacha qisqartirildi',
         'incomplete' => 'Ba\'zi oylar uchun ma\'lumot olinmadi',
         'total' => 'Jami',
         'refresh' => 'Yangilash',

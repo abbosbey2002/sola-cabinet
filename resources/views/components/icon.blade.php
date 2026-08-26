@@ -40,6 +40,7 @@
         'search' => '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
         'calendar' => '<rect x="3.5" y="5.5" width="17" height="15" rx="2.5"/><path d="M3.5 10.5h17"/><path d="M8 3.5v4"/><path d="M16 3.5v4"/>',
         'download' => '<path d="M12 4v11m0 0 4-4m-4 4-4-4"/><path d="M4.5 19.5h15"/>',
+        'copy' => '<rect x="8.5" y="8.5" width="12" height="12" rx="2"/><path d="M15.5 8.5V5.5A2 2 0 0 0 13.5 3.5h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3"/>',
         // The sheet feeding out of the machine, because the button opens the
         // print dialog — where "Save as PDF" is one of the destinations.
         'printer' => '<path d="M7 9V4.5h10V9"/><path d="M7 17H5.5A1.5 1.5 0 0 1 4 15.5v-5A1.5 1.5 0 0 1 5.5 9h13a1.5 1.5 0 0 1 1.5 1.5v5a1.5 1.5 0 0 1-1.5 1.5H17"/><path d="M7 14h10v5.5H7Z"/>',

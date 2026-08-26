@@ -20,19 +20,19 @@
         @endif
     </div>
 
-    <div id="payments-result" data-ajax-region>
-        @include('payment.result', ['clamped' => false])
-    </div>
-
-    {{-- Outside the AJAX region: the contract number does not change with the
-         period, and it is the one thing on this page a subscriber copies out.
-         The payment systems are named in plain text on purpose — an
-         approximated Payme or Click mark, drawn rather than taken from the
-         brand's own press kit, is what a phishing page looks like. --}}
+    {{-- Above the history, not below it: "how do I pay" is why a subscriber
+         with a low or negative balance opens this page at all, and a muted
+         footnote under a full table was answering that question last. The
+         contract number does not change with the period, so this sits
+         outside the AJAX region. The payment systems are named in plain text
+         on purpose — an approximated Payme or Click mark, drawn rather than
+         taken from the brand's own press kit, is what a phishing page
+         looks like. --}}
     @if (filled($profile->contractNumber()))
-        <p class="mt-4 text-sm text-muted">
-            @lang('app.payment.how_to_pay')
-            <span class="font-semibold text-ink">{{ $profile->contractNumber() }}</span>.
-        </p>
+        <x-pay-card :contract="$profile->contractNumber()" class="mb-4"/>
     @endif
+
+    <div id="payments-result" data-ajax-region>
+        @include('payment.result')
+    </div>
 @endsection
