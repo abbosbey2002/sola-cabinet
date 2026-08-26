@@ -87,11 +87,16 @@ Barchasida `lang` ixtiyoriy. `acc_id` talab qiladigan endpointlarda u **butun so
 > 0** bo'lishi shart (aks holda `114`).
 
 ¹ Mijoz aytdi (2026-08-19): `/acct/payments` endi bitta `pay_month` o'rniga
-`pay_begin`/`pay_end` (`YYYY-MM-DD`, ikkalasi ham majburiy, filtrlash
-oralig'i) qabul qiladi — §7 ga qarang. Bu yerdagi `docs/task/apipc/main.php`
-nusxasi hali eski `pay_month`-only variantni ko'rsatadi (server tomonidagi
-o'zgarish live probe/yangi apipc export bilan hali qayta tasdiqlanmagan);
-xato kodlari (`115` va h.k.) shu sabab eski holicha qoldirilgan.
+`pay_begin`/`pay_end` (ikkalasi ham majburiy, filtrlash oralig'i) qabul
+qiladi — §7 ga qarang. Format ikki marta noto'g'ri kodga tushgan: avval
+(2026-08-19) `YYYY-MM-DD`, keyin (2026-08-25) `d.m.y` (ikki xonali yil) —
+ikkalasi ham live serverga qarshi to'liq tasdiqlanmagan holda kiritilgan
+edi; 2026-08-27 da server aslida `d.m.Y` (to'rt xonali yil, masalan
+`25.08.2026`) kutishi aniqlandi — §7 ga qarang, tuzatilgan. Bu yerdagi
+`docs/task/apipc/main.php` nusxasi hali eski `pay_month`-only variantni
+ko'rsatadi (server tomonidagi o'zgarish yangi apipc export bilan hali qayta
+tasdiqlanmagan); xato kodlari (`115` va h.k.) shu sabab eski holicha
+qoldirilgan.
 
 **`/service/disconnect` yo'q.** Tarif uchun `disconnect` bor, xizmat uchun yo'q —
 `API_PC` da `DelAddSrv` ochilmagan.
@@ -196,12 +201,19 @@ Parol murakkabligi **tekshirilmaydi** — bu Oracle tomonida.
 
 ### 7. `/acct/payments` — to'lovlar
 
-`pay_begin`, `pay_end` — `YYYY-MM-DD`, ikkalasi ham **majburiy**, inklyuziv
-oraliq (mijoz, 2026-08-19). Eski `pay_month` (`YYYY-MM`, `checkRequestMonth()`
-bilan tekshirilardi) endi yuborilmaydi — `SolaClient::payments()`,
-`BillingHistory::payments()`. Validatsiya xato kodlari (`115` qatorining
-yangi shakli, min/max oraliq bormi) hali live probe qilinmagan — quyidagi
-`114`/`110`/`121` eski kontraktdan qolgan, ehtiyot bilan o'qing.
+`pay_begin`, `pay_end` — **`d.m.Y`** (masalan `25.08.2026`), ikkalasi ham
+**majburiy**, inklyuziv oraliq. Oraliq borligi mijoz tomonidan 2026-08-19 da
+aytilgan, lekin o'shanda format `YYYY-MM-DD` deb yozilgan va live serverga
+qarshi tasdiqlanmagan edi; 2026-08-25 da live tekshiruv (keyinchalik noto'g'ri
+chiqqan) kun-oy-yil tartibida **ikki** xonali yil deb ko'rsatgan edi —
+2026-08-27 da bu ham noto'g'ri ekani aniqlandi: server to'liq, **to'rt**
+xonali yilni kutadi, sana kun-oy-yil tartibida, nuqta bilan ajratilgan holda.
+`Period::paymentsStart()`/`paymentsEnd()` shunga mos tuzatildi. Eski
+`pay_month` (`YYYY-MM`, `checkRequestMonth()` bilan tekshirilardi) endi
+yuborilmaydi — `SolaClient::payments()`, `BillingHistory::payments()`.
+Validatsiya xato kodlari (`115` qatorining yangi shakli, min/max oraliq
+bormi) hali live probe qilinmagan — quyidagi `114`/`110`/`121` eski
+kontraktdan qolgan, ehtiyot bilan o'qing.
 
 **200:** `payments[{payment_id, payment_date, amount, payment_system, payment_status}]`
 

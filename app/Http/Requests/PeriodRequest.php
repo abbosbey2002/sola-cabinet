@@ -30,9 +30,4 @@ final class PeriodRequest extends FormRequest
     {
         return Period::between($this->string('start')->value(), $this->string('end')->value());
     }
-
-    public function requestedStart(): string
-    {
-        return $this->string('start')->value();
-    }
 }

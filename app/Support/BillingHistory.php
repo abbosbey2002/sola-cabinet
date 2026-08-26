@@ -64,7 +64,7 @@ final class BillingHistory
      */
     public function payments(string $accountId, Period $period): array
     {
-        $response = $this->sola->payments($accountId, $period->startInput(), $period->endInput());
+        $response = $this->sola->payments($accountId, $period->paymentsStart(), $period->paymentsEnd());
 
         if ($response->failed()) {
             return ['rows' => [], 'total' => 0.0, 'incomplete' => true];

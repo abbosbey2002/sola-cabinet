@@ -13,26 +13,26 @@ use Carbon\CarbonImmutable;
  * endpoint — so BillingHistory::traffic() asks for each month the range
  * touches and trims the rows back to the exact days requested. months() and
  * contains() exist for that. /acct/payments takes a range directly
- * (pay_begin/pay_end); BillingHistory::payments() uses startInput()/
- * endInput() instead of months().
+ * (pay_begin/pay_end); BillingHistory::payments() uses paymentsStart()/
+ * paymentsEnd() instead of months().
  *
- * The month count is capped because each traffic month is a separate HTTP
- * round trip to a billing server that answers in ~250 ms; an unbounded range
- * would let a subscriber hold a PHP worker open for a minute. The same cap
- * also bounds how wide a single payments range can be requested.
+ * There used to be a 12-month cap here: each traffic month is a separate
+ * HTTP round trip to a billing server that answers in ~250 ms, so a very
+ * long range means a slow page rather than a wrong one. Removed on the
+ * client's explicit request (2026-08-25), after that trade-off was raised —
+ * a subscriber can now request any range, at the cost of a slower traffic
+ * page the wider it gets.
  */
 final class Period
 {
-    public const MAX_MONTHS = 12;
-
     private function __construct(
         public readonly CarbonImmutable $start,
         public readonly CarbonImmutable $end,
     ) {}
 
     /**
-     * Build from two "Y-m-d" strings, normalising the order and clamping the
-     * length. Both ends are inclusive: the end date covers its whole day.
+     * Build from two "Y-m-d" strings, normalising the order. Both ends are
+     * inclusive: the end date covers its whole day.
      */
     public static function between(string $start, string $end): self
     {
@@ -41,13 +41,6 @@ final class Period
 
         if ($from->greaterThan($to)) {
             [$from, $to] = [$to->startOfDay(), $from->endOfDay()];
-        }
-
-        // Clamp from the end backwards: the recent side is the one people mean.
-        $earliest = $to->startOfMonth()->subMonths(self::MAX_MONTHS - 1);
-
-        if ($from->lessThan($earliest)) {
-            $from = $earliest;
         }
 
         return new self($from, $to);
@@ -98,14 +91,12 @@ final class Period
     }
 
     /**
-     * True when the requested range was longer than MAX_MONTHS and got cut,
-     * so the UI can say so rather than quietly showing partial totals.
+     * "Y-m-d" — what an HTML `<input type="date">` requires in its `value`
+     * attribute (period-form.blade.php). Distinct from paymentsStart()/
+     * paymentsEnd() below, which speak the shape /acct/payments wants
+     * instead — the two are not interchangeable even though both describe
+     * the same two dates.
      */
-    public function wasClamped(string $requestedStart): bool
-    {
-        return CarbonImmutable::parse($requestedStart)->startOfDay()->lessThan($this->start);
-    }
-
     public function startInput(): string
     {
         return $this->start->format('Y-m-d');
@@ -114,5 +105,21 @@ final class Period
     public function endInput(): string
     {
         return $this->end->format('Y-m-d');
+    }
+
+    /**
+     * As /acct/payments actually wants pay_begin/pay_end: "d.m.Y" (4-digit
+     * year), not the "Y-m-d" startInput()/endInput() above give the date
+     * picker. The 2-digit "d.m.y" this shipped with on 2026-08-25 was wrong —
+     * corrected 2026-08-27, see docs/api/SOLA_API_REFERENCE.md §7.
+     */
+    public function paymentsStart(): string
+    {
+        return $this->start->format('d.m.Y');
+    }
+
+    public function paymentsEnd(): string
+    {
+        return $this->end->format('d.m.Y');
     }
 }

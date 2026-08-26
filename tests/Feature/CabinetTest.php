@@ -550,6 +550,24 @@ final class CabinetTest extends TestCase
             ->assertOk();
     }
 
+    /**
+     * Period::startInput()/endInput() and Period::paymentsStart()/
+     * paymentsEnd() speak different formats for different consumers — an
+     * HTML date input and /acct/payments respectively — and once already got
+     * merged into one pair of methods by mistake, which silently broke this
+     * picker (a "d.m.y" value is not valid HTML5 date input syntax, so the
+     * browser just shows it empty). This pins the one the picker needs.
+     */
+    #[Test]
+    public function the_period_picker_carries_an_html5_date_value(): void
+    {
+        $this->fakeSola();
+
+        $this->verifiedSubscriber()->get('/finance')
+            ->assertOk()
+            ->assertSee('value="'.now()->startOfMonth()->format('Y-m-d').'"', escape: false);
+    }
+
     #[Test]
     public function a_malformed_period_is_rejected(): void
     {
@@ -562,20 +580,23 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * Each month is a separate round trip to billing, so an open-ended range
-     * must not be allowed to hold a worker for a minute.
+     * The range cap was removed on the client's request (2026-08-25): a
+     * subscriber can now ask for any span, at the cost of one HTTP round
+     * trip per month it covers — no longer silently cut to a maximum.
      */
     #[Test]
-    public function an_over_long_range_is_clamped_instead_of_hammering_billing(): void
+    public function a_long_range_is_honoured_in_full_instead_of_clamped(): void
     {
         $this->fakeSola();
+
+        $period = Period::between('2019-01-01', '2026-08-10');
 
         $this->verifiedSubscriber()
             ->post('/statistics', ['start' => '2019-01-01', 'end' => '2026-08-10'])
             ->assertOk();
 
-        // One /abonent/info-free block: 12 traffic calls, no more.
-        Http::assertSentCount(Period::MAX_MONTHS);
+        // One /abonent/info-free block: one traffic call per month in range.
+        Http::assertSentCount(count($period->months()));
     }
 
     #[Test]

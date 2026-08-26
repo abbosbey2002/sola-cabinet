@@ -37,7 +37,6 @@ final class PaymentController extends Controller
         return view('payment.result', [
             'period' => $period,
             'payments' => $this->history()->payments($this->accountId(), $period),
-            'clamped' => $period->wasClamped($request->requestedStart()),
         ]);
     }
 

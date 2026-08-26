@@ -37,7 +37,6 @@ final class TrafficController extends Controller
         return view('trafic.result', [
             'period' => $period,
             'traffic' => $this->history()->traffic($this->accountId(), $period),
-            'clamped' => $period->wasClamped($request->requestedStart()),
         ]);
     }
 

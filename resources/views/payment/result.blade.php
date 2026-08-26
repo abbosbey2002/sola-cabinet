@@ -22,7 +22,7 @@
     $money = fn (float $value): string => str_replace('-', '−', number_format($value, 0, '', ' '));
 @endphp
 
-<x-period-note :clamped="$clamped ?? false" :incomplete="$payments['incomplete']"/>
+<x-period-note :incomplete="$payments['incomplete']"/>
 
 {{-- Labelled by its own visible caption: an sr-only "Total" heading above a
      line that already begins with "Total from … to …" is the same words twice. --}}

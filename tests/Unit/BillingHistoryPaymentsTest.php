@@ -33,8 +33,8 @@ final class BillingHistoryPaymentsTest extends TestCase
         Http::assertSentCount(1);
         Http::assertSent(fn (Request $request): bool => $request->body() === json_encode([
             'acc_id' => '1001',
-            'pay_begin' => '2026-06-01',
-            'pay_end' => '2026-08-15',
+            'pay_begin' => '01.06.2026',
+            'pay_end' => '15.08.2026',
             'lang' => 'ru',
         ]));
     }

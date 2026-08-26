@@ -112,8 +112,8 @@ final class SolaClient
     }
 
     /**
-     * @param  string  $begin  "Y-m-d", inclusive
-     * @param  string  $end    "Y-m-d", inclusive
+     * @param  string  $begin  "d.m.Y", inclusive — see Period::paymentsStart()
+     * @param  string  $end    "d.m.Y", inclusive — see Period::paymentsEnd()
      */
     public function payments(string $accountId, string $begin, string $end): SolaResponse
     {

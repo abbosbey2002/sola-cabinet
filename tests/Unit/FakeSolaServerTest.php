@@ -91,9 +91,38 @@ final class FakeSolaServerTest extends TestCase
         $this->assertSame([], (array) $sola->trafficDetail(self::ACCOUNT_ID, $future)->get('detail'));
         $this->assertSame([], (array) $sola->payments(
             self::ACCOUNT_ID,
-            $futureStart->format('Y-m-d'),
-            $futureStart->endOfMonth()->format('Y-m-d'),
+            $futureStart->format('d.m.Y'),
+            $futureStart->endOfMonth()->format('d.m.Y'),
         )->get('payments'));
+    }
+
+    /**
+     * pay_begin/pay_end arrive as "d.m.Y" (see Period::paymentsStart()), not the
+     * "Y-m-d" every other date on this fake speaks — a transposed d/m/y group
+     * here would silently turn into an empty result instead of an error, so
+     * this pins the happy path rather than only the "malformed → empty" one
+     * the future-month case above already covers.
+     */
+    #[Test]
+    public function payments_are_read_from_the_dmy_pay_range(): void
+    {
+        $sola = $this->client();
+
+        $end = CarbonImmutable::now();
+        $begin = $end->subDays(60);
+
+        $rows = (array) $sola->payments(
+            self::ACCOUNT_ID,
+            $begin->format('d.m.Y'),
+            $end->format('d.m.Y'),
+        )->get('payments');
+
+        $this->assertNotSame([], $rows);
+
+        foreach ($rows as $row) {
+            $date = CarbonImmutable::parse((string) $row['payment_date']);
+            $this->assertTrue($date->betweenIncluded($begin->startOfDay(), $end->endOfDay()));
+        }
     }
 
     #[Test]

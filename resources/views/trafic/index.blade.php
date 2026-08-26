@@ -11,6 +11,6 @@
          period, so a refresh that replaced only one of them would leave a total
          on screen that no longer matches the rows under it. --}}
     <div id="traffic-result" data-ajax-region>
-        @include('trafic.result', ['clamped' => false])
+        @include('trafic.result')
     </div>
 @endsection

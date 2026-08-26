@@ -7,7 +7,7 @@
     $mb = fn (float $value): string => number_format($value, 0, ',', ' ');
 @endphp
 
-<x-period-note :clamped="$clamped ?? false" :incomplete="$traffic['incomplete']"/>
+<x-period-note :incomplete="$traffic['incomplete']"/>
 
 <div class="grid gap-4 lg:grid-cols-[21rem_1fr]">
 
