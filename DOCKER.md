@@ -7,11 +7,21 @@ Laravel **13**, PHP **8.4**.
 
 ```bash
 docker compose up -d --build
-docker compose exec php composer install
-docker compose exec php php artisan key:generate   # faqat .env da APP_KEY bo'lmasa
+docker compose exec -u www-data php composer install
+docker compose exec -u www-data php php artisan key:generate   # faqat .env da APP_KEY bo'lmasa
 ```
 
 Sayt: http://localhost:8080
+
+> **Diqqat: har doim `-u www-data` bilan.** Dockerfile konteyner ichidagi
+> `www-data`'ni host foydalanuvchisining UID/GID'iga moslaydi, lekin `docker
+> compose exec`/`run` — agar `-u` berilmasa — **root** sifatida ishga tushadi
+> (image'da `USER www-data` yo'q). Root sifatida yaratilgan/yangilangan fayl
+> (`bootstrap/cache/*.php`, `storage/framework/views/*.php`) keyinchalik
+> `www-data` (ya'ni oddiy so'rovlarni bajaruvchi PHP-FPM) tomonidan
+> yangilanolmay qoladi — `touch(): Utime failed: Operation not permitted`.
+> Tuzatish: `docker compose exec -u root php chown -R www-data:www-data
+> storage bootstrap/cache`.
 
 ## Frontend (Vite + Tailwind)
 
@@ -63,7 +73,7 @@ Birinchi marta o'rnatishda:
 
 ```bash
 touch database/database.sqlite
-docker compose exec php php artisan migrate
+docker compose exec -u www-data php php artisan migrate
 ```
 
 ### Nega production'ga chiqmaydi
@@ -98,16 +108,16 @@ Bitta sahifa yuklanishi ~30 ta yozuv beradi. Kunlik `telescope:prune` jadvalga
 qo'shilgan, lekin Docker'da cron yo'q — shuning uchun fayl kattalashsa qo'lda:
 
 ```bash
-docker compose exec php php artisan telescope:prune --hours=48
-docker compose exec php php artisan telescope:clear   # hammasini o'chirish
+docker compose exec -u www-data php php artisan telescope:prune --hours=48
+docker compose exec -u www-data php php artisan telescope:clear   # hammasini o'chirish
 ```
 
 ## Artisan / composer / testlar
 
 ```bash
-docker compose exec php php artisan <buyruq>
-docker compose exec php php artisan test
-docker compose exec php ./vendor/bin/pint        # kod stili
+docker compose exec -u www-data php php artisan <buyruq>
+docker compose exec -u www-data php php artisan test
+docker compose exec -u www-data php ./vendor/bin/pint        # kod stili
 ```
 
 ## Muhim: API bog'liqligi
@@ -182,7 +192,7 @@ Raqamlar `rand()` emas, `crc32` orqali hosil qilinadi — sahifani yangilaganda
 o'zgarmaydi, skrinshotlar barqaror. Boshlang'ich holatga qaytarish:
 
 ```bash
-docker compose exec php php artisan cache:clear
+docker compose exec -u www-data php php artisan cache:clear
 ```
 
 > Faqat `APP_ENV=local` da ishlaydi. Deploy qilingan hostda `.env` ga
