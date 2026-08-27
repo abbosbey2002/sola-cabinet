@@ -377,8 +377,8 @@ final class FakeSolaServer
         $accountId = $this->accountId($payload);
         $rows = [];
 
-        $begin = $this->fromPayDate((string) ($payload['pay_begin'] ?? ''));
-        $end = $this->fromPayDate((string) ($payload['pay_end'] ?? ''));
+        $begin = $this->fromDmyDate((string) ($payload['pay_begin'] ?? ''));
+        $end = $this->fromDmyDate((string) ($payload['pay_end'] ?? ''));
 
         foreach ($this->daysBetween($begin, $end) as $day) {
             if ($this->number($accountId, $day, 'pay') % 14 !== 3) {
@@ -410,7 +410,10 @@ final class FakeSolaServer
         $accountId = $this->accountId($payload);
         $rows = [];
 
-        foreach ($this->daysOf((string) ($payload['detail_month'] ?? '')) as $day) {
+        $begin = $this->fromDmyDate((string) ($payload['detail_start'] ?? ''));
+        $end = $this->fromDmyDate((string) ($payload['detail_end'] ?? ''));
+
+        foreach ($this->daysBetween($begin, $end) as $day) {
             $hour = $this->number($accountId, $day, 'hour') % 24;
 
             $rows[] = [
@@ -425,25 +428,11 @@ final class FakeSolaServer
     }
 
     /**
-     * The days of a "Y-m" month, never past today — billing has no future rows.
-     *
-     * @return list<string>
+     * pay_begin/pay_end and detail_start/detail_end all arrive as "d.m.Y"
+     * (see Period::paymentsStart(), Period::detailStart()) — daysBetween()
+     * below wants "Y-m-d".
      */
-    private function daysOf(string $month): array
-    {
-        if (preg_match('/^\d{4}-\d{2}$/', $month) !== 1) {
-            return [];
-        }
-
-        return $this->daysBetween($month.'-01', CarbonImmutable::parse($month.'-01')->endOfMonth()->format('Y-m-d'));
-    }
-
-    /**
-     * pay_begin/pay_end arrive as "d.m.Y" (see Period::paymentsStart()) —
-     * daysBetween() below wants "Y-m-d", the same shape daysOf() already
-     * passes it for a traffic month.
-     */
-    private function fromPayDate(string $value): string
+    private function fromDmyDate(string $value): string
     {
         if (preg_match('/^(\d{2})\.(\d{2})\.(\d{4})$/', $value, $matches) !== 1) {
             return '';

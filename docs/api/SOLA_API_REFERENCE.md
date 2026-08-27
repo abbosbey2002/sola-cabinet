@@ -70,7 +70,7 @@ qolgani ma'qul, lekin bu server kafolati emas.
 | 5 | `/acct/balance` | `acc_id` | `{saldo}` | | `acctBalance` |
 | 6 | `/acct/wifipassword` | `acc_id`, `curr_password`, `new_password` | *bo'sh* | ✎ | `acctWifiPassword` |
 | 7 | `/acct/payments` | `acc_id`, `pay_begin`, `pay_end` ¹ | `payments[]` | | `acctPayments` |
-| 8 | `/traffic/detail` | `acc_id`, `detail_month` | `detail[]` | | `TrafficDetail` |
+| 8 | `/traffic/detail` | `acc_id`, `detail_start`, `detail_end` | `detail[]` | | `TrafficDetail` |
 | 9 | `/device/list` | `acc_id` | `devices[]`, `connect_cost` | | `DeviceList` |
 | 10 | `/device/new` | `acc_id` | *bo'sh* | ✎⇄ | `DeviceNew` |
 | 11 | `/device/newoneclick` | `phn`, `acc_id`, `smsCode` | `accs[]`, `smsSended` | ✎✉⇄ | `DeviceNewOneClick` |
@@ -221,15 +221,22 @@ kontraktdan qolgan, ehtiyot bilan o'qing.
 - `payment_system` = `NBANK_KASSA`, lekin `BANK_KASSA == 5` bo'lsa `NOTE`
 - `payment_status` — bazadan erkin matn, `lang` bo'yicha tarjima qilinadi
 
-Sahifalash yo'q. Sana oralig'i endi bor (`pay_begin`/`pay_end`) — kabinet
-tomonida `Period::MAX_MONTHS` (12 oy) bilan cheklanadi, serverning o'z
-maksimal oralig'i tasdiqlanmagan.
+Sahifalash yo'q. Sana oralig'i endi bor (`pay_begin`/`pay_end`) — 12 oylik
+`Period::MAX_MONTHS` cheklovi 2026-08-25 da olib tashlangan (mijoz so'rovi
+bilan), serverning o'z maksimal oralig'i hali tasdiqlanmagan.
 
 `114` · `110` · `121` (`115` eski `pay_month` uchun edi — yangi kontraktda hali tasdiqlanmagan).
 
 ### 8. `/traffic/detail` — trafik detalizatsiyasi
 
-`detail_month` — `YYYY-MM` → ichkarida `YYMM` ga aylantiriladi (`getMonthYYMM`).
+`detail_start`, `detail_end` — **`d.m.Y`** (masalan `25.08.2026`), inklyuziv
+oraliq — `pay_begin`/`pay_end` (§7) bilan bir xil shakl. Eski `detail_month`
+(`YYYY-MM`, ichkarida `YYMM`ga aylantirilardi — `getMonthYYMM`) endi
+yuborilmaydi — `SolaClient::trafficDetail()`, `BillingHistory::traffic()`.
+Bu format billing/SOLA tomoni bilan mijoz orqali tasdiqlangan (2026-08-27),
+lekin `pay_begin`/`pay_end` kabi live serverga qarshi mustaqil o'lchanmagan —
+haqiqiy format va xato kodlari (quyidagi `114`/`115`/`110`/`121` eski
+`detail_month` kontraktidan qolgan) birinchi real chaqiruvda tekshirilsin.
 
 **200:** `detail[{event_time, location_info, traffic_input, traffic_output, pocket_info}]`
 
@@ -465,10 +472,12 @@ qilingani uchun **int**. Batafsil: `SOLA_API.md` §"Muhim: tiplar".
 holda o'tadi — ularda kirill bo'lsa buziladi.
 
 **Sahifalash yo'q.** Hech bir ro'yxat endpointida `limit`/`offset` yo'q.
-`/traffic/detail` bitta **oy** oladi (`detail_month`); `date_from`/`date_to`
-yuborilsa jimgina e'tiborsiz qoldiriladi (o'lchangan — `SOLA_API.md` §10).
-`/acct/payments` endi bundan mustasno: `pay_begin`/`pay_end` bilan haqiqiy
-sana oralig'ini qabul qiladi (mijoz, 2026-08-19) — §7.
+`/acct/payments` `pay_begin`/`pay_end` bilan haqiqiy sana oralig'ini qabul
+qiladi (mijoz, 2026-08-19) — §7. `/traffic/detail` ham endi xuddi shunday
+`detail_start`/`detail_end` bilan oraliq qabul qiladi (mijoz, 2026-08-27) —
+§8; eski o'lchov (`date_from`/`date_to` e'tiborsiz qoldirilishi,
+`SOLA_API.md` §10) `detail_month` kontraktiga tegishli edi va yangi
+`detail_start`/`detail_end` maydonlari bilan qayta tekshirilmagan.
 
 **Tranzaksiya.** O'zgartiruvchi 6 ta endpoint `executeDefault()` + aniq
 `commit`/`rollback` ishlatadi. Idempotentlik yo'q: takroriy `/tariff/connect`

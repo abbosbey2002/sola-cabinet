@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Support\Period;
 use App\Support\TariffVisibility;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
@@ -290,19 +289,19 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * The API only answers one "Y-m" at a time, so a range that spans months
-     * has to be assembled from one call per month and trimmed to the days
-     * actually asked for.
+     * The API answers a range directly (detail_start/detail_end), so a
+     * request spanning months costs one call — but boundary rows outside
+     * the requested days are still trimmed defensively.
      */
     #[Test]
-    public function a_range_spanning_months_is_fetched_month_by_month_and_trimmed(): void
+    public function a_range_spanning_months_is_fetched_in_one_call_and_trimmed(): void
     {
         $this->fakeSola([
             '*/traffic/detail' => Http::response([
                 'detail' => [
                     // Inside the requested 20.06 – 10.08 window.
                     ['traffic_input' => 1048576, 'traffic_output' => 0, 'event_time' => '2026-06-25 10:00:00'],
-                    // Before it — the API returns it because it answers per month.
+                    // Before it — trimmed by Period::contains() defensively.
                     ['traffic_input' => 8388608, 'traffic_output' => 0, 'event_time' => '2026-06-02 10:00:00'],
                 ],
             ]),
@@ -313,21 +312,18 @@ final class CabinetTest extends TestCase
 
         $response->assertOk();
 
-        // June, July, August — and nothing else: the block re-renders on its
-        // own, without re-reading the subscriber's profile.
-        Http::assertSentCount(3);
+        // The block re-renders on its own, without re-reading the
+        // subscriber's profile — one traffic call for the whole range.
+        Http::assertSentCount(1);
 
-        $months = [];
-
-        Http::assertSent(function (Request $request) use (&$months): bool {
+        Http::assertSent(function (Request $request): bool {
             if (str_contains($request->url(), '/traffic/detail')) {
-                $months[] = $request->data()['detail_month'];
+                $this->assertSame('20.06.2026', $request->data()['detail_start']);
+                $this->assertSame('10.08.2026', $request->data()['detail_end']);
             }
 
             return true;
         });
-
-        $this->assertSame(['2026-06', '2026-07', '2026-08'], $months);
     }
 
     /**
@@ -568,6 +564,22 @@ final class CabinetTest extends TestCase
             ->assertSee('value="'.now()->startOfMonth()->format('Y-m-d').'"', escape: false);
     }
 
+    /**
+     * The traffic page opens on a trailing month (today minus one calendar
+     * month), not the current-calendar-month default /finance and the
+     * dashboard use — see Period::lastMonth().
+     */
+    #[Test]
+    public function the_traffic_page_defaults_to_the_trailing_month(): void
+    {
+        $this->fakeSola();
+
+        $this->verifiedSubscriber()->get('/statistics')
+            ->assertOk()
+            ->assertSee('value="'.now()->subMonth()->format('Y-m-d').'"', escape: false)
+            ->assertSee('value="'.now()->format('Y-m-d').'"', escape: false);
+    }
+
     #[Test]
     public function a_malformed_period_is_rejected(): void
     {
@@ -581,22 +593,21 @@ final class CabinetTest extends TestCase
 
     /**
      * The range cap was removed on the client's request (2026-08-25): a
-     * subscriber can now ask for any span, at the cost of one HTTP round
-     * trip per month it covers — no longer silently cut to a maximum.
+     * subscriber can now ask for any span. Billing now takes the range
+     * directly (detail_start/detail_end), so a wide span no longer costs
+     * one HTTP round trip per month it covers either.
      */
     #[Test]
     public function a_long_range_is_honoured_in_full_instead_of_clamped(): void
     {
         $this->fakeSola();
 
-        $period = Period::between('2019-01-01', '2026-08-10');
-
         $this->verifiedSubscriber()
             ->post('/statistics', ['start' => '2019-01-01', 'end' => '2026-08-10'])
             ->assertOk();
 
-        // One /abonent/info-free block: one traffic call per month in range.
-        Http::assertSentCount(count($period->months()));
+        // One /abonent/info-free block: one traffic call for the whole range.
+        Http::assertSentCount(1);
     }
 
     #[Test]

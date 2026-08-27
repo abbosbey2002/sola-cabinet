@@ -65,43 +65,53 @@ final class FakeSolaServerTest extends TestCase
     }
 
     /**
-     * History is read a month at a time and trimmed to the requested days, so
-     * every row has to fall inside the month it was asked for — and billing
-     * never reports a session that has not happened yet.
+     * History is read for the exact range asked and trimmed to it, so every
+     * row has to fall inside that range — and billing never reports a
+     * session that has not happened yet.
      */
     #[Test]
-    public function history_stays_inside_the_month_it_was_asked_for(): void
+    public function history_stays_inside_the_range_it_was_asked_for(): void
     {
         $sola = $this->client();
-        $month = now()->format('Y-m');
+        $begin = CarbonImmutable::now()->startOfMonth();
+        $end = CarbonImmutable::now();
 
-        $rows = (array) $sola->trafficDetail(self::ACCOUNT_ID, $month)->get('detail');
+        $rows = (array) $sola->trafficDetail(
+            self::ACCOUNT_ID,
+            $begin->format('d.m.Y'),
+            $end->format('d.m.Y'),
+        )->get('detail');
 
         $this->assertNotSame([], $rows);
 
         foreach ($rows as $row) {
-            $this->assertStringStartsWith($month, (string) $row['event_time']);
-            $this->assertLessThanOrEqual(CarbonImmutable::now()->endOfDay(), CarbonImmutable::parse($row['event_time']));
+            $date = CarbonImmutable::parse((string) $row['event_time']);
+            $this->assertTrue($date->betweenIncluded($begin->startOfDay(), $end->endOfDay()));
         }
 
-        // A month the subscriber has not lived through yet is simply empty.
-        $future = now()->addYear()->format('Y-m');
-        $futureStart = CarbonImmutable::parse($future.'-01');
+        // A range the subscriber has not lived through yet is simply empty.
+        $futureStart = CarbonImmutable::now()->addYear()->startOfMonth();
+        $futureEnd = $futureStart->endOfMonth();
 
-        $this->assertSame([], (array) $sola->trafficDetail(self::ACCOUNT_ID, $future)->get('detail'));
+        $this->assertSame([], (array) $sola->trafficDetail(
+            self::ACCOUNT_ID,
+            $futureStart->format('d.m.Y'),
+            $futureEnd->format('d.m.Y'),
+        )->get('detail'));
         $this->assertSame([], (array) $sola->payments(
             self::ACCOUNT_ID,
             $futureStart->format('d.m.Y'),
-            $futureStart->endOfMonth()->format('d.m.Y'),
+            $futureEnd->format('d.m.Y'),
         )->get('payments'));
     }
 
     /**
-     * pay_begin/pay_end arrive as "d.m.Y" (see Period::paymentsStart()), not the
-     * "Y-m-d" every other date on this fake speaks — a transposed d/m/y group
-     * here would silently turn into an empty result instead of an error, so
-     * this pins the happy path rather than only the "malformed → empty" one
-     * the future-month case above already covers.
+     * pay_begin/pay_end and detail_start/detail_end all arrive as "d.m.Y"
+     * (see Period::paymentsStart(), Period::detailStart()), not the "Y-m-d"
+     * every other date on this fake speaks — a transposed d/m/y group here
+     * would silently turn into an empty result instead of an error, so this
+     * pins the happy path rather than only the "malformed → empty" one the
+     * future-range case above already covers.
      */
     #[Test]
     public function payments_are_read_from_the_dmy_pay_range(): void

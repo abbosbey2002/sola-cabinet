@@ -10,15 +10,9 @@ use Carbon\CarbonImmutable;
 /**
  * Traffic and payment history over an arbitrary date range.
  *
- * Traffic is still month-at-a-time: traffic() walks the months a Period
- * covers, concatenates the rows and drops the ones that fall outside the
- * requested days. A failed month is skipped rather than aborting the whole
- * range — a partial answer with the rest of the period intact beats a 502
- * for the subscriber.
- *
- * Payments take the range directly (pay_begin/pay_end) in one call — billing
- * added range filtering to /acct/payments, so there is no month walk there
- * any more.
+ * Both take the range directly in one call — traffic() sends detail_start/
+ * detail_end, payments() sends pay_begin/pay_end. Neither walks the range
+ * month by month any more; billing added range filtering to both endpoints.
  */
 final class BillingHistory
 {
@@ -29,22 +23,19 @@ final class BillingHistory
      */
     public function traffic(string $accountId, Period $period): array
     {
+        $response = $this->sola->trafficDetail($accountId, $period->detailStart(), $period->detailEnd());
+
+        if ($response->failed()) {
+            return ['rows' => [], 'input' => 0.0, 'output' => 0.0, 'incomplete' => true];
+        }
+
         $rows = [];
-        $incomplete = false;
 
-        foreach ($period->months() as $month) {
-            $response = $this->sola->trafficDetail($accountId, $month);
-
-            if ($response->failed()) {
-                $incomplete = true;
-
-                continue;
-            }
-
-            foreach ((array) $response->get('detail', []) as $row) {
-                if (is_array($row) && $period->contains($row['event_time'] ?? null)) {
-                    $rows[] = $row;
-                }
+        // Billing is asked for exactly this range, but the boundary rows are
+        // still trimmed defensively — the same guard payments() relies on.
+        foreach ((array) $response->get('detail', []) as $row) {
+            if (is_array($row) && $period->contains($row['event_time'] ?? null)) {
+                $rows[] = $row;
             }
         }
 
@@ -55,7 +46,7 @@ final class BillingHistory
             // The API reports bytes; every screen speaks MiB.
             'input' => self::sum($rows, 'traffic_input') / 1024 / 1024,
             'output' => self::sum($rows, 'traffic_output') / 1024 / 1024,
-            'incomplete' => $incomplete,
+            'incomplete' => false,
         ];
     }
 

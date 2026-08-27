@@ -141,7 +141,14 @@ probel uchragani uchun nom bo'yicha solishtirish joriy tarifni yo'qotadi.
 
 ## 6. `/traffic/detail` — trafik detalizatsiyasi
 
-**So'rov:** `acc_id`, `detail_month` (`Y-m`), `lang` · **Javob:** `detail[]`
+**So'rov:** `acc_id`, `detail_start`, `detail_end` (`d.m.Y`, inklyuziv oraliq), `lang` ·
+**Javob:** `detail[]`
+
+Eski `detail_month` (`Y-m`) endi yuborilmaydi — bu range parametri mijoz
+tomonidan billing bilan tasdiqlangan (2026-08-27), lekin quyidagi "Sana
+oralig'i parametrlari — qabul qilinmaydi" bo'limi shu sahifada eski
+`detail_month`-faqat kontraktga qarshi o'lchangan, `detail_start`/
+`detail_end` bilan qayta tekshirilmagan.
 
 | Maydon | Tur | Misol | Izoh |
 |---|---|---|---|
@@ -260,9 +267,13 @@ sodiqlik dasturi, tarif tarixi va chegirmalar API da umuman yo'q.
 /traffic/detail {date_from, date_to}                →  115 "не указан … (месяц)"
 ```
 
-Oy majburiy, oraliq esa **jimgina e'tiborsiz qoldiriladi**. Ya'ni
-`Period::MAX_MONTHS = 12` cheklovi va har oy uchun alohida so'rov yuborish
-yechimi kuchida qoladi.
+Oy majburiy, oraliq esa **jimgina e'tiborsiz qoldiriladi** — bu o'lchov
+`date_from`/`date_to` maydon nomlariga tegishli edi. Shundan keyin billing
+ikkala endpoint uchun ham haqiqiy range parametrlarini qo'shdi: `/acct/payments`
+uchun `pay_begin`/`pay_end` (mijoz, 2026-08-19), `/traffic/detail` uchun
+`detail_start`/`detail_end` (mijoz, 2026-08-27) — ikkalasi ham `SOLA_API_REFERENCE.md`
+§7-8 da. `Period::MAX_MONTHS` cheklovi 2026-08-25 da olib tashlangan; har oy
+uchun alohida so'rov yuborish yechimi ham shu bilan endi kerak emas.
 
 ### Yo'l-yo'lakay: `phone` maydoni toza emas
 

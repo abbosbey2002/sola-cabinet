@@ -59,6 +59,21 @@ final class SolaClientTest extends TestCase
     }
 
     #[Test]
+    public function traffic_detail_sends_a_start_end_range_not_a_month(): void
+    {
+        Http::fake(['*' => Http::response([])]);
+
+        $this->client()->trafficDetail('1001', '2026-07-01', '2026-07-31');
+
+        Http::assertSent(fn (Request $request): bool => $request->body() === json_encode([
+            'acc_id' => '1001',
+            'detail_start' => '2026-07-01',
+            'detail_end' => '2026-07-31',
+            'lang' => 'ru',
+        ]));
+    }
+
+    #[Test]
     public function connecting_a_tariff_is_sent_without_a_lang_field(): void
     {
         Http::fake(['*' => Http::response([])]);

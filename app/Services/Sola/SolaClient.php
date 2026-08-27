@@ -126,13 +126,15 @@ final class SolaClient
     }
 
     /**
-     * @param  string  $month  "Y-m"
+     * @param  string  $begin  "d.m.Y", inclusive — see Period::detailStart()
+     * @param  string  $end    "d.m.Y", inclusive — see Period::detailEnd()
      */
-    public function trafficDetail(string $accountId, string $month): SolaResponse
+    public function trafficDetail(string $accountId, string $begin, string $end): SolaResponse
     {
         return $this->post('/traffic/detail', [
             'acc_id' => $accountId,
-            'detail_month' => $month,
+            'detail_start' => $begin,
+            'detail_end' => $end,
             'lang' => $this->locale(),
         ]);
     }

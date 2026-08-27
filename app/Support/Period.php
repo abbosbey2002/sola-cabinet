@@ -9,19 +9,13 @@ use Carbon\CarbonImmutable;
 /**
  * A start/end date range, as the spec's "Период: с … по …" controls produce.
  *
- * /traffic/detail only accepts a single "Y-m" per call — there is no range
- * endpoint — so BillingHistory::traffic() asks for each month the range
- * touches and trims the rows back to the exact days requested. months() and
- * contains() exist for that. /acct/payments takes a range directly
- * (pay_begin/pay_end); BillingHistory::payments() uses paymentsStart()/
- * paymentsEnd() instead of months().
- *
- * There used to be a 12-month cap here: each traffic month is a separate
- * HTTP round trip to a billing server that answers in ~250 ms, so a very
- * long range means a slow page rather than a wrong one. Removed on the
- * client's explicit request (2026-08-25), after that trade-off was raised —
- * a subscriber can now request any range, at the cost of a slower traffic
- * page the wider it gets.
+ * Both /acct/payments and /traffic/detail take a range directly now —
+ * BillingHistory::payments() uses paymentsStart()/paymentsEnd() (pay_begin/
+ * pay_end), BillingHistory::traffic() uses detailStart()/detailEnd()
+ * (detail_start/detail_end). contains() still trims the rows defensively:
+ * billing answers the range it was asked for, but boundary rows are checked
+ * rather than trusted. months() is kept as a general "Y-m" breakdown even
+ * though neither history call walks it anymore.
  */
 final class Period
 {
@@ -54,6 +48,17 @@ final class Period
         $now = CarbonImmutable::now();
 
         return new self($now->startOfMonth(), $now->endOfDay());
+    }
+
+    /**
+     * The trailing 30-ish days, which is what the traffic page opens on:
+     * today minus one calendar month, through today.
+     */
+    public static function lastMonth(): self
+    {
+        $now = CarbonImmutable::now();
+
+        return new self($now->subMonth()->startOfDay(), $now->endOfDay());
     }
 
     /**
@@ -119,6 +124,22 @@ final class Period
     }
 
     public function paymentsEnd(): string
+    {
+        return $this->end->format('d.m.Y');
+    }
+
+    /**
+     * As /traffic/detail wants detail_start/detail_end: "d.m.Y" (4-digit
+     * year), the same shape /acct/payments takes for pay_begin/pay_end —
+     * distinct from startInput()/endInput() above, which speak the date
+     * picker's "Y-m-d" instead.
+     */
+    public function detailStart(): string
+    {
+        return $this->start->format('d.m.Y');
+    }
+
+    public function detailEnd(): string
     {
         return $this->end->format('d.m.Y');
     }
