@@ -107,6 +107,12 @@ return [
 
     'loyalty_url' => env('SOLA_LOYALTY_URL'),
 
+    /*
+     * The support Telegram channel — a known, permanent link, like the speed
+     * test above, not an opt-in campaign URL like promo/loyalty.
+     */
+    'telegram_url' => env('SOLA_TELEGRAM_URL', 'https://t.me/sola_911'),
+
     'chat' => [
         'url' => env('SOLA_CHAT_URL'),
         'script' => env('SOLA_CHAT_SCRIPT'),

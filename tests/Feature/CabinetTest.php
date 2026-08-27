@@ -264,6 +264,22 @@ final class CabinetTest extends TestCase
         }
     }
 
+    /**
+     * Unlike promo/loyalty/chat — opt-in campaign links, unset by default —
+     * the Telegram channel ships with a real default (config/sola.php), so
+     * the card is on the services page out of the box.
+     */
+    #[Test]
+    public function the_telegram_card_links_to_the_channel(): void
+    {
+        $this->fakeSola();
+
+        $this->verifiedSubscriber()->get('/services')
+            ->assertOk()
+            ->assertSee(trans('app.telegram.title'))
+            ->assertSee('href="'.config('sola.telegram_url').'"', escape: false);
+    }
+
     #[Test]
     public function the_traffic_page_totals_the_reported_bytes(): void
     {
@@ -570,6 +586,31 @@ final class CabinetTest extends TestCase
         $this->verifiedSubscriber()->get('/finance')
             ->assertSee(trans('app.payment.id'), escape: false)
             ->assertSee('1062960');
+    }
+
+    /**
+     * Billing sends corrections as negative amounts under the same free-text
+     * status a normal payment carries — "оплачено" on a debit reads as
+     * billing's mistake, not the subscriber's, so the sign overrides the
+     * label and tone rather than the status text winning.
+     */
+    #[Test]
+    public function a_negative_amount_is_labelled_a_charge_not_paid(): void
+    {
+        $this->fakeSola([
+            '*/acct/payments' => Http::response([
+                'payments' => [
+                    ['payment_id' => '1067505', 'payment_date' => now()->format('Y-m-d').' 14:20:00', 'amount' => -20000000, 'payment_system' => 'касса', 'payment_status' => "to'langan"],
+                ],
+            ]),
+        ]);
+
+        $content = (string) $this->verifiedSubscriber()->get('/finance')->getContent();
+
+        $this->assertStringContainsString(trans('app.payment.charge'), $content);
+        $this->assertStringContainsString('u-pill-neutral', $content);
+        // The raw billing status text is overridden, not shown alongside it.
+        $this->assertStringNotContainsString("to'langan", $content);
     }
 
     /**

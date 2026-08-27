@@ -81,7 +81,7 @@
                 @if (filled($next))
                     @lang('app.tariff.next_is', ['tariff' => $next])
                 @elseif (filled($current))
-                    @lang('app.tariff.next_continues', ['tariff' => $current])
+                    @lang('app.tariff.next_continues')
                 @else
                     @lang('app.dash.not_selected')
                 @endif

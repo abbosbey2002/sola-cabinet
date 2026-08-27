@@ -66,10 +66,18 @@
                 <tbody>
                     @foreach ($payments['rows'] as $payment)
                         @php
-                            $tone = $tones[BillingHistory::paymentTone($payment['payment_status'] ?? null)];
-                            $label = filled($payment['payment_status'] ?? null)
-                                ? $payment['payment_status']
-                                : __('app.dash.unknown');
+                            // Billing sends corrections as negative amounts (see
+                            // $money above) under the same free-text status as an
+                            // ordinary payment — "оплачено" on a charge reads as
+                            // billing's mistake, not the subscriber's. The sign
+                            // overrides the text rather than the other way round.
+                            $isCharge = ((float) ($payment['amount'] ?? 0)) < 0;
+                            $tone = $isCharge ? $tones['neutral'] : $tones[BillingHistory::paymentTone($payment['payment_status'] ?? null)];
+                            $label = match (true) {
+                                $isCharge => __('app.payment.charge'),
+                                filled($payment['payment_status'] ?? null) => $payment['payment_status'],
+                                default => __('app.dash.unknown'),
+                            };
                         @endphp
 
                         <tr>

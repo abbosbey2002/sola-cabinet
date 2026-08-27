@@ -38,7 +38,7 @@ return [
     'header' => [
         'add_device' => 'Additional MAC',
         'add_device_sure' => 'Add an additional MAC address to this account?',
-        'add_device_sure_priced' => 'The additional MAC address costs :amount. Add it?',
+        'add_device_sure_priced' => 'Connecting an additional device costs :amount.',
         'add_device_sure_free' => 'The additional MAC address is free. Add it?',
         'mac' => 'MAC address',
         'status' => 'Status',
@@ -102,6 +102,7 @@ return [
         'amount' => 'Amount',
         'status' => 'Status',
         'total_between' => 'Total from :start to :end',
+        'charge' => 'Charge',
     ],
 
     'services' => [
@@ -148,7 +149,7 @@ return [
         'switch_hint' => 'The new tariff takes effect from the next billing period. Money already paid for the current period is not refunded.',
         'switch_locked' => 'Only permanent subscribers can change tariff. Call support if you have a question.',
         'next_is' => 'From next month: :tariff.',
-        'next_continues' => 'No tariff chosen for next month — :tariff carries on.',
+        'next_continues' => 'No tariff change is scheduled.',
     ],
 
     'modal' => [
@@ -306,6 +307,12 @@ return [
         'title' => 'Support chat',
         'text' => 'Message us, we are online',
         'go' => 'Open chat',
+    ],
+
+    'telegram' => [
+        'title' => 'Telegram channel',
+        'text' => 'News and notifications on Telegram',
+        'go' => 'Subscribe',
     ],
 
     'pay_status' => [

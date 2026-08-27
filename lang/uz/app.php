@@ -38,7 +38,7 @@ return [
     'header' => [
         'add_device' => 'Qo\'shimcha MAC',
         'add_device_sure' => 'Qo\'shimcha MAC manzil qo\'shishni istaysizmi?',
-        'add_device_sure_priced' => 'Qo\'shimcha MAC manzil narxi — :amount. Qo\'shishni istaysizmi?',
+        'add_device_sure_priced' => 'Qo\'shimcha qurilma ulash narxi — :amount.',
         'add_device_sure_free' => 'Qo\'shimcha MAC manzil bepul qo\'shiladi. Davom etamizmi?',
         'mac' => 'MAC manzil',
         'status' => 'Holat',
@@ -102,6 +102,7 @@ return [
         'amount' => 'Summa',
         'status' => 'Holat',
         'total_between' => ':start — :end oralig\'ida jami',
+        'charge' => 'Yechib olindi',
     ],
 
     'services' => [
@@ -148,7 +149,7 @@ return [
         'switch_hint' => 'Yangi tarif keyingi hisob davridan kuchga kiradi. Joriy davr uchun to\'langan pul qaytarilmaydi.',
         'switch_locked' => 'Tarifni o\'zgartirish faqat doimiy abonentlar uchun. Savol bo\'lsa qo\'llab-quvvatlashga qo\'ng\'iroq qiling.',
         'next_is' => 'Keyingi oydan: :tariff.',
-        'next_continues' => 'Keyingi oyga tarif tanlanmagan — :tariff o\'z-o\'zidan davom etadi.',
+        'next_continues' => 'Tarif almashtirish rejalashtirilmagan.',
     ],
 
     'modal' => [
@@ -306,6 +307,12 @@ return [
         'title' => 'Qo\'llab-quvvatlash chati',
         'text' => 'Bizga yozing, biz onlaynmiz',
         'go' => 'Chatni ochish',
+    ],
+
+    'telegram' => [
+        'title' => 'Telegram-kanal',
+        'text' => 'Telegram\'da yangiliklar va bildirishnomalar',
+        'go' => 'Obuna bo\'lish',
     ],
 
     'pay_status' => [
