@@ -160,7 +160,7 @@ return [
         'choose' => 'tanlash',
         'to_connect' => 'Qachon ulash kerak',
         'now' => 'Hozir',
-        'month' => 'Keyingi hisob davridan',
+        'month' => 'Keyingi hisob-kitob davridan boshlab',
         'are_you_sure' => 'Haqiqatdan ham ulanishni istaysizmi?',
         'success_tariff' => 'Tarif muvaffaqiyatli ulandi!',
     ],
