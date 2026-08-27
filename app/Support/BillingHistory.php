@@ -10,7 +10,7 @@ use Carbon\CarbonImmutable;
 /**
  * Traffic and payment history over an arbitrary date range.
  *
- * Both take the range directly in one call — traffic() sends detail_start/
+ * Both take the range directly in one call — traffic() sends detail_begin/
  * detail_end, payments() sends pay_begin/pay_end. Neither walks the range
  * month by month any more; billing added range filtering to both endpoints.
  */
@@ -23,7 +23,7 @@ final class BillingHistory
      */
     public function traffic(string $accountId, Period $period): array
     {
-        $response = $this->sola->trafficDetail($accountId, $period->detailStart(), $period->detailEnd());
+        $response = $this->sola->trafficDetail($accountId, $period->detailBegin(), $period->detailEnd());
 
         if ($response->failed()) {
             return ['rows' => [], 'input' => 0.0, 'output' => 0.0, 'incomplete' => true];

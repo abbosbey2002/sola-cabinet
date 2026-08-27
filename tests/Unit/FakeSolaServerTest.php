@@ -106,8 +106,8 @@ final class FakeSolaServerTest extends TestCase
     }
 
     /**
-     * pay_begin/pay_end and detail_start/detail_end all arrive as "d.m.Y"
-     * (see Period::paymentsStart(), Period::detailStart()), not the "Y-m-d"
+     * pay_begin/pay_end and detail_begin/detail_end all arrive as "d.m.Y"
+     * (see Period::paymentsStart(), Period::detailBegin()), not the "Y-m-d"
      * every other date on this fake speaks — a transposed d/m/y group here
      * would silently turn into an empty result instead of an error, so this
      * pins the happy path rather than only the "malformed → empty" one the

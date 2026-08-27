@@ -59,7 +59,7 @@ final class SolaClientTest extends TestCase
     }
 
     #[Test]
-    public function traffic_detail_sends_a_start_end_range_not_a_month(): void
+    public function traffic_detail_sends_a_begin_end_range_not_a_month(): void
     {
         Http::fake(['*' => Http::response([])]);
 
@@ -67,7 +67,7 @@ final class SolaClientTest extends TestCase
 
         Http::assertSent(fn (Request $request): bool => $request->body() === json_encode([
             'acc_id' => '1001',
-            'detail_start' => '2026-07-01',
+            'detail_begin' => '2026-07-01',
             'detail_end' => '2026-07-31',
             'lang' => 'ru',
         ]));

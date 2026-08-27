@@ -141,13 +141,13 @@ probel uchragani uchun nom bo'yicha solishtirish joriy tarifni yo'qotadi.
 
 ## 6. `/traffic/detail` — trafik detalizatsiyasi
 
-**So'rov:** `acc_id`, `detail_start`, `detail_end` (`d.m.Y`, inklyuziv oraliq), `lang` ·
+**So'rov:** `acc_id`, `detail_begin`, `detail_end` (`d.m.Y`, inklyuziv oraliq), `lang` ·
 **Javob:** `detail[]`
 
 Eski `detail_month` (`Y-m`) endi yuborilmaydi — bu range parametri mijoz
 tomonidan billing bilan tasdiqlangan (2026-08-27), lekin quyidagi "Sana
 oralig'i parametrlari — qabul qilinmaydi" bo'limi shu sahifada eski
-`detail_month`-faqat kontraktga qarshi o'lchangan, `detail_start`/
+`detail_month`-faqat kontraktga qarshi o'lchangan, `detail_begin`/
 `detail_end` bilan qayta tekshirilmagan.
 
 | Maydon | Tur | Misol | Izoh |
@@ -158,7 +158,9 @@ oralig'i parametrlari — qabul qilinmaydi" bo'limi shu sahifada eski
 | `pocket_info` | string | `"Tezlik 15MBit/s"` | Bir javobda ham o'zbekcha, ham ruscha (`"Скорость 50+ Mb/c"`) qatorlar aralash keldi |
 | `location_info` | string \| null | `null` | Har doim `null` |
 
-Faqat **bitta oy** so'raladi — sana oralig'i parametri yo'q. Javob sahifalanmaydi.
+Sana oralig'i endi to'g'ridan-to'g'ri so'raladi (`detail_begin`/`detail_end`,
+yuqoriga qarang) — yuqoridagi eski "faqat bitta oy" holati `detail_month`
+kontraktiga tegishli edi. Javob sahifalanmaydi.
 
 ## 7. `/acct/payments` — to'lovlar
 
@@ -271,7 +273,7 @@ Oy majburiy, oraliq esa **jimgina e'tiborsiz qoldiriladi** — bu o'lchov
 `date_from`/`date_to` maydon nomlariga tegishli edi. Shundan keyin billing
 ikkala endpoint uchun ham haqiqiy range parametrlarini qo'shdi: `/acct/payments`
 uchun `pay_begin`/`pay_end` (mijoz, 2026-08-19), `/traffic/detail` uchun
-`detail_start`/`detail_end` (mijoz, 2026-08-27) — ikkalasi ham `SOLA_API_REFERENCE.md`
+`detail_begin`/`detail_end` (mijoz, 2026-08-27) — ikkalasi ham `SOLA_API_REFERENCE.md`
 §7-8 da. `Period::MAX_MONTHS` cheklovi 2026-08-25 da olib tashlangan; har oy
 uchun alohida so'rov yuborish yechimi ham shu bilan endi kerak emas.
 

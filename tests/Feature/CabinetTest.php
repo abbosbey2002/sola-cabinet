@@ -289,7 +289,7 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * The API answers a range directly (detail_start/detail_end), so a
+     * The API answers a range directly (detail_begin/detail_end), so a
      * request spanning months costs one call — but boundary rows outside
      * the requested days are still trimmed defensively.
      */
@@ -318,7 +318,7 @@ final class CabinetTest extends TestCase
 
         Http::assertSent(function (Request $request): bool {
             if (str_contains($request->url(), '/traffic/detail')) {
-                $this->assertSame('20.06.2026', $request->data()['detail_start']);
+                $this->assertSame('20.06.2026', $request->data()['detail_begin']);
                 $this->assertSame('10.08.2026', $request->data()['detail_end']);
             }
 
@@ -594,7 +594,7 @@ final class CabinetTest extends TestCase
     /**
      * The range cap was removed on the client's request (2026-08-25): a
      * subscriber can now ask for any span. Billing now takes the range
-     * directly (detail_start/detail_end), so a wide span no longer costs
+     * directly (detail_begin/detail_end), so a wide span no longer costs
      * one HTTP round trip per month it covers either.
      */
     #[Test]

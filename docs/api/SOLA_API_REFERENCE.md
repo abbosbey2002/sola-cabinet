@@ -70,7 +70,7 @@ qolgani ma'qul, lekin bu server kafolati emas.
 | 5 | `/acct/balance` | `acc_id` | `{saldo}` | | `acctBalance` |
 | 6 | `/acct/wifipassword` | `acc_id`, `curr_password`, `new_password` | *bo'sh* | ✎ | `acctWifiPassword` |
 | 7 | `/acct/payments` | `acc_id`, `pay_begin`, `pay_end` ¹ | `payments[]` | | `acctPayments` |
-| 8 | `/traffic/detail` | `acc_id`, `detail_start`, `detail_end` | `detail[]` | | `TrafficDetail` |
+| 8 | `/traffic/detail` | `acc_id`, `detail_begin`, `detail_end` | `detail[]` | | `TrafficDetail` |
 | 9 | `/device/list` | `acc_id` | `devices[]`, `connect_cost` | | `DeviceList` |
 | 10 | `/device/new` | `acc_id` | *bo'sh* | ✎⇄ | `DeviceNew` |
 | 11 | `/device/newoneclick` | `phn`, `acc_id`, `smsCode` | `accs[]`, `smsSended` | ✎✉⇄ | `DeviceNewOneClick` |
@@ -229,7 +229,7 @@ bilan), serverning o'z maksimal oralig'i hali tasdiqlanmagan.
 
 ### 8. `/traffic/detail` — trafik detalizatsiyasi
 
-`detail_start`, `detail_end` — **`d.m.Y`** (masalan `25.08.2026`), inklyuziv
+`detail_begin`, `detail_end` — **`d.m.Y`** (masalan `25.08.2026`), inklyuziv
 oraliq — `pay_begin`/`pay_end` (§7) bilan bir xil shakl. Eski `detail_month`
 (`YYYY-MM`, ichkarida `YYMM`ga aylantirilardi — `getMonthYYMM`) endi
 yuborilmaydi — `SolaClient::trafficDetail()`, `BillingHistory::traffic()`.
@@ -474,10 +474,10 @@ holda o'tadi — ularda kirill bo'lsa buziladi.
 **Sahifalash yo'q.** Hech bir ro'yxat endpointida `limit`/`offset` yo'q.
 `/acct/payments` `pay_begin`/`pay_end` bilan haqiqiy sana oralig'ini qabul
 qiladi (mijoz, 2026-08-19) — §7. `/traffic/detail` ham endi xuddi shunday
-`detail_start`/`detail_end` bilan oraliq qabul qiladi (mijoz, 2026-08-27) —
+`detail_begin`/`detail_end` bilan oraliq qabul qiladi (mijoz, 2026-08-27) —
 §8; eski o'lchov (`date_from`/`date_to` e'tiborsiz qoldirilishi,
 `SOLA_API.md` §10) `detail_month` kontraktiga tegishli edi va yangi
-`detail_start`/`detail_end` maydonlari bilan qayta tekshirilmagan.
+`detail_begin`/`detail_end` maydonlari bilan qayta tekshirilmagan.
 
 **Tranzaksiya.** O'zgartiruvchi 6 ta endpoint `executeDefault()` + aniq
 `commit`/`rollback` ishlatadi. Idempotentlik yo'q: takroriy `/tariff/connect`

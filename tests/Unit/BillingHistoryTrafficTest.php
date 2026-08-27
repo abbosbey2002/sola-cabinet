@@ -14,7 +14,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 /**
- * Billing added range filtering (detail_start/detail_end) to /traffic/detail,
+ * Billing added range filtering (detail_begin/detail_end) to /traffic/detail,
  * so a period is now served in one call instead of one call per month it
  * covers — see BillingHistory::traffic() and SolaClient::trafficDetail().
  */
@@ -32,7 +32,7 @@ final class BillingHistoryTrafficTest extends TestCase
         Http::assertSentCount(1);
         Http::assertSent(fn (Request $request): bool => $request->body() === json_encode([
             'acc_id' => '1001',
-            'detail_start' => '01.06.2026',
+            'detail_begin' => '01.06.2026',
             'detail_end' => '15.08.2026',
             'lang' => 'ru',
         ]));

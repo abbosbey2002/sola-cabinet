@@ -11,8 +11,8 @@ use Carbon\CarbonImmutable;
  *
  * Both /acct/payments and /traffic/detail take a range directly now —
  * BillingHistory::payments() uses paymentsStart()/paymentsEnd() (pay_begin/
- * pay_end), BillingHistory::traffic() uses detailStart()/detailEnd()
- * (detail_start/detail_end). contains() still trims the rows defensively:
+ * pay_end), BillingHistory::traffic() uses detailBegin()/detailEnd()
+ * (detail_begin/detail_end). contains() still trims the rows defensively:
  * billing answers the range it was asked for, but boundary rows are checked
  * rather than trusted. months() is kept as a general "Y-m" breakdown even
  * though neither history call walks it anymore.
@@ -129,12 +129,12 @@ final class Period
     }
 
     /**
-     * As /traffic/detail wants detail_start/detail_end: "d.m.Y" (4-digit
+     * As /traffic/detail wants detail_begin/detail_end: "d.m.Y" (4-digit
      * year), the same shape /acct/payments takes for pay_begin/pay_end —
      * distinct from startInput()/endInput() above, which speak the date
      * picker's "Y-m-d" instead.
      */
-    public function detailStart(): string
+    public function detailBegin(): string
     {
         return $this->start->format('d.m.Y');
     }

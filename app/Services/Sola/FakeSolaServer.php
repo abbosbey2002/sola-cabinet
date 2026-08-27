@@ -410,7 +410,7 @@ final class FakeSolaServer
         $accountId = $this->accountId($payload);
         $rows = [];
 
-        $begin = $this->fromDmyDate((string) ($payload['detail_start'] ?? ''));
+        $begin = $this->fromDmyDate((string) ($payload['detail_begin'] ?? ''));
         $end = $this->fromDmyDate((string) ($payload['detail_end'] ?? ''));
 
         foreach ($this->daysBetween($begin, $end) as $day) {
@@ -428,8 +428,8 @@ final class FakeSolaServer
     }
 
     /**
-     * pay_begin/pay_end and detail_start/detail_end all arrive as "d.m.Y"
-     * (see Period::paymentsStart(), Period::detailStart()) — daysBetween()
+     * pay_begin/pay_end and detail_begin/detail_end all arrive as "d.m.Y"
+     * (see Period::paymentsStart(), Period::detailBegin()) — daysBetween()
      * below wants "Y-m-d".
      */
     private function fromDmyDate(string $value): string
