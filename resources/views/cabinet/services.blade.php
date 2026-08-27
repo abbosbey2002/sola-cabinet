@@ -21,9 +21,9 @@
                 'icon' => 'chat', 'url' => config('sola.chat.url'), 'external' => true,
                 'title' => __('app.chat.title'), 'text' => __('app.chat.text'), 'go' => __('app.chat.go'),
             ] : null,
-            config('sola.telegram_url') ? [
-                'icon' => 'chat', 'url' => config('sola.telegram_url'), 'external' => true,
-                'title' => __('app.telegram.title'), 'text' => __('app.telegram.text'), 'go' => __('app.telegram.go'),
+            config('sola.manager_url') ? [
+                'icon' => 'user', 'url' => config('sola.manager_url'), 'external' => true,
+                'title' => __('app.manager.title'), 'text' => __('app.manager.text'), 'go' => __('app.manager.go'),
             ] : null,
             config('sola.speedtest_url') ? [
                 'icon' => 'speed', 'url' => config('sola.speedtest_url'), 'external' => true,

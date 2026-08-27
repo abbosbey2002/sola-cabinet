@@ -309,10 +309,10 @@ return [
         'go' => 'Chatni ochish',
     ],
 
-    'telegram' => [
-        'title' => 'Telegram-kanal',
-        'text' => 'Telegram\'da yangiliklar va bildirishnomalar',
-        'go' => 'Obuna bo\'lish',
+    'manager' => [
+        'title' => 'Telegram\'dagi menejer',
+        'text' => 'Shaxsiy menejer bilan bog\'laning',
+        'go' => 'Yozish',
     ],
 
     'pay_status' => [

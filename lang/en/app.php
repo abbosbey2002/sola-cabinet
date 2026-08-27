@@ -309,10 +309,10 @@ return [
         'go' => 'Open chat',
     ],
 
-    'telegram' => [
-        'title' => 'Telegram channel',
-        'text' => 'News and notifications on Telegram',
-        'go' => 'Subscribe',
+    'manager' => [
+        'title' => 'Manager on Telegram',
+        'text' => 'Contact your personal manager directly',
+        'go' => 'Message',
     ],
 
     'pay_status' => [

@@ -108,10 +108,12 @@ return [
     'loyalty_url' => env('SOLA_LOYALTY_URL'),
 
     /*
-     * The support Telegram channel — a known, permanent link, like the speed
-     * test above, not an opt-in campaign URL like promo/loyalty.
+     * The personal manager's Telegram contact — a known, permanent link,
+     * like the speed test above, not an opt-in campaign URL like
+     * promo/loyalty. Not a broadcast channel: it opens a direct chat with
+     * SOLA's manager account.
      */
-    'telegram_url' => env('SOLA_TELEGRAM_URL', 'https://t.me/sola_911'),
+    'manager_url' => env('SOLA_MANAGER_URL', 'https://t.me/sola_911'),
 
     'chat' => [
         'url' => env('SOLA_CHAT_URL'),

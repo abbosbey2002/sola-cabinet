@@ -266,18 +266,18 @@ final class CabinetTest extends TestCase
 
     /**
      * Unlike promo/loyalty/chat — opt-in campaign links, unset by default —
-     * the Telegram channel ships with a real default (config/sola.php), so
-     * the card is on the services page out of the box.
+     * the manager's Telegram contact ships with a real default
+     * (config/sola.php), so the card is on the services page out of the box.
      */
     #[Test]
-    public function the_telegram_card_links_to_the_channel(): void
+    public function the_manager_card_links_to_the_telegram_contact(): void
     {
         $this->fakeSola();
 
         $this->verifiedSubscriber()->get('/services')
             ->assertOk()
-            ->assertSee(trans('app.telegram.title'))
-            ->assertSee('href="'.config('sola.telegram_url').'"', escape: false);
+            ->assertSee(trans('app.manager.title'))
+            ->assertSee('href="'.config('sola.manager_url').'"', escape: false);
     }
 
     #[Test]
