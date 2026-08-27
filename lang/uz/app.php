@@ -152,13 +152,13 @@ return [
     ],
 
     'modal' => [
-        'now_hint' => 'Tarif darhol faollashadi.',
-        'month_hint' => 'Yangi oyning 1-sanasidan boshlanadi.',
+        'now_hint' => 'Tarif darhol faollashadi. Oldingi tarif uchun qayta hisob-kitob qilinmaydi, yangi tarif uchun abonent to\'lovi qaytadan hisoblanadi.',
+        'month_hint' => ':date sanasidan boshlanadi.',
         'choose_date' => 'Oyni tanlang',
         'choose' => 'tanlash',
         'to_connect' => 'Qachon ulash kerak',
         'now' => 'Hozir',
-        'month' => 'Yangi oydan',
+        'month' => 'Keyingi hisob davridan',
         'are_you_sure' => 'Haqiqatdan ham ulanishni istaysizmi?',
         'success_tariff' => 'Tarif muvaffaqiyatli ulandi!',
     ],

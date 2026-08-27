@@ -50,6 +50,7 @@ final class TariffController extends Controller
             'accounts' => $this->accounts(),
             'tariffs' => $tariffs,
             'startedAt' => $connected?->startedAt(),
+            'nextPeriodStart' => $this->nextPeriodStart(),
         ]);
     }
 
@@ -96,7 +97,7 @@ final class TariffController extends Controller
 
         $date = match ($timing) {
             'now' => CarbonImmutable::now(),
-            default => CarbonImmutable::now()->addMonth()->firstOfMonth(),
+            default => $this->nextPeriodStart(),
         };
 
         $response = $this->sola->connectTariff($accountId, $request->tariffId(), $date->format('Y-m-d'));
@@ -108,5 +109,21 @@ final class TariffController extends Controller
         }
 
         return redirect()->route('tariff');
+    }
+
+    /**
+     * The 1st of next month — both when a deferred tariff switch actually
+     * takes effect (connect()) and what the timing modal shows the
+     * subscriber before they choose (index()), so the two never drift apart
+     * within one request. Each call reads the current wall-clock time
+     * independently, so a session that stays open across the month boundary
+     * (page loaded 23:59 on the last day, submitted after midnight) could in
+     * principle see a date the modal already showed roll over by one month —
+     * accepted as a rare, low-stakes edge case rather than plumbing a shared
+     * timestamp through the request lifecycle for it.
+     */
+    private function nextPeriodStart(): CarbonImmutable
+    {
+        return CarbonImmutable::now()->addMonth()->firstOfMonth();
     }
 }

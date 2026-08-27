@@ -211,7 +211,7 @@
             <div class="space-y-2.5">
                 @foreach ([
                     ['timing' => 'now', 'icon' => 'speed', 'title' => __('app.modal.now'), 'hint' => __('app.modal.now_hint')],
-                    ['timing' => 'month', 'icon' => 'calendar', 'title' => __('app.modal.month'), 'hint' => __('app.modal.month_hint')],
+                    ['timing' => 'month', 'icon' => 'calendar', 'title' => __('app.modal.month'), 'hint' => __('app.modal.month_hint', ['date' => $nextPeriodStart->format('d.m.Y')])],
                 ] as $choice)
                     <button type="button" data-tariff-timing="{{ $choice['timing'] }}"
                             class="flex w-full items-center gap-3.5 rounded-xl border-2 border-line p-4 text-left transition-colors hover:border-action hover:bg-surface-2">

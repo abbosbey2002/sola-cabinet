@@ -152,13 +152,13 @@ return [
     ],
 
     'modal' => [
-        'now_hint' => 'The tariff starts immediately.',
-        'month_hint' => 'Starts on the 1st of next month.',
+        'now_hint' => 'The tariff starts immediately. The previous tariff is not recalculated — the subscription fee is charged again for the new tariff.',
+        'month_hint' => 'Starts on :date.',
         'choose_date' => 'Choose month',
         'choose' => 'choose',
         'to_connect' => 'When to connect',
         'now' => 'Now',
-        'month' => 'From next month',
+        'month' => 'From the next billing period',
         'are_you_sure' => 'Do you really want to connect?',
         'success_tariff' => 'The tariff connected successfully!',
     ],
