@@ -153,6 +153,7 @@ return [
 
     'modal' => [
         'now_hint' => 'Tarif darhol faollashadi. Oldingi tarif uchun qayta hisob-kitob qilinmaydi, yangi tarif uchun abonent to\'lovi qaytadan hisoblanadi.',
+        'next_charge_note' => 'Keyingi hisobdan yechish — :date.',
         'month_hint' => ':date sanasidan boshlanadi.',
         'choose_date' => 'Oyni tanlang',
         'choose' => 'tanlash',

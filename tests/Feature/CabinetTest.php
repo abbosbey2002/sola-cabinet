@@ -393,6 +393,40 @@ final class CabinetTest extends TestCase
             now()->addMonth()->firstOfMonth()->format('d.m.Y'),
             $content,
         );
+
+        // No charge_date in this fixture and no curr_tariff_id to derive one
+        // from /tariff/connected either — the "next charge" line is omitted
+        // rather than showing a guessed date.
+        $this->assertStringNotContainsString(
+            explode(':date', trans('app.modal.next_charge_note'))[0],
+            $content,
+        );
+    }
+
+    /**
+     * When billing HAS told us the next charge date (the same charge_date
+     * field the home page reads), the "Сейчас" choice shows it — still the
+     * subscriber's already-scheduled charge, not a new one computed for the
+     * switch, since billing has not said whether an immediate charge resets
+     * that cycle.
+     */
+    #[Test]
+    public function the_timing_modal_shows_the_known_next_charge_date(): void
+    {
+        Carbon::setTestNow('2026-07-20');
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'charge_date' => '2026-08-15',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/tariffs')
+            ->assertOk()
+            ->assertSee(trans('app.modal.next_charge_note', ['date' => '15.08.2026']));
     }
 
     /**

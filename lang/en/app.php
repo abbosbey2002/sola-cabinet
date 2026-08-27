@@ -153,6 +153,7 @@ return [
 
     'modal' => [
         'now_hint' => 'The tariff starts immediately. The previous tariff is not recalculated — the subscription fee is charged again for the new tariff.',
+        'next_charge_note' => 'Next charge — :date.',
         'month_hint' => 'Starts on :date.',
         'choose_date' => 'Choose month',
         'choose' => 'choose',

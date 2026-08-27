@@ -208,9 +208,20 @@
         <x-modal name="tariff-timing" :title="__('app.modal.to_connect')">
             <p data-tariff-name-slot class="-mt-2 mb-4 text-base font-semibold" style="color: var(--c-action)"></p>
 
+            @php
+                // The subscriber's already-known next charge date (same
+                // source as the home page) — not recomputed for the switch,
+                // since billing has not told us whether an immediate charge
+                // resets that cycle. Omitted rather than guessed when unknown.
+                $nowHint = __('app.modal.now_hint');
+                if ($nextCharge !== null) {
+                    $nowHint .= ' '.__('app.modal.next_charge_note', ['date' => $nextCharge->format('d.m.Y')]);
+                }
+            @endphp
+
             <div class="space-y-2.5">
                 @foreach ([
-                    ['timing' => 'now', 'icon' => 'speed', 'title' => __('app.modal.now'), 'hint' => __('app.modal.now_hint')],
+                    ['timing' => 'now', 'icon' => 'speed', 'title' => __('app.modal.now'), 'hint' => $nowHint],
                     ['timing' => 'month', 'icon' => 'calendar', 'title' => __('app.modal.month'), 'hint' => __('app.modal.month_hint', ['date' => $nextPeriodStart->format('d.m.Y')])],
                 ] as $choice)
                     <button type="button" data-tariff-timing="{{ $choice['timing'] }}"

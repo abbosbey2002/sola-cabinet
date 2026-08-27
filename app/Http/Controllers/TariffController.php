@@ -51,6 +51,10 @@ final class TariffController extends Controller
             'tariffs' => $tariffs,
             'startedAt' => $connected?->startedAt(),
             'nextPeriodStart' => $this->nextPeriodStart(),
+            // Same source and fallback as the home page's "next charge" —
+            // never invented: null when billing has not told us a date, and
+            // the timing modal simply omits the line rather than guess one.
+            'nextCharge' => $profile->nextChargeDate() ?? $connected?->nextChargeDate(),
         ]);
     }
 
