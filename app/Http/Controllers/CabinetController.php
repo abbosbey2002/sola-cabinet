@@ -53,15 +53,7 @@ final class CabinetController extends Controller
             // The device counts on this page come from /abonent/info, which is
             // already loaded — /device/list is a round trip this page does not
             // need. The permit list lives on /devices.
-            //
-            // "Last payment" means real money received, not the latest row:
-            // billing lists corrections/charges (negative amounts, shown as
-            // "Списание" on /finance) in the same list. The most recent one of
-            // those is not a payment the subscriber made, so it is skipped
-            // rather than shown as if it were.
-            'lastPayment' => collect($payments['rows'])->first(
-                fn (array $row): bool => (float) ($row['amount'] ?? 0) > 0,
-            ),
+            'lastPayment' => BillingHistory::lastRealPayment($payments['rows']),
         ]);
     }
 

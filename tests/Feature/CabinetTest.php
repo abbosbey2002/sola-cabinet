@@ -60,19 +60,22 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * Billing lists corrections/charges (negative amounts — "Списание" on
-     * /finance) in the same feed as real payments. The most recent row being
-     * a charge must not make the home page report it as the "last payment" —
-     * that card answers "how much came in last", so a charge is skipped for
-     * the most recent row that is actually money received.
+     * A negative row is not a new charge — the client confirmed it is a prior
+     * payment being reversed, so the pair nets to nothing received. The most
+     * recent negative row here cancels the specific payment right behind it
+     * (same amount), not just any earlier one — the card has to fall back to
+     * the older, genuinely uncancelled payment. See BillingHistory::
+     * lastRealPayment() and tests/Unit/LastRealPaymentTest.php for the
+     * amount-matching logic this exercises end to end.
      */
     #[Test]
-    public function the_last_payment_card_skips_a_charge_and_shows_the_real_payment(): void
+    public function the_last_payment_card_skips_a_payment_its_own_reversal_cancels(): void
     {
         $this->fakeSola([
             '*/acct/payments' => Http::response([
                 'payments' => [
                     ['payment_date' => now()->format('Y-m-d').' 14:20:00', 'amount' => -20000000, 'payment_system' => 'касса', 'payment_status' => "to'langan"],
+                    ['payment_date' => now()->format('Y-m-d').' 14:19:00', 'amount' => 20000000, 'payment_system' => 'касса', 'payment_status' => "to'langan"],
                     ['payment_date' => now()->format('Y-m-d').' 13:00:00', 'amount' => 25000000, 'payment_system' => 'Payme', 'payment_status' => "to'langan"],
                 ],
             ]),

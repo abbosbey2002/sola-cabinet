@@ -126,4 +126,60 @@ final class BillingHistory
     {
         return $value ? CarbonImmutable::parse($value) : null;
     }
+
+    /**
+     * The most recent payment that nothing later reverses.
+     *
+     * Billing does not send a "this reverses payment X" reference — a
+     * reversal is simply a later row for the exact same amount, negated: the
+     * client confirmed a negative row is not a new debit, it is a prior
+     * credit being cancelled, so together they add up to nothing received.
+     * Matching by amount, most-recent-first, finds the last payment that
+     * still stands — verified against a real account's history, where every
+     * ± pair nets to zero and the leftover matches the period's own total
+     * exactly.
+     *
+     * A reversal with no earlier same-amount row in this list (the payment it
+     * cancels fell outside the requested period) is simply left unmatched —
+     * out of scope for a single-month card, same as the API being asked for
+     * one month at a time in general.
+     *
+     * The count-per-amount below is not a verified 1:1 link between a
+     * specific reversal and the row it cancels — with three or more rows
+     * sharing an amount it is a greedy match, not a traced reference. Billing
+     * sends no "this reverses payment X" id to check against, so amount and
+     * recency are the only signal there is.
+     *
+     * @param  list<array<string, mixed>>  $rows  most-recent-first, as
+     *                                            payments() returns them
+     * @return array<string, mixed>|null
+     */
+    public static function lastRealPayment(array $rows): ?array
+    {
+        $pendingReversals = [];
+
+        foreach ($rows as $row) {
+            $amount = (int) ($row['amount'] ?? 0);
+
+            if ($amount < 0) {
+                $pendingReversals[-$amount] = ($pendingReversals[-$amount] ?? 0) + 1;
+
+                continue;
+            }
+
+            if ($amount === 0) {
+                continue;
+            }
+
+            if (($pendingReversals[$amount] ?? 0) > 0) {
+                $pendingReversals[$amount]--;
+
+                continue;
+            }
+
+            return $row;
+        }
+
+        return null;
+    }
 }
