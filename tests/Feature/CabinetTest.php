@@ -60,6 +60,32 @@ final class CabinetTest extends TestCase
     }
 
     /**
+     * Billing lists corrections/charges (negative amounts — "Списание" on
+     * /finance) in the same feed as real payments. The most recent row being
+     * a charge must not make the home page report it as the "last payment" —
+     * that card answers "how much came in last", so a charge is skipped for
+     * the most recent row that is actually money received.
+     */
+    #[Test]
+    public function the_last_payment_card_skips_a_charge_and_shows_the_real_payment(): void
+    {
+        $this->fakeSola([
+            '*/acct/payments' => Http::response([
+                'payments' => [
+                    ['payment_date' => now()->format('Y-m-d').' 14:20:00', 'amount' => -20000000, 'payment_system' => 'касса', 'payment_status' => "to'langan"],
+                    ['payment_date' => now()->format('Y-m-d').' 13:00:00', 'amount' => 25000000, 'payment_system' => 'Payme', 'payment_status' => "to'langan"],
+                ],
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee('250 000')
+            ->assertSee('Payme')
+            ->assertDontSee('−200 000', escape: false);
+    }
+
+    /**
      * The day meter is the page's whole point, so it has to be built from the
      * charge date rather than from the day of the month: the fill and the
      * handle sit at today's position along the cycle, the charge marker at
