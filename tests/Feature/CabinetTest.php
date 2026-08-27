@@ -373,6 +373,29 @@ final class CabinetTest extends TestCase
     }
 
     /**
+     * The timing modal's "from next period" choice shows the actual date it
+     * will take effect — the same 1st-of-next-month date connect() charges
+     * against, so the two never drift apart — and the "now" choice spells out
+     * that the previous tariff is not recalculated and the new one's
+     * subscription fee is charged again immediately.
+     */
+    #[Test]
+    public function the_timing_modal_shows_the_next_period_date_and_the_recalculation_note(): void
+    {
+        $this->fakeSola();
+
+        $content = (string) $this->verifiedSubscriber()->get('/tariffs')->getContent();
+
+        $this->assertStringContainsString(trans('app.modal.now'), $content);
+        $this->assertStringContainsString(trans('app.modal.now_hint'), $content);
+        $this->assertStringContainsString(trans('app.modal.month'), $content);
+        $this->assertStringContainsString(
+            now()->addMonth()->firstOfMonth()->format('d.m.Y'),
+            $content,
+        );
+    }
+
+    /**
      * /abonent/info names the current tariff but never says when it started;
      * /tariff/connected is the only endpoint that carries it. The row is paired
      * on the id, so a tariff the subscriber does not hold cannot supply the
