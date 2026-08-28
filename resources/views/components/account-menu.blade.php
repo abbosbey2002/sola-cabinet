@@ -59,9 +59,9 @@
             <span class="sr-only">@lang('app.accounts.personal') {{ $current }} — @lang('app.accounts.switch')</span>
             <span class="u-display grid size-9 place-items-center rounded-full text-xs"
                   style="background: var(--c-action-soft); color: var(--c-action)" aria-hidden="true">{{ $initials ?: '—' }}</span>
-            <span class="hidden text-left lg:block">
-                <span class="block text-xs text-muted">@lang('app.accounts.personal')</span>
-                <span class="block text-sm font-semibold text-ink">{{ $current }}</span>
+            <span class="hidden max-w-[9rem] text-left lg:block">
+                <span class="block truncate text-sm font-semibold text-ink">{{ $name ?: '—' }}</span>
+                <span class="block text-xs text-muted">{{ $current }}</span>
             </span>
             <x-icon name="chevron-down" size="size-4" class="text-muted"/>
         </button>

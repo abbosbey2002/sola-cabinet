@@ -10,7 +10,6 @@
         ['route' => 'traffic', 'icon' => 'chart', 'label' => __('app.nav.statistics')],
         ['route' => 'payment', 'icon' => 'receipt', 'label' => __('app.nav.payments')],
         ['route' => 'services', 'icon' => 'gift', 'label' => __('app.nav.services')],
-        ['url' => config('sola.speedtest_url'), 'icon' => 'speed', 'label' => __('app.nav.speedtest'), 'external' => true],
     ];
 
     // A legal entity (yuridik shaxs) is not offered tariff switching at all —
@@ -46,7 +45,7 @@
             </a>
 
             @isset($profile)
-                <dl class="u-id-facts ml-5 hidden min-w-0 items-center gap-x-7 2xl:flex">
+                <dl class="u-id-facts ml-5 hidden min-w-0 items-center gap-x-7 xl:flex">
                     @foreach ([
                         ['label' => __('app.cabinet.fio'), 'value' => $profile->fullName()],
                         ['label' => __('app.dash.contract'), 'value' => $profile->contractNumber()],
@@ -111,8 +110,22 @@
             </button>
         </div>
 
+        {{-- The nav itself is what a subscriber opens this drawer for, so it
+             leads — identity, account switching, language and the call
+             numbers are all secondary and sit below it. --}}
+        <nav class="space-y-1.5 border-b-2 border-line px-3 pb-4" aria-label="{{ __('app.ui.menu') }}">
+            @foreach ($items as $item)
+                <a href="{{ $item['url'] ?? route($item['route']) }}"
+                   @if ($item['external'] ?? false) target="_blank" rel="noopener" @endif
+                   @if (isset($item['route']) && request()->routeIs($item['route'])) aria-current="page" @endif
+                   class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
+                    <x-icon :name="$item['icon']"/>{{ $item['label'] }}
+                </a>
+            @endforeach
+        </nav>
+
         @isset($profile)
-            <dl class="mx-3 mb-3 space-y-2.5 rounded-xl bg-surface-2 px-4 py-3.5">
+            <dl class="mx-3 mb-3 mt-4 space-y-2.5 rounded-xl bg-surface-2 px-4 py-3.5">
                 @foreach ([
                     ['label' => __('app.cabinet.fio'), 'value' => $profile->fullName()],
                     ['label' => __('app.dash.contract'), 'value' => $profile->contractNumber()],
@@ -136,16 +149,10 @@
             </div>
         @endisset
 
-        <nav class="flex-1 space-y-1.5 px-3" aria-label="{{ __('app.ui.menu') }}">
-            @foreach ($items as $item)
-                <a href="{{ $item['url'] ?? route($item['route']) }}"
-                   @if ($item['external'] ?? false) target="_blank" rel="noopener" @endif
-                   @if (isset($item['route']) && request()->routeIs($item['route'])) aria-current="page" @endif
-                   class="u-nav-link w-full !rounded-xl !px-4 !py-3 !text-base">
-                    <x-icon :name="$item['icon']"/>{{ $item['label'] }}
-                </a>
-            @endforeach
-        </nav>
+        {{-- Pushes the language/call sections to the bottom of the drawer
+             regardless of viewport width, now that the nav above no longer
+             carries flex-1 itself. --}}
+        <div class="flex-1"></div>
 
         <div class="border-t-2 border-line px-5 py-5 sm:hidden">
             <p class="u-label mb-2">@lang('app.view.language')</p>

@@ -154,7 +154,6 @@ return [
 
     'modal' => [
         'now_hint' => 'The tariff starts immediately. The previous tariff is not recalculated — the subscription fee is charged again for the new tariff.',
-        'next_charge_note' => 'Next charge — :date.',
         'month_hint' => 'Starts on :date.',
         'choose_date' => 'Choose month',
         'choose' => 'choose',
@@ -253,6 +252,9 @@ return [
         'offline_count' => '{1} One is offline|[2,*] :count are offline',
         'all_online' => 'All online',
         'days_left' => '{1} 1 day until the charge|[2,*] :days days until the charge',
+        // Paired with the day count shown separately (the ring's own big
+        // number), so this never repeats it — unlike days_left above.
+        'days_left_unit' => '{1} day|[2,*] days',
         'charge_today' => 'Charged today',
         'charge_passed' => 'The charge date has passed',
         'balance_ok' => 'Your balance covers it — the :amount sum charge on :date is funded.',

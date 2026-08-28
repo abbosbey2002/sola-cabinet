@@ -138,16 +138,6 @@ final class AbonentProfile
         return true;
     }
 
-    public function deviceCount(): int
-    {
-        return (int) ($this->body['device_count'] ?? 0);
-    }
-
-    public function activeDeviceCount(): int
-    {
-        return (int) ($this->body['device_active_count'] ?? 0);
-    }
-
     public function contractDate(): ?CarbonImmutable
     {
         return $this->date('contract_date');

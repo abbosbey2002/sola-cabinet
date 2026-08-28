@@ -50,16 +50,12 @@ final class TariffController extends Controller
             'accounts' => $this->accounts(),
             'tariffs' => $tariffs,
             'startedAt' => $connected?->startedAt(),
-            'nextPeriodStart' => $this->nextPeriodStart(),
-            // Same source and fallback as the home page's "next charge" —
-            // never invented: null when billing has not told us a date, and
-            // the timing modal simply omits the line rather than guess one.
-            'nextCharge' => $profile->nextChargeDate() ?? $connected?->nextChargeDate(),
+            'nextPeriodStart' => $this->connectionDate($profile, $connected),
         ]);
     }
 
     /**
-     * Connect a tariff, either immediately or from the 1st of next month.
+     * Connect a tariff, either immediately or from the next billing cycle.
      *
      * POST, not GET: this charges the subscriber. The previous version was a
      * link, so the request carried no CSRF token and any third-party page could
@@ -101,7 +97,10 @@ final class TariffController extends Controller
 
         $date = match ($timing) {
             'now' => CarbonImmutable::now(),
-            default => $this->nextPeriodStart(),
+            default => $this->connectionDate(
+                $profile,
+                ConnectedTariff::current($this->sola->connectedTariffs($accountId), $profile->currentTariffId()),
+            ),
         };
 
         $response = $this->sola->connectTariff($accountId, $request->tariffId(), $date->format('Y-m-d'));
@@ -116,15 +115,38 @@ final class TariffController extends Controller
     }
 
     /**
-     * The 1st of next month — both when a deferred tariff switch actually
-     * takes effect (connect()) and what the timing modal shows the
-     * subscriber before they choose (index()), so the two never drift apart
-     * within one request. Each call reads the current wall-clock time
-     * independently, so a session that stays open across the month boundary
-     * (page loaded 23:59 on the last day, submitted after midnight) could in
-     * principle see a date the modal already showed roll over by one month —
-     * accepted as a rare, low-stakes edge case rather than plumbing a shared
-     * timestamp through the request lifecycle for it.
+     * When a deferred tariff switch takes effect — both what connect() charges
+     * against and what the timing modal shows the subscriber before they
+     * choose (index()), so the two never drift apart within one request.
+     *
+     * The subscriber's already-known next charge date — same source and
+     * fallback as the home page's "next charge" (AbonentProfile first, then
+     * the connected tariff's anchor-day cycle) — is preferred over a naive
+     * "1st of next month", since it is the real boundary billing will next
+     * charge on, not an arbitrary calendar date. Only when billing has told
+     * us neither does this fall back to the 1st of next month.
+     *
+     * AbonentProfile::nextChargeDate() is read straight from billing's
+     * `charge_date`, with no guarantee it has already rolled forward past
+     * today — unlike ConnectedTariff::nextChargeDate(), which walks forward
+     * until it is. Floored at today so a stale past date from billing can
+     * never send an already-elapsed date to connectTariff().
+     */
+    private function connectionDate(AbonentProfile $profile, ?ConnectedTariff $connected): CarbonImmutable
+    {
+        $date = $profile->nextChargeDate() ?? $connected?->nextChargeDate() ?? $this->nextPeriodStart();
+
+        return $date->max(CarbonImmutable::now()->startOfDay());
+    }
+
+    /**
+     * The naive fallback when billing has not told us a real next charge
+     * date at all. Each call reads the current wall-clock time independently,
+     * so a session that stays open across the month boundary (page loaded
+     * 23:59 on the last day, submitted after midnight) could in principle see
+     * a date the modal already showed roll over by one month — accepted as a
+     * rare, low-stakes edge case rather than plumbing a shared timestamp
+     * through the request lifecycle for it.
      */
     private function nextPeriodStart(): CarbonImmutable
     {

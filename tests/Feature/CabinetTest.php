@@ -60,6 +60,38 @@ final class CabinetTest extends TestCase
     }
 
     /**
+     * Billing's own `device_active_count` on /abonent/info can disagree with
+     * reality — it lags the device's actual IP lease, which is what
+     * /device/list (and the /devices page) go by. QA_CHECKLIST.md §C.6
+     * requires the home page's count to match /devices, so it must be
+     * counted from the same source: a permit is active iff it has an ip.
+     */
+    #[Test]
+    public function the_home_pages_active_device_count_matches_the_devices_page_not_billings_stale_counter(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                // Billing's own counter says nothing is active yet...
+                'device_count' => '1',
+                'device_active_count' => '0',
+            ]),
+            // ...but the device already has an ip lease, same as /devices shows.
+            '*/device/list' => Http::response([
+                'devices' => [
+                    ['mac' => 'AA:BB:CC:DD:EE:FF', 'ip' => '10.0.0.5', 'connect_date' => '2026-01-15', 'readonly' => false, 'permit_id' => '77'],
+                ],
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee(trans('app.dash.active_of', ['active' => 1, 'total' => 1]));
+    }
+
+    /**
      * A negative row is not a new charge — the client confirmed it is a prior
      * payment being reversed, so the pair nets to nothing received. The most
      * recent negative row here cancels the specific payment right behind it
@@ -90,9 +122,9 @@ final class CabinetTest extends TestCase
 
     /**
      * The day meter is the page's whole point, so it has to be built from the
-     * charge date rather than from the day of the month: the fill and the
-     * handle sit at today's position along the cycle, the charge marker at
-     * the last day.
+     * charge date rather than from the day of the month: the ring's fill
+     * stops at today's position along the cycle, and the calendar chip
+     * states the charge date itself.
      */
     #[Test]
     public function the_day_meter_counts_the_days_to_the_next_charge(): void
@@ -111,13 +143,13 @@ final class CabinetTest extends TestCase
         $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
 
         // 01.08 → 01.09 is 31 days (span 30); the 8th is day 8, so today sits
-        // at 7/30 = 23.33% along the track, and the charge lands on the last
-        // day, i.e. 100%.
-        $this->assertSame(1, substr_count($content, 'class="u-meter-handle"'));
-        $this->assertSame(1, substr_count($content, 'class="u-meter-charge"'));
-        $this->assertStringContainsString('u-meter-fill" style="width: 23.33%"', $content);
-        $this->assertStringContainsString('u-meter-handle" style="left: 23.33%"', $content);
-        $this->assertStringContainsString('u-meter-charge" style="left: 100%"', $content);
+        // at 7/30 = 23.33% around the ring — a circumference of 213.63
+        // (r=34) leaves a dash-offset of 163.78 — and 24 days remain.
+        $this->assertSame(1, substr_count($content, 'class="u-ring-fill"'));
+        $this->assertStringContainsString('stroke-dashoffset="163.78"', $content);
+        $this->assertStringContainsString('<b>24</b>', $content);
+        $this->assertStringContainsString(trans_choice('app.dash.days_left_unit', 24), $content);
+        $this->assertStringContainsString('u-cal-chip-day">01<', $content);
 
         $this->assertStringContainsString(
             trans_choice('app.dash.days_left', 24, ['days' => 24]),
@@ -126,12 +158,13 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * When today IS the charge day, the handle takes on the charge marker's
-     * own diamond instead of a separate marker being drawn on top of it —
-     * two shapes for the same point would just be visual noise.
+     * When today IS the charge day, the ring reads as fully filled — its own
+     * 0%/100% endpoints already ARE the cycle's boundaries, so there is no
+     * separate "charge day" marker to merge into anything, unlike the old
+     * scrubber track this replaced.
      */
     #[Test]
-    public function the_handle_becomes_the_charge_marker_when_today_is_the_charge_day(): void
+    public function the_ring_is_fully_filled_when_today_is_the_charge_day(): void
     {
         Carbon::setTestNow('2026-09-01');
 
@@ -146,10 +179,8 @@ final class CabinetTest extends TestCase
 
         $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
 
-        $this->assertSame(1, substr_count($content, 'class="u-meter-handle"'));
-        $this->assertSame(0, substr_count($content, 'class="u-meter-charge"'));
-        $this->assertSame(1, substr_count($content, 'data-t="charge"'));
-        $this->assertStringContainsString('u-meter-handle" style="left: 100%"', $content);
+        $this->assertStringContainsString('stroke-dashoffset="0"', $content);
+        $this->assertStringContainsString(trans('app.dash.charge_today'), $content);
     }
 
     /**
@@ -172,7 +203,7 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee('u-meter-track', escape: false)
+            ->assertSee('u-ring-row', escape: false)
             ->assertSee('15.08.2026');
     }
 
@@ -198,7 +229,7 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee('u-meter-track', escape: false)
+            ->assertSee('u-ring-row', escape: false)
             ->assertSee('15.08.2026');
     }
 
@@ -213,6 +244,69 @@ final class CabinetTest extends TestCase
      * keeps that fix from being quietly undone by a future "it's easy, just use
      * contract_date". The legitimate anchor is exercised by the test after it.
      */
+    /**
+     * When a tariff switch is already queued (AbonentProfile::nextTariff()),
+     * what actually comes off the balance at the next charge is the QUEUED
+     * tariff's price, not the one in force today — so the home page's "next
+     * charge" amount and its balance verdict must use next_tariff_cost, not
+     * curr_tariff_cost. The "current tariff" card is unaffected: it always
+     * states the price of the tariff in force today.
+     */
+    #[Test]
+    public function the_next_charge_amount_prefers_the_queued_tariffs_price_over_the_current_ones(): void
+    {
+        Carbon::setTestNow('2026-07-20');
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'curr_tariff_cost' => 100000,
+                'next_tariff_name' => 'Home 200',
+                'next_tariff_cost' => 200000,
+                'charge_date' => '2026-08-15',
+            ]),
+        ]);
+
+        $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
+
+        // The hero "next charge" figure and the balance verdict both read
+        // 2 000 (next_tariff_cost), never 1 000 (curr_tariff_cost) — but the
+        // "current tariff" card still states 1 000, its own tariff's price.
+        $this->assertStringContainsString(trans('app.dash.balance_ok', ['date' => '15.08', 'amount' => '2 000']), $content);
+        $this->assertStringContainsString('1 000 '.trans('app.ye'), $content);
+        $this->assertSame(1, substr_count($content, '2 000 '.trans('app.ye')));
+    }
+
+    /**
+     * A stray next_tariff_cost with no next_tariff_name means billing has NOT
+     * actually queued a switch — trusting the cost alone here would show a
+     * wrong "next charge" amount and could misjudge the balance verdict, so
+     * it must be ignored and the current tariff's price used instead.
+     */
+    #[Test]
+    public function a_next_tariff_cost_with_no_queued_tariff_name_is_ignored(): void
+    {
+        Carbon::setTestNow('2026-07-20');
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'curr_tariff_cost' => 100000,
+                'next_tariff_cost' => 200000,
+                'charge_date' => '2026-08-15',
+            ]),
+        ]);
+
+        $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
+
+        $this->assertStringContainsString(trans('app.dash.balance_ok', ['date' => '15.08', 'amount' => '1 000']), $content);
+        $this->assertStringNotContainsString('2 000 '.trans('app.ye'), $content);
+    }
+
     #[Test]
     public function no_charge_date_means_no_meter_rather_than_an_invented_one(): void
     {
@@ -221,7 +315,7 @@ final class CabinetTest extends TestCase
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
             ->assertSee('125 000')
-            ->assertDontSee('u-meter-track', escape: false);
+            ->assertDontSee('u-ring-row', escape: false);
     }
 
     /**
@@ -253,7 +347,7 @@ final class CabinetTest extends TestCase
         // — and the cycle it closes opened on 10 August.
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee('u-meter-track', escape: false)
+            ->assertSee('u-ring-row', escape: false)
             ->assertSee('10.09.2026')
             ->assertSee('10.08.2026');
     }
@@ -419,10 +513,13 @@ final class CabinetTest extends TestCase
 
     /**
      * The timing modal's "from next period" choice shows the actual date it
-     * will take effect — the same 1st-of-next-month date connect() charges
-     * against, so the two never drift apart — and the "now" choice spells out
-     * that the previous tariff is not recalculated and the new one's
-     * subscription fee is charged again immediately.
+     * will take effect — the same date connect() charges against, so the two
+     * never drift apart. With no known charge date in this fixture (no
+     * charge_date, no curr_tariff_id to derive one from /tariff/connected),
+     * that falls back to the naive 1st-of-next-month. The "now" choice only
+     * spells out that the previous tariff is not recalculated and the new
+     * one's subscription fee is charged again immediately — no date of its
+     * own.
      */
     #[Test]
     public function the_timing_modal_shows_the_next_period_date_and_the_recalculation_note(): void
@@ -438,22 +535,14 @@ final class CabinetTest extends TestCase
             now()->addMonth()->firstOfMonth()->format('d.m.Y'),
             $content,
         );
-
-        // No charge_date in this fixture and no curr_tariff_id to derive one
-        // from /tariff/connected either — the "next charge" line is omitted
-        // rather than showing a guessed date.
-        $this->assertStringNotContainsString(
-            explode(':date', trans('app.modal.next_charge_note'))[0],
-            $content,
-        );
     }
 
     /**
      * When billing HAS told us the next charge date (the same charge_date
-     * field the home page reads), the "Сейчас" choice shows it — still the
-     * subscriber's already-scheduled charge, not a new one computed for the
-     * switch, since billing has not said whether an immediate charge resets
-     * that cycle.
+     * field the home page reads), the "from next period" choice shows THAT
+     * date rather than the naive 1st-of-next-month — it is the real boundary
+     * billing will next charge on. The "now" choice still carries no date at
+     * all.
      */
     #[Test]
     public function the_timing_modal_shows_the_known_next_charge_date(): void
@@ -469,9 +558,16 @@ final class CabinetTest extends TestCase
             ]),
         ]);
 
-        $this->verifiedSubscriber()->get('/tariffs')
-            ->assertOk()
-            ->assertSee(trans('app.modal.next_charge_note', ['date' => '15.08.2026']));
+        $content = (string) $this->verifiedSubscriber()->get('/tariffs')->getContent();
+
+        $this->assertStringContainsString(
+            trans('app.modal.month_hint', ['date' => '15.08.2026']),
+            $content,
+        );
+        $this->assertStringNotContainsString(
+            now()->addMonth()->firstOfMonth()->format('d.m.Y'),
+            $content,
+        );
     }
 
     /**
@@ -858,9 +954,72 @@ final class CabinetTest extends TestCase
                 ->post('/tariffs/connect', ['tariff' => 9, 'timing' => $timing])
                 ->assertRedirect('/tariffs');
 
-            Http::assertSent(fn (Request $request): bool => ! str_contains($request->url(), '/tariff/connect')
+            // Not str_contains: '/tariff/connected' (now also hit by the
+            // "month" branch, to read the real charge date) contains
+            // '/tariff/connect' as a substring and would collide with it.
+            Http::assertSent(fn (Request $request): bool => ! str_ends_with($request->url(), '/tariff/connect')
                 || ($request->data()['tariff_conndate'] === $expected && $request->data()['tariff_id'] === 9));
         }
+    }
+
+    /**
+     * When billing has told us the real next charge date, a deferred switch
+     * charges against THAT date rather than the naive 1st-of-next-month — the
+     * same date the modal showed the subscriber before they chose "from next
+     * period". Getting this wrong either bills a subscriber's current tariff
+     * an extra time or starts the new one on a date nobody saw.
+     */
+    #[Test]
+    public function a_deferred_switch_charges_against_the_known_next_charge_date(): void
+    {
+        Carbon::setTestNow('2026-08-08 12:00:00');
+        (new TariffVisibility)->enable(9);
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'charge_date' => '2026-08-20',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()
+            ->post('/tariffs/connect', ['tariff' => 9, 'timing' => 'month'])
+            ->assertRedirect('/tariffs');
+
+        Http::assertSent(fn (Request $request): bool => ! str_ends_with($request->url(), '/tariff/connect')
+            || ($request->data()['tariff_conndate'] === '2026-08-20' && $request->data()['tariff_id'] === 9));
+    }
+
+    /**
+     * `charge_date` is read straight through from billing (AbonentProfile),
+     * with no guarantee it has already rolled forward past today — unlike the
+     * connected-tariff cycle date, which is walked forward until it is. A
+     * stale past charge_date must never reach connectTariff() as the switch
+     * date: it is floored at today instead.
+     */
+    #[Test]
+    public function a_stale_past_charge_date_never_reaches_billing(): void
+    {
+        Carbon::setTestNow('2026-08-08 12:00:00');
+        (new TariffVisibility)->enable(9);
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'charge_date' => '2026-07-15',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()
+            ->post('/tariffs/connect', ['tariff' => 9, 'timing' => 'month'])
+            ->assertRedirect('/tariffs');
+
+        Http::assertSent(fn (Request $request): bool => ! str_ends_with($request->url(), '/tariff/connect')
+            || ($request->data()['tariff_conndate'] === '2026-08-08' && $request->data()['tariff_id'] === 9));
     }
 
     /**
@@ -988,12 +1147,15 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * Both the top navigation and the dashboard's tariff card are built from
-     * $profile, which every cabinet controller already loads — no extra API
-     * call is needed to keep them in step with the server-side gate above.
+     * The top nav link still goes away entirely — it would just 403 if
+     * followed. The dashboard's tariff card stays, but display-only: no
+     * link to the tariff page, since that page is still forbidden to this
+     * account (see the two tests above). Both are built from $profile,
+     * which every cabinet controller already loads — no extra API call is
+     * needed to keep them in step with the server-side gate.
      */
     #[Test]
-    public function the_tariff_link_and_dashboard_card_are_hidden_for_a_legal_entity(): void
+    public function the_tariff_link_is_hidden_but_the_dashboard_card_stays_display_only_for_a_legal_entity(): void
     {
         $this->fakeSola([
             '*/abonent/info' => Http::response([
@@ -1007,7 +1169,9 @@ final class CabinetTest extends TestCase
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
             ->assertDontSee(trans('app.nav.tariff'))
-            ->assertDontSee(trans('app.dash.current_tariff'));
+            ->assertSee(trans('app.dash.current_tariff'))
+            ->assertSee('Home 100')
+            ->assertDontSee(route('tariff'));
     }
 
     /**

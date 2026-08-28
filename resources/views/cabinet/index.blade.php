@@ -12,8 +12,19 @@
         // colour AND icon AND wording together, so the difference survives
         // without colour vision.
         $balance = $profile->balance();
-        $cost = $profile->currentTariffCost();
         $contract = $profile->contractNumber();
+
+        // What actually comes off the balance at the next charge: the tariff
+        // already queued to take over, when a switch is genuinely pending —
+        // gated on nextTariff() (the name) rather than trusting
+        // nextTariffCost() alone, in case billing ever leaves a stale cost
+        // behind with no real switch queued. The current tariff's price
+        // otherwise. The "current tariff" card lower on the page always
+        // shows currentTariffCost(), regardless: that card is about the
+        // tariff in force today, not what is billed next.
+        $cost = $profile->nextTariff() !== null
+            ? ($profile->nextTariffCost() ?? $profile->currentTariffCost())
+            : $profile->currentTariffCost();
 
         $state = match (true) {
             $balance < 0 => 'negative',
@@ -51,8 +62,8 @@
             default => null,
         };
 
-        $active = $profile->activeDeviceCount();
-        $total = $profile->deviceCount();
+        $active = $activeDevices;
+        $total = $totalDevices;
         $offline = max(0, $total - $active);
     @endphp
 
@@ -125,12 +136,24 @@
          why no detail is kept here. --}}
     <div class="mt-4 grid gap-4 md:grid-cols-3">
         @php
+            // This card is the tariff in force today, so its price is always
+            // currentTariffCost() — never $cost above, which prefers the
+            // queued tariff's price for the "will my balance last" verdict.
+            $currentCost = $profile->currentTariffCost();
+        @endphp
+
+        @php
             $cards = [
                 [
                     'route' => 'tariff',
                     'label' => __('app.dash.current_tariff'),
                     'value' => $profile->currentTariff() ?: __('app.header.no_tariff'),
-                    'hint' => $cost !== null ? $money($cost).' '.__('app.ye') : null,
+                    'hint' => $currentCost !== null ? $money($currentCost).' '.__('app.ye') : null,
+                    // A legal entity (yuridik shaxs) may not switch tariffs —
+                    // TariffController::index()/connect() still 403s them, see
+                    // AbonentProfile::isLegalEntity() — so this card stays
+                    // informational only, with no link to the tariff page.
+                    'clickable' => ! $profile->isLegalEntity(),
                 ],
                 [
                     'route' => 'devices',
@@ -154,17 +177,13 @@
                         : __('app.empty.payments'),
                 ],
             ];
-
-            // A legal entity (yuridik shaxs) is not offered the tariff card —
-            // same rule as partials/topbar.blade.php, see AbonentProfile::isLegalEntity().
-            if ($profile->isLegalEntity()) {
-                $cards = array_values(array_filter($cards, fn (array $card): bool => $card['route'] !== 'tariff'));
-            }
         @endphp
 
         @foreach ($cards as $i => $card)
-            <a href="{{ route($card['route']) }}"
-               class="u-card u-rise group flex items-start justify-between gap-4 no-underline transition-[border-color,transform] hover:-translate-y-px hover:border-action"
+            @php($clickable = $card['clickable'] ?? true)
+            <{{ $clickable ? 'a' : 'div' }}
+               @if ($clickable) href="{{ route($card['route']) }}" @endif
+               class="u-card u-rise flex items-start justify-between gap-4 no-underline{{ $clickable ? ' group transition-[border-color,transform] hover:-translate-y-px hover:border-action' : ' cursor-default' }}"
                style="--i:{{ $i + 1 }}">
                 <span class="min-w-0">
                     <span class="u-label block">{{ $card['label'] }}</span>
@@ -175,8 +194,10 @@
                         <span class="mt-1.5 block text-sm text-muted">{{ $card['hint'] }}</span>
                     @endif
                 </span>
-                <x-icon name="chevron-right" class="mt-1 text-muted transition-transform group-hover:translate-x-0.5"/>
-            </a>
+                @if ($clickable)
+                    <x-icon name="chevron-right" class="mt-1 text-muted transition-transform group-hover:translate-x-0.5"/>
+                @endif
+            </{{ $clickable ? 'a' : 'div' }}>
         @endforeach
     </div>
 

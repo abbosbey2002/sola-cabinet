@@ -154,7 +154,6 @@ return [
 
     'modal' => [
         'now_hint' => 'Tarif darhol faollashadi. Oldingi tarif uchun qayta hisob-kitob qilinmaydi, yangi tarif uchun abonent to\'lovi qaytadan hisoblanadi.',
-        'next_charge_note' => 'Keyingi hisobdan yechish — :date.',
         'month_hint' => ':date sanasidan boshlanadi.',
         'choose_date' => 'Oyni tanlang',
         'choose' => 'tanlash',
@@ -253,6 +252,9 @@ return [
         'offline_count' => '{1} Bittasi oflayn|[2,*] :count tasi oflayn',
         'all_online' => 'Hammasi onlayn',
         'days_left' => '{1} Yechishgacha 1 kun qoldi|[2,*] Yechishgacha :days kun qoldi',
+        // Paired with the day count shown separately (the ring's own big
+        // number), so this never repeats it — unlike days_left above.
+        'days_left_unit' => '{1} kun|[2,*] kun',
         'charge_today' => 'Bugun hisobdan yechiladi',
         'charge_passed' => 'Yechish muddati o\'tdi',
         'balance_ok' => 'Balans yetarli — :date dagi :amount so\'m yechim qoplanadi.',

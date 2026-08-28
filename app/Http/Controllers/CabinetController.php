@@ -44,15 +44,21 @@ final class CabinetController extends Controller
         $payments = (new BillingHistory($this->sola))
             ->payments($accountId, Period::currentMonth());
 
+        // /abonent/info's device_active_count is billing's own counter and can
+        // lag behind a device's actual IP lease — QA_CHECKLIST.md §C.6 requires
+        // this number to match /devices, so it's counted the same way that page
+        // does: a permit is active iff /device/list reports it with an ip.
+        $devices = (array) $this->sola->devices($accountId)->get('devices', []);
+        $activeDevices = count(array_filter($devices, fn (array $device): bool => filled($device['ip'] ?? null)));
+
         return $this->view->make('cabinet.index', [
             'profile' => $profile,
             'accounts' => $this->accounts(),
             // No charge date from billing means no meter: thirty-one ticks
             // drawn against a guessed date would be a confident lie.
             'cycle' => $charge !== null ? ChargeCycle::endingAt($charge) : null,
-            // The device counts on this page come from /abonent/info, which is
-            // already loaded — /device/list is a round trip this page does not
-            // need. The permit list lives on /devices.
+            'activeDevices' => $activeDevices,
+            'totalDevices' => count($devices),
             'lastPayment' => BillingHistory::lastRealPayment($payments['rows']),
         ]);
     }
