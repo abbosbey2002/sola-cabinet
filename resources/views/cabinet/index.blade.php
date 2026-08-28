@@ -94,24 +94,10 @@
             @endif
         </div>
 
-        @if ($cycle !== null)
-            <x-day-meter :cycle="$cycle" class="mt-6"/>
-
-            <div class="mt-2.5 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 text-sm text-muted">
-                <span>{{ $cycle->start->format('d.m.Y') }}</span>
-                <span class="font-semibold text-ink">
-                    @if ($cycle->isOverdue())
-                        @lang('app.dash.charge_passed')
-                    @elseif ($cycle->isChargeDay())
-                        {{-- daysLeft is 0 here too, but "the charge date has
-                             passed" on the morning the money comes off is
-                             simply wrong. --}}
-                        @lang('app.dash.charge_today')
-                    @else
-                        {{ trans_choice('app.dash.days_left', $cycle->daysLeft, ['days' => $cycle->daysLeft]) }}
-                    @endif
-                </span>
-                <span>{{ $cycle->end->format('d.m.Y') }}</span>
+        @if ($billingLogin !== '')
+            <div class="mt-5 flex items-baseline gap-2">
+                <span class="u-label">@lang('app.cabinet.login')</span>
+                <span class="text-sm font-semibold text-ink">{{ $billingLogin }}</span>
             </div>
         @endif
 

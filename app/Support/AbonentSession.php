@@ -63,6 +63,23 @@ final class AbonentSession
     }
 
     /**
+     * Billing's own login for this account — /identify's per-account `login`
+     * field, a distinct billing-assigned value that just usually happens to
+     * equal the phone number. Not to be confused with login()/setLogin()
+     * above, which holds the phone the subscriber typed to sign in and is
+     * what OTP verification is checked against.
+     */
+    public function setBillingLogin(string $login): void
+    {
+        $this->put('billing_login', $login);
+    }
+
+    public function billingLogin(): string
+    {
+        return (string) $this->read('billing_login');
+    }
+
+    /**
      * Stored as an integer because the API is fed the raw numeric phone when
      * listing accounts; changing the type would change the signed JSON body.
      */
@@ -156,7 +173,7 @@ final class AbonentSession
      */
     public function flush(): void
     {
-        foreach (['account', 'full_name', 'phone', 'login', 'verify', 'data'] as $name) {
+        foreach (['account', 'full_name', 'phone', 'login', 'billing_login', 'verify', 'data'] as $name) {
             unset($this->pending[$name]);
 
             Cookie::queue(Cookie::forget($name));

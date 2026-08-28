@@ -76,21 +76,12 @@
     --c-action-hover: #3b5d00;
     --c-action-soft: #e1f5ce;
 
-    /* The logo green itself — GRAPHIC only. Day meter and logo plate, both on
-       a dark ground (10.02:1). Never text, never a button. */
-    --c-lime: #8fd400;
-
     /* State colours, deliberately off the green hue: a warning inside the
        brand family is a warning nobody sees. */
     --c-warn: #8a5a00;
     --c-warn-soft: #faeed8;
     --c-danger: #a32014;
     --c-danger-soft: #fbe7e3;
-
-    /* The meter track — the same dark plate in both themes. That is the
-       relationship the logo itself uses: green on dark. */
-    --c-meter-bg: #101808;
-    --c-meter-idle: #424b3a;
 
     --shadow-card: 0 1px 2px rgba(20, 29, 9, .06), 0 12px 28px -20px rgba(20, 29, 9, .30);
 }
@@ -118,9 +109,6 @@
         --c-danger: #ff8f79;
         --c-danger-soft: #31201c;
 
-        --c-meter-bg: #050903;
-        --c-meter-idle: #47513e;
-
         --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
     }
 }
@@ -146,9 +134,6 @@
     --c-warn-soft: #2c2412;
     --c-danger: #ff8f79;
     --c-danger-soft: #31201c;
-
-    --c-meter-bg: #050903;
-    --c-meter-idle: #47513e;
 
     --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
 }
@@ -210,15 +195,11 @@
     --color-primary: var(--c-primary);
     --color-primary-hover: var(--c-primary-hover);
     --color-primary-on: var(--c-primary-on);
-    --color-lime: var(--c-lime);
 
     --color-warn: var(--c-warn);
     --color-warn-soft: var(--c-warn-soft);
     --color-danger: var(--c-danger);
     --color-danger-soft: var(--c-danger-soft);
-
-    --color-meter-bg: var(--c-meter-bg);
-    --color-meter-idle: var(--c-meter-idle);
 
     --radius-card: 1.125rem;
     --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
@@ -497,100 +478,6 @@
     .u-nav-link[aria-current='page'] {
         background: var(--c-action-soft);
         color: var(--c-action);
-    }
-
-    /* SIGNATURE: the day meter ------------------------------------------
-       The subscriber has one question — "will my balance last?". A percentage
-       bar does not answer it; countable days do, which is why the ring's fill
-       is still measured in days server-side. The plate is dark in both
-       themes: green on dark is the relationship the logo itself uses. */
-    .u-meter {
-        @apply rounded-xl px-5 py-6;
-        background: var(--c-meter-bg);
-    }
-
-    .u-ring-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.1rem;
-    }
-
-    .u-ring {
-        position: relative;
-        width: 84px;
-        height: 84px;
-        flex-shrink: 0;
-    }
-
-    /* Rotated so the fill sweeps from 12 o'clock, clockwise — the reading a
-       radial progress ring is normally given. */
-    .u-ring svg {
-        transform: rotate(-90deg);
-    }
-
-    .u-ring-track {
-        stroke: var(--c-meter-idle);
-    }
-
-    .u-ring-fill {
-        stroke: var(--c-lime);
-        stroke-linecap: round;
-    }
-
-    .u-ring-count {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        color: #ffffff;
-        line-height: 1.1;
-    }
-
-    .u-ring-count b {
-        font-family: var(--font-display);
-        font-weight: 800;
-        font-size: 1.375rem;
-    }
-
-    .u-ring-count span {
-        font-size: 0.625rem;
-        color: #b7c2a8;
-        margin-top: 0.15rem;
-    }
-
-    /* A torn calendar-page chip for the charge date — the "muddat" (deadline)
-       reading the client asked for in place of the old slider-track look. */
-    .u-cal-chip {
-        width: 58px;
-        flex-shrink: 0;
-        border-radius: 0.55rem;
-        overflow: hidden;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
-    }
-
-    .u-cal-chip-month {
-        display: block;
-        background: var(--c-danger);
-        color: #ffffff;
-        text-align: center;
-        font-size: 0.625rem;
-        font-weight: 700;
-        letter-spacing: 0.03em;
-        padding: 0.2rem 0;
-    }
-
-    .u-cal-chip-day {
-        display: block;
-        background: #ffffff;
-        text-align: center;
-        font-family: var(--font-display);
-        font-weight: 800;
-        font-size: 1.375rem;
-        color: #1a1a1a;
-        padding: 0.25rem 0 0.3rem;
     }
 
     /* Logo --------------------------------------------------------------

@@ -54,11 +54,12 @@ final class CabinetController extends Controller
         return $this->view->make('cabinet.index', [
             'profile' => $profile,
             'accounts' => $this->accounts(),
-            // No charge date from billing means no meter: thirty-one ticks
-            // drawn against a guessed date would be a confident lie.
+            // No charge date from billing means no "next charge" block: a
+            // guessed date would be a confident lie.
             'cycle' => $charge !== null ? ChargeCycle::endingAt($charge) : null,
             'activeDevices' => $activeDevices,
             'totalDevices' => count($devices),
+            'billingLogin' => $this->session->billingLogin(),
             'lastPayment' => BillingHistory::lastRealPayment($payments['rows']),
         ]);
     }

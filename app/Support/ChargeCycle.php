@@ -10,21 +10,21 @@ use Carbon\CarbonImmutable;
  * The billing cycle that ends at the subscriber's next charge, expressed as
  * countable days.
  *
- * This exists for the day meter on the dashboard — the one element the whole
- * redesign is built around. A subscriber has exactly one question, "will my
- * balance last?", and a percentage bar does not answer it: what answers it is
- * how many days are left and how much comes off on the last one.
+ * The Home page dashboard reads only end() from this today (the "next
+ * charge" date and amount) — it used to also drive a day-meter widget that
+ * read start()/daysLeft()/isOverdue()/isChargeDay(), removed 2026-08-28. The
+ * rest of this class's API is kept: it is a correct, tested value object for
+ * the cycle, not something to trim just because its one caller stopped
+ * reading it, and a future dashboard element is free to read it again.
  *
  * Billing reports only the NEXT charge date, never the cycle's start, so the
  * start is taken as one month back. That is right for the monthly tariffs the
  * cabinet actually sells and, for anything else, still produces an honest
- * "days remaining" — which is the number the meter is read for.
+ * "days remaining".
  *
  * The span is therefore always one calendar month, 28–31 days; the clamp on it
  * is a guard against a future change to how the start is derived, not against
- * anything billing can send today. What billing CAN make absurd is daysLeft,
- * which is why the view prints it through a plural string rather than doing
- * arithmetic of its own.
+ * anything billing can send today.
  */
 final class ChargeCycle
 {

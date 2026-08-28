@@ -27,7 +27,7 @@ final class AuthTest extends TestCase
     public function a_known_phone_is_sent_an_sms_and_lands_on_the_verify_screen(): void
     {
         Http::fake(['*/identify' => Http::response([
-            'accs' => [['accId' => 1001, 'abonType' => 2, 'abonName' => 'Tester']],
+            'accs' => [['accId' => 1001, 'abonType' => 2, 'abonName' => 'Tester', 'login' => 'TESTER01']],
         ])]);
 
         $response = $this->post(route('login'), ['login' => '+998 901234567']);
@@ -37,6 +37,10 @@ final class AuthTest extends TestCase
         $response->assertCookie('account', '1001');
         $response->assertCookie('login', '998901234567');
         $response->assertSessionHas('phone', '998901234567');
+        // Billing's own login for the account — a distinct field from the
+        // phone the subscriber typed, deliberately given a different value
+        // here to prove one is not silently aliasing the other.
+        $response->assertCookie('billing_login', 'TESTER01');
 
         Http::assertSent(fn ($request): bool => $request['phn'] === '998901234567'
             && $request['sendsms'] === 1);
@@ -127,12 +131,16 @@ final class AuthTest extends TestCase
             'verify' => '1',
             'account' => '1001',
             'login' => '998901234567',
+            'billing_login' => 'TESTER01',
         ])->get(route('logout'));
 
         $response->assertRedirect(route('login'));
         $response->assertCookieExpired('verify');
         $response->assertCookieExpired('account');
         $response->assertCookieExpired('login');
+        // Left uncleared, a shared browser's next subscriber would open the
+        // cabinet still showing the previous one's billing login.
+        $response->assertCookieExpired('billing_login');
     }
 
     #[Test]

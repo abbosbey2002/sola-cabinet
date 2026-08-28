@@ -124,5 +124,6 @@ final class AuthController extends Controller
     {
         $this->session->setAccountId((string) ($account['accId'] ?? ''));
         $this->session->setAbonentType((int) ($account['abonType'] ?? 0));
+        $this->session->setBillingLogin((string) ($account['login'] ?? ''));
     }
 }

@@ -121,69 +121,6 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * The day meter is the page's whole point, so it has to be built from the
-     * charge date rather than from the day of the month: the ring's fill
-     * stops at today's position along the cycle, and the calendar chip
-     * states the charge date itself.
-     */
-    #[Test]
-    public function the_day_meter_counts_the_days_to_the_next_charge(): void
-    {
-        Carbon::setTestNow('2026-08-08');
-
-        $this->fakeSola([
-            '*/abonent/info' => Http::response([
-                'name' => 'Tester Testov',
-                'saldo' => 125000,
-                'curr_tariff_name' => 'Home 100',
-                'next_charge_date' => '2026-09-01',
-            ]),
-        ]);
-
-        $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
-
-        // 01.08 → 01.09 is 31 days (span 30); the 8th is day 8, so today sits
-        // at 7/30 = 23.33% around the ring — a circumference of 213.63
-        // (r=34) leaves a dash-offset of 163.78 — and 24 days remain.
-        $this->assertSame(1, substr_count($content, 'class="u-ring-fill"'));
-        $this->assertStringContainsString('stroke-dashoffset="163.78"', $content);
-        $this->assertStringContainsString('<b>24</b>', $content);
-        $this->assertStringContainsString(trans_choice('app.dash.days_left_unit', 24), $content);
-        $this->assertStringContainsString('u-cal-chip-day">01<', $content);
-
-        $this->assertStringContainsString(
-            trans_choice('app.dash.days_left', 24, ['days' => 24]),
-            $content,
-        );
-    }
-
-    /**
-     * When today IS the charge day, the ring reads as fully filled — its own
-     * 0%/100% endpoints already ARE the cycle's boundaries, so there is no
-     * separate "charge day" marker to merge into anything, unlike the old
-     * scrubber track this replaced.
-     */
-    #[Test]
-    public function the_ring_is_fully_filled_when_today_is_the_charge_day(): void
-    {
-        Carbon::setTestNow('2026-09-01');
-
-        $this->fakeSola([
-            '*/abonent/info' => Http::response([
-                'name' => 'Tester Testov',
-                'saldo' => 125000,
-                'curr_tariff_name' => 'Home 100',
-                'next_charge_date' => '2026-09-01',
-            ]),
-        ]);
-
-        $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
-
-        $this->assertStringContainsString('stroke-dashoffset="0"', $content);
-        $this->assertStringContainsString(trans('app.dash.charge_today'), $content);
-    }
-
-    /**
      * Billing's confirmed field: /abonent/info's `charge_date` IS the upcoming
      * payment date already — no arithmetic, it is read straight through.
      */
@@ -203,7 +140,6 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee('u-ring-row', escape: false)
             ->assertSee('15.08.2026');
     }
 
@@ -229,20 +165,21 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee('u-ring-row', escape: false)
             ->assertSee('15.08.2026');
     }
 
     /**
-     * With nothing to anchor a charge date to, thirty-one ticks drawn against a
-     * guess would be a confident lie, so there is no meter.
+     * With no cycle to anchor it (no charge date from billing at all), the
+     * "next charge" block itself must not appear — inventing a date to show
+     * one would be a confident lie.
      *
-     * This profile carries a contract_date and no curr_tariff_id, and the meter
-     * still must not appear: deriving the charge day from the contract was
-     * tried on 2026-08-10 and reverted the same day — the charge follows the
-     * last tariff change, not the contract day. The assertion below is what
-     * keeps that fix from being quietly undone by a future "it's easy, just use
-     * contract_date". The legitimate anchor is exercised by the test after it.
+     * This profile carries a contract_date and no curr_tariff_id, and the
+     * block still must not appear: deriving the charge day from the contract
+     * was tried on 2026-08-10 and reverted the same day — the charge follows
+     * the last tariff change, not the contract day. The assertion below is
+     * what keeps that fix from being quietly undone by a future "it's easy,
+     * just use contract_date". The legitimate anchor is exercised by the test
+     * after it.
      */
     /**
      * When a tariff switch is already queued (AbonentProfile::nextTariff()),
@@ -308,24 +245,24 @@ final class CabinetTest extends TestCase
     }
 
     #[Test]
-    public function no_charge_date_means_no_meter_rather_than_an_invented_one(): void
+    public function the_next_charge_block_is_absent_without_a_charge_date(): void
     {
         $this->fakeSola();
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
             ->assertSee('125 000')
-            ->assertDontSee('u-ring-row', escape: false);
+            ->assertDontSee(trans('app.dash.next_charge'));
     }
 
     /**
      * The anchor billing does supply: /tariff/connected reports the day the
      * tariff started, and the period ends on that day of the month. That is
-     * enough to draw the meter the dashboard is built around, without billing
-     * ever sending a charge date of its own.
+     * enough to derive a next-charge date, without billing ever sending a
+     * charge date of its own.
      */
     #[Test]
-    public function the_meter_is_drawn_from_the_day_the_tariff_started(): void
+    public function the_next_charge_date_falls_back_to_the_day_the_tariff_started(): void
     {
         Carbon::setTestNow('2026-08-13 09:00:00');
 
@@ -343,13 +280,10 @@ final class CabinetTest extends TestCase
             ]),
         ]);
 
-        // Anchor day 10, already past on the 13th, so the charge is 10 September
-        // — and the cycle it closes opened on 10 August.
+        // Anchor day 10, already past on the 13th, so the charge is 10 September.
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee('u-ring-row', escape: false)
-            ->assertSee('10.09.2026')
-            ->assertSee('10.08.2026');
+            ->assertSee('10.09.2026');
     }
 
     /**
@@ -871,7 +805,35 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()
             ->get('/select/account/'.self::ACCOUNT_ID)
-            ->assertRedirect(route('cabinet'));
+            ->assertRedirect(route('cabinet'))
+            // Billing's own login for the account, refreshed from /identify
+            // on every switch — not the phone the subscriber logged in with.
+            ->assertCookie('billing_login', 'TESTOV01');
+    }
+
+    #[Test]
+    public function the_home_page_shows_billings_login_when_the_session_carries_one(): void
+    {
+        $this->fakeSola();
+
+        $this->verifiedSubscriber()
+            ->withCookie('billing_login', 'TESTOV01')
+            ->get('/')
+            ->assertOk()
+            ->assertSee(trans('app.cabinet.login'))
+            ->assertSee('TESTOV01');
+    }
+
+    #[Test]
+    public function the_login_row_is_absent_for_a_session_predating_the_field(): void
+    {
+        $this->fakeSola();
+
+        // verifiedSubscriber() carries no billing_login cookie, the same as
+        // every session created before this field existed.
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertDontSee(trans('app.cabinet.login'));
     }
 
     /**
@@ -1250,7 +1212,7 @@ final class CabinetTest extends TestCase
         Http::fake($overrides + [
             '*/identify' => Http::response([
                 'accs' => [
-                    ['accId' => 1001, 'abonType' => 2, 'abonName' => 'Tester Testov'],
+                    ['accId' => 1001, 'abonType' => 2, 'abonName' => 'Tester Testov', 'login' => 'TESTOV01'],
                 ],
             ]),
             '*/abonent/info' => Http::response([
