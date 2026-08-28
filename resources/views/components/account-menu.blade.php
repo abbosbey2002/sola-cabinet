@@ -90,8 +90,15 @@
 
                             <span class="min-w-0 flex-1">
                                 <span class="block truncate text-base font-semibold text-ink">
+                                    {{-- abonName is frequently blank in billing's own traffic
+                                         (docs/api/SOLA_API.md) — login is the reliable field in
+                                         the same accs[] row, so it stands in first; the account
+                                         type badge is the last-resort fallback if even that is
+                                         somehow blank. --}}
                                     @if (filled($account['abonName'] ?? null))
                                         {{ $account['abonName'] }}
+                                    @elseif (filled($account['login'] ?? null))
+                                        {{ $account['login'] }}
                                     @else
                                         <x-account-type :type="$account['abonType']" as="text"/>
                                     @endif

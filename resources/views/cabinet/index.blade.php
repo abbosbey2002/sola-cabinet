@@ -67,7 +67,12 @@
         $offline = max(0, $total - $active);
     @endphp
 
-    <section class="u-card u-rise" aria-labelledby="hero-title">
+    {{-- Extra padding versus the plain u-card default (p-5/p-6): this is the
+         one card on the page the subscriber's whole visit is about, so it
+         gets more breathing room than the list-style cards below it — the
+         same "most important thing gets the most space" hierarchy the
+         balance figure itself already carries. --}}
+    <section class="u-card u-rise p-6 sm:p-8" aria-labelledby="hero-title">
         <h2 id="hero-title" class="sr-only">@lang('app.dash.account_state')</h2>
 
         <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-5">
@@ -94,19 +99,29 @@
             @endif
         </div>
 
+        {{-- A rule, not just a gap: this is account metadata, not a third
+             balance figure, and the divider says so before the eye even
+             reads the label. --}}
         @if ($billingLogin !== '')
-            <div class="mt-5 flex items-baseline gap-2">
-                <span class="u-label">@lang('app.cabinet.login')</span>
-                <span class="text-sm font-semibold text-ink">{{ $billingLogin }}</span>
+            <div class="mt-6 border-t border-line pt-5">
+                <p class="u-label">@lang('app.cabinet.login')</p>
+                <p class="mt-1.5 text-lg font-semibold text-ink">{{ $billingLogin }}</p>
             </div>
         @endif
 
+        {{-- The icon sits on its own surface-coloured tile rather than bare
+             on the tinted strip — the same "chip on a tinted ground" reading
+             the pay-card and the services entry below already use, so the
+             one alert this page ever shows still looks like it belongs to
+             the same product instead of a plain system warning box. --}}
         @if ($note !== null)
-            <p class="mt-5 flex items-start gap-3 rounded-xl px-4 py-3.5 text-base text-ink"
-               style="background: {{ $tone['bg'] }}">
-                <x-icon :name="$tone['icon']" class="mt-1" style="color: {{ $tone['fg'] }}"/>
+            <div class="mt-5 flex items-center gap-3.5 rounded-xl px-4 py-3.5 text-base text-ink"
+                 style="background: {{ $tone['bg'] }}">
+                <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-surface" style="color: {{ $tone['fg'] }}">
+                    <x-icon :name="$tone['icon']" size="size-4"/>
+                </span>
                 <span>{{ $note }}</span>
-            </p>
+            </div>
         @endif
     </section>
 

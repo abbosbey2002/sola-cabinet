@@ -326,6 +326,30 @@ final class CabinetTest extends TestCase
      * the manager's Telegram contact ships with a real default
      * (config/sola.php), so the card is on the services page out of the box.
      */
+    /**
+     * abonName is documented as frequently blank in billing's own traffic
+     * (docs/api/SOLA_API.md) — the account switcher used to fall back to a
+     * generic account-type badge ("Doimiy"/"Vaqtinchalik") for those rows,
+     * which does not help tell two blank-named accounts apart. login is the
+     * reliable field in the same accs[] row, so it stands in first now.
+     */
+    #[Test]
+    public function the_account_switcher_shows_login_when_billings_name_is_blank(): void
+    {
+        $this->fakeSola([
+            '*/identify' => Http::response([
+                'accs' => [
+                    ['accId' => 1001, 'abonType' => 2, 'abonName' => 'Tester Testov', 'login' => 'TESTOV01'],
+                    ['accId' => 1002, 'abonType' => 2, 'abonName' => '', 'login' => '998907654321'],
+                ],
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee('998907654321');
+    }
+
     #[Test]
     public function the_manager_card_links_to_the_telegram_contact(): void
     {
