@@ -18,20 +18,57 @@
     $tones = $toneMap[$tone] ?? $toneMap['action'];
 @endphp
 
-<div {{ $attributes->merge(['class' => 'u-card u-rise flex flex-wrap items-center gap-4']) }}
+<div {{ $attributes->merge(['class' => 'u-card u-rise']) }}
      style="background: {{ $tones['bg'] }}">
-    <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-surface" style="color: {{ $tones['fg'] }}">
-        <x-icon name="wallet" size="size-6"/>
-    </span>
+    {{-- Billing does not send a contract number for every account (none of
+         AbonentProfile::CANDIDATE_CONTRACT matched for account 1336708,
+         observed live 2026-08-28) — this half of the card is the one thing
+         that actually needs it, so it is skipped rather than printing a
+         blank figure. The iWon button below needs no contract number at
+         all and must not disappear along with it. --}}
+    @if (filled($contract))
+        <div class="flex flex-wrap items-center gap-4">
+            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-surface" style="color: {{ $tones['fg'] }}">
+                <x-icon name="wallet" size="size-6"/>
+            </span>
 
-    <div class="min-w-0 flex-1">
-        <p class="u-label">@lang('app.dash.contract')</p>
-        <p class="u-figure mt-0.5 text-2xl text-ink">{{ $contract }}</p>
-        <p class="mt-1 text-sm text-muted">@lang('app.dash.pay_hint')</p>
-    </div>
+            <div class="min-w-0 flex-1">
+                <p class="u-label">@lang('app.dash.contract')</p>
+                <p class="u-figure mt-0.5 text-2xl text-ink">{{ $contract }}</p>
+                <p class="mt-1 text-sm text-muted">@lang('app.dash.pay_hint')</p>
+            </div>
 
-    <button type="button" data-copy="{{ $contract }}" data-copy-done="@lang('app.ui.copied')"
-            class="u-btn-ghost u-btn-sm u-no-print shrink-0">
-        <x-icon name="copy" size="size-4"/><span data-copy-text role="status">@lang('app.ui.copy')</span>
-    </button>
+            <button type="button" data-copy="{{ $contract }}" data-copy-done="@lang('app.ui.copied')"
+                    class="u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink">
+                <span data-copy-icon-default><x-icon name="copy" size="size-4"/></span>
+                <span data-copy-icon-done hidden style="color: var(--c-action)"><x-icon name="check" size="size-4"/></span>
+                <span data-copy-text role="status" class="sr-only">@lang('app.ui.copy')</span>
+            </button>
+        </div>
+    @elseif (config('iwon.active'))
+        {{-- No contract number and nothing to copy, but the card still
+             needs to read as one deliberate piece — an icon and a line of
+             text, the same weight as the contract half above, rather than
+             a bare button floating in a tinted box. --}}
+        <div class="flex flex-wrap items-center gap-4">
+            <span class="grid size-12 shrink-0 place-items-center rounded-xl bg-surface" style="color: {{ $tones['fg'] }}">
+                <x-icon name="wallet" size="size-6"/>
+            </span>
+
+            <div class="min-w-0 flex-1">
+                <p class="u-label">@lang('app.topup.pay_card_title')</p>
+                <p class="mt-0.5 text-sm text-muted">@lang('app.topup.pay_card_hint')</p>
+            </div>
+        </div>
+    @endif
+
+    {{-- The manual copy-the-contract-number flow above stays for Payme/Click/
+         Uzum, since only iWon is actually integrated — closed at
+         config('iwon.active') the same way TopUpController itself is, so the
+         button never appears offering a flow the route would 404 on. --}}
+    @if (config('iwon.active'))
+        <a href="{{ route('topup') }}" class="u-btn-primary u-no-print mt-4 flex w-full">
+            <x-icon name="wallet" size="size-5"/>@lang('app.topup.pay_card_button')
+        </a>
+    @endif
 </div>

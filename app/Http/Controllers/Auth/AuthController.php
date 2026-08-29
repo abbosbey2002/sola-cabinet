@@ -101,12 +101,6 @@ final class AuthController extends Controller
 
         $this->selectAccount($account);
 
-        $info = $this->sola->abonentInfo($accountId);
-
-        if ($info->successful()) {
-            $this->session->setFullName((string) $info->get('name'));
-        }
-
         return redirect()->route('cabinet');
     }
 
@@ -125,5 +119,31 @@ final class AuthController extends Controller
         $this->session->setAccountId((string) ($account['accId'] ?? ''));
         $this->session->setAbonentType((int) ($account['abonType'] ?? 0));
         $this->session->setBillingLogin((string) ($account['login'] ?? ''));
+        $this->session->setFullName($this->resolveFullName($account));
+    }
+
+    /**
+     * The subscriber's display name for this account — sourced from
+     * /identify's own `abonName`/`login`, not /abonent/info's `name`.
+     *
+     * /abonent/info's `name` is not reliable as a display name: observed
+     * live 2026-08-28 on account 1000033 (abonType "1", one-off) as the
+     * literal string "Разовый абонент" — billing's own generic label for the
+     * account type, filled in instead of leaving `name` null the way
+     * docs/api/SOLA_API.md §3 documents for accounts with no name on file.
+     * Shown as-is it read as the subscriber's own name in the header and
+     * account switcher. `abonName` is documented as "often blank" rather
+     * than wrong, and `login` is /identify's reliable fallback for that same
+     * row — the same `abonName ?: login` pattern `x-account-menu`'s "switch
+     * account" list already uses, now shared by whichever account is
+     * actually selected.
+     *
+     * @param  array<string, mixed>  $account
+     */
+    private function resolveFullName(array $account): string
+    {
+        $abonName = (string) ($account['abonName'] ?? '');
+
+        return $abonName !== '' ? $abonName : (string) ($account['login'] ?? '');
     }
 }

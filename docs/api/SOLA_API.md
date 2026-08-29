@@ -87,6 +87,8 @@ bilan aniqlanadi — javobda token ham, sessiya ham yo'q.
   "contract_date": "2019-01-11",
   "curr_tariff_id": "4",
   "curr_tariff_name": "Paket 2 soat",
+  "tariff_price": "125000",
+  "charge_date": "2026-09-24",
   "device_count": "1",
   "device_active_count": "0"
 }
@@ -94,17 +96,22 @@ bilan aniqlanadi — javobda token ham, sessiya ham yo'q.
 
 | Maydon | Tur | Izoh |
 |---|---|---|
-| `name`, `email`, `phone` | string \| **null** | Test hisobida uchalasi ham `null` keldi — klient buni hisobga olishi shart |
+| `name`, `email`, `phone` | string \| **null** | Test hisobida uchalasi ham `null` keldi — klient buni hisobga olishi shart. **Lekin har doim ham `null` emas**: hisob 1000033 da (abonType "1", razoviy) `name` sifatida `"Разовый абонент"` — ya'ni haqiqiy ism o'rniga hisob turining o'zi — qaytdi. Shu sababli **kabinet obunachi ismini bu maydondan olmaydi** — `AuthController::resolveFullName()` `/identify`ning o'z `abonName` (yo'q bo'lsa `login`) maydonidan foydalanadi, bu yerdagi `name`dan mustaqil |
 | `address` | string | `lang=uz` bo'lsa ham rus tilida qaytdi |
 | `status` | string | Erkin matn (`"Активен"`), kod emas |
 | `saldo` | string | So'mda (yuqoriga qarang) |
 | `contract_date` | `Y-m-d` | Shartnoma **sanasi**; raqami yo'q |
 | `curr_tariff_id` | string | Joriy tarifni ro'yxatda topish uchun ishlatiladi (nom ishonchsiz — pastga qarang) |
+| `tariff_price` | string | **Javob topildi (2026-08-28, hisob 1336708)**: joriy tarif narxi shu maydonda keladi, **`curr_tariff_cost` emas**. Boshqa tiyin maydonlaridan farqli — **to'g'ridan-to'g'ri so'mda**, `/100` bo'linmaydi. Tekshirildi: `curr_tariff_name: "Smart 50 - 125 000 сум"` yonida `tariff_price: "125000"` — agar tiyin bo'lsa 1 250 so'm chiqardi, nom bilan mos kelmaydi. `app/Support/AbonentProfile.php::currentTariffCost()` shu maydonni birinchi tekshiradi |
 | `device_count` / `device_active_count` | string | Butun son matn sifatida |
 
-**Yo'q maydonlar** (TZ talab qiladi): `contract_number`, `curr_tariff_cost`,
-`next_tariff_name`, `next_tariff_cost`, `next_charge_date` —
-`docs/task/BILLING_API_TALABLARI.md` ga qarang.
+**Yo'q maydonlar** (TZ talab qiladi): `contract_number`, `next_tariff_name`,
+`next_tariff_cost` — `docs/task/BILLING_API_TALABLARI.md` ga qarang.
+`curr_tariff_cost`'ning o'zi kelmaydi, lekin narxning o'zi `tariff_price` orqali
+keladi (yuqoriga qarang) — bu ikkisi turli maydon, bir xil emas.
+`next_charge_date`'ning o'zi ham kelmaydi, lekin `charge_date` xuddi shu
+ma'noni beradi (keyingi to'lov sanasi to'g'ridan-to'g'ri, hech qanday hisob-
+kitobsiz) — `AbonentProfile::nextChargeDate()`ga qarang.
 
 ## 4. `/device/list` — qurilmalar
 
@@ -174,6 +181,7 @@ kontraktiga tegishli edi. Javob sahifalanmaydi.
 | `amount` | **int** | `2500000` | Tiyinda |
 | `payment_system` | string | `"PayNet"` | |
 | `payment_status` | string | `"to'langan"` | **`lang` bo'yicha tarjima qilinadi** — mashina kodi emas |
+| `note` | string | `"Оплата в кредита"` | **Qo'shildi (2026-08-28)**, hali hujjatlashtirilmagan edi. `payment_status`dan mustaqil — kredit bo'yicha to'lovni `payment_status` o'zi bildirmaydi. `note`da `"кредита"` so'zi uchrasa, `BillingHistory::isCreditNote()` buni aniqlab, holat ustuniga "Kredit" belgisini qo'shadi (`payment/result.blade.php`) |
 
 `payment_status` lokalizatsiya qilingani muhim: uni matn bo'yicha tanib olish
 tilga bog'liq bo'lib qoladi. Shuning uchun `payment_status_code` so'ralmoqda.

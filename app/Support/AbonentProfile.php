@@ -6,6 +6,7 @@ namespace App\Support;
 
 use App\Services\Sola\SolaResponse;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
@@ -170,9 +171,93 @@ final class AbonentProfile
         return $this->firstCost(self::CANDIDATE_NEXT_TARIFF_COST);
     }
 
+    /**
+     * Confirmed live on account 1336708 (2026-08-28): billing sends the
+     * tariff's price as `tariff_price` — already in so'm, unlike every
+     * CANDIDATE_CURRENT_TARIFF_COST key below, which are tiyin and divided
+     * accordingly. The tariff's own name spells this out ("Smart 50 - 125 000
+     * сум" alongside `tariff_price: "125000"`) — at tiyin that would be
+     * 1 250 so'm, contradicting the name. Checked first because it is the one
+     * candidate actually observed on a live account; the rest stay as an
+     * untested guess list for accounts that might still report differently.
+     */
     public function currentTariffCost(): ?float
     {
-        return $this->firstCost(self::CANDIDATE_CURRENT_TARIFF_COST);
+        $price = $this->body['tariff_price'] ?? null;
+
+        if (! is_numeric($price)) {
+            return $this->firstCost(self::CANDIDATE_CURRENT_TARIFF_COST);
+        }
+
+        $price = (float) $price;
+
+        // Unlike nextChargeDate() below, the confirmed field wins here
+        // without checking the guess list first — but silently, so a second
+        // account where they disagree would ship a wrong "next charge"
+        // figure with no signal. This is that signal.
+        $legacy = $this->firstCost(self::CANDIDATE_CURRENT_TARIFF_COST);
+
+        if ($legacy !== null && abs($legacy - $price) > 0.01) {
+            Log::warning('AbonentProfile: tariff_price disagrees with a legacy tariff-cost field', [
+                'tariff_price_som' => $price,
+                'legacy_field_som' => $legacy,
+            ]);
+        }
+
+        return $price;
+    }
+
+    /**
+     * currentTariff(), with billing's own price suffix trimmed off when it's
+     * actually there.
+     *
+     * Confirmed live 2026-08-28: this billing catalog now names every
+     * current tariff "<Plan> - <price> <currency word>" (e.g. "Smart 50 -
+     * 125 000 сум", cross-checked against a real /tariff/connected capture
+     * showing the same pattern on Smart 75/100/300 too) — so the price this
+     * class already reports separately via currentTariffCost() was showing
+     * twice on every screen that displays both. Only strips a suffix that
+     * literally matches the cost this class already trusts; a name that
+     * doesn't end in the known price — including one from a billing
+     * generation that never adopted this convention — is returned exactly
+     * as billing sent it.
+     */
+    public function currentTariffDisplayName(): ?string
+    {
+        return $this->withoutPriceSuffix($this->currentTariff(), $this->currentTariffCost());
+    }
+
+    /** nextTariff(), with the same price-suffix trim as currentTariffDisplayName(). */
+    public function nextTariffDisplayName(): ?string
+    {
+        return $this->withoutPriceSuffix($this->nextTariff(), $this->nextTariffCost());
+    }
+
+    private function withoutPriceSuffix(?string $name, ?float $cost): ?string
+    {
+        if ($name === null || $cost === null) {
+            return $name;
+        }
+
+        // Matched digit-group by digit-group rather than against one
+        // hardcoded separator byte: a plain space is what account 1336708's
+        // name actually used, but Cyrillic billing exports are also known to
+        // use a non-breaking space (U+00A0) as the thousands separator —
+        // that would silently fail to match a literal " " and leave the
+        // price shown twice again, with no signal that it happened.
+        $groups = explode(',', number_format($cost, 0, '', ','));
+        $numberPattern = implode('[\s\x{00A0}]', array_map(
+            fn (string $group): string => preg_quote($group, '/'),
+            $groups,
+        ));
+
+        $trimmed = preg_replace(
+            '/[\s\x{00A0}]*-[\s\x{00A0}]*'.$numberPattern.'[\s\x{00A0}]*\S+[\s\x{00A0}]*$/u',
+            '',
+            $name,
+        );
+
+        return $trimmed !== null && trim($trimmed) !== '' ? $trimmed : $name;
     }
 
     public function nextChargeDate(): ?CarbonImmutable

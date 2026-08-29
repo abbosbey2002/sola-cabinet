@@ -60,35 +60,55 @@ final class CabinetTest extends TestCase
     }
 
     /**
-     * Billing's own `device_active_count` on /abonent/info can disagree with
-     * reality — it lags the device's actual IP lease, which is what
-     * /device/list (and the /devices page) go by. QA_CHECKLIST.md §C.6
-     * requires the home page's count to match /devices, so it must be
-     * counted from the same source: a permit is active iff it has an ip.
+     * The dashboard shows the device count only — no active/offline split,
+     * dropped at the user's request (2026-08-28) alongside the status
+     * column on /devices. The count itself still has to match /devices
+     * exactly (QA_CHECKLIST.md §E.1), so it's read from /device/list rather
+     * than /abonent/info's own device_count, billing's separate counter.
      */
     #[Test]
-    public function the_home_pages_active_device_count_matches_the_devices_page_not_billings_stale_counter(): void
+    public function the_home_pages_device_count_matches_the_devices_page_not_billings_own_counter(): void
     {
         $this->fakeSola([
             '*/abonent/info' => Http::response([
                 'name' => 'Tester Testov',
                 'saldo' => 125000,
                 'curr_tariff_name' => 'Home 100',
-                // Billing's own counter says nothing is active yet...
-                'device_count' => '1',
-                'device_active_count' => '0',
+                // Billing's own counter disagrees with the real device list...
+                'device_count' => '99',
             ]),
-            // ...but the device already has an ip lease, same as /devices shows.
+            // ...but /device/list — what /devices itself shows — reports two.
             '*/device/list' => Http::response([
                 'devices' => [
                     ['mac' => 'AA:BB:CC:DD:EE:FF', 'ip' => '10.0.0.5', 'connect_date' => '2026-01-15', 'readonly' => false, 'permit_id' => '77'],
+                    ['mac' => '11:22:33:44:55:66', 'ip' => null, 'connect_date' => '2026-02-01', 'readonly' => false, 'permit_id' => '78'],
                 ],
             ]),
         ]);
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee(trans('app.dash.active_of', ['active' => 1, 'total' => 1]));
+            ->assertSee(trans_choice('app.dash.devices_total', 2, ['count' => 2]))
+            ->assertDontSee(trans('app.header.offline'))
+            ->assertDontSee(trans('app.header.online'));
+    }
+
+    /**
+     * The devices table used to show a per-device online/offline status
+     * column — dropped at the user's request (2026-08-28), alongside the
+     * home page's active/offline breakdown above.
+     */
+    #[Test]
+    public function the_devices_table_has_no_status_column(): void
+    {
+        $this->fakeSola();
+
+        $this->verifiedSubscriber()->get('/devices')
+            ->assertOk()
+            ->assertSee('AA:BB:CC:DD:EE:FF')
+            ->assertDontSee(trans('app.header.status'))
+            ->assertDontSee(trans('app.header.online'))
+            ->assertDontSee(trans('app.header.offline'));
     }
 
     /**
@@ -141,6 +161,68 @@ final class CabinetTest extends TestCase
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
             ->assertSee('15.08.2026');
+    }
+
+    /**
+     * Captured live from account 1336708 (2026-08-28): billing sends the
+     * tariff's price as `tariff_price`, already in so'm — none of the older
+     * CANDIDATE_CURRENT_TARIFF_COST keys were present, so the "next charge"
+     * figure silently fell back to date-only. This is that account's real
+     * /abonent/info shape (minus fields unrelated to this bug).
+     */
+    #[Test]
+    public function the_next_charge_amount_reads_the_real_tariff_price_field(): void
+    {
+        Carbon::setTestNow('2026-08-28');
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'TEST PAYMENTS',
+                'legal' => '0',
+                'saldo' => '0',
+                'status' => 'Активен',
+                'curr_tariff_id' => '1185',
+                'curr_tariff_name' => 'Smart 50 - 125 000 сум',
+                'tariff_price' => '125000',
+                'charge_date' => '2026-09-24',
+                'contract_id' => '202',
+                'contract_date' => '2019-07-17',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee('125 000')
+            ->assertSee('24.09.2026');
+    }
+
+    /**
+     * Same real account shape as the test above — the "current tariff" card
+     * used to show "Smart 50 - 125 000 сум" as its heading AND "125 000 сум"
+     * again as its own hint line right below, both from the same tariff.
+     */
+    #[Test]
+    public function the_current_tariff_card_does_not_repeat_the_price_baked_into_the_name(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'TEST PAYMENTS',
+                'saldo' => '0',
+                'curr_tariff_id' => '1185',
+                'curr_tariff_name' => 'Smart 50 - 125 000 сум',
+                'tariff_price' => '125000',
+                'charge_date' => '2026-09-24',
+            ]),
+        ]);
+
+        $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
+
+        $this->assertStringContainsString('Smart 50', $content);
+        $this->assertStringNotContainsString('Smart 50 - 125 000', $content);
+        // The "next charge" figure, the balance-shortfall note, and the
+        // tariff card's own price hint each legitimately state 125 000
+        // once — never a fourth time from the raw, unstripped name.
+        $this->assertSame(3, substr_count($content, '125 000'));
     }
 
     /**
@@ -211,7 +293,7 @@ final class CabinetTest extends TestCase
         // The hero "next charge" figure and the balance verdict both read
         // 2 000 (next_tariff_cost), never 1 000 (curr_tariff_cost) — but the
         // "current tariff" card still states 1 000, its own tariff's price.
-        $this->assertStringContainsString(trans('app.dash.balance_ok', ['date' => '15.08', 'amount' => '2 000']), $content);
+        $this->assertStringContainsString(trans('app.dash.balance_ok', ['date' => '15.08.2026', 'amount' => '2 000']), $content);
         $this->assertStringContainsString('1 000 '.trans('app.ye'), $content);
         $this->assertSame(1, substr_count($content, '2 000 '.trans('app.ye')));
     }
@@ -240,7 +322,7 @@ final class CabinetTest extends TestCase
 
         $content = (string) $this->verifiedSubscriber()->get('/')->getContent();
 
-        $this->assertStringContainsString(trans('app.dash.balance_ok', ['date' => '15.08', 'amount' => '1 000']), $content);
+        $this->assertStringContainsString(trans('app.dash.balance_ok', ['date' => '15.08.2026', 'amount' => '1 000']), $content);
         $this->assertStringNotContainsString('2 000 '.trans('app.ye'), $content);
     }
 
@@ -253,6 +335,49 @@ final class CabinetTest extends TestCase
             ->assertOk()
             ->assertSee('125 000')
             ->assertDontSee(trans('app.dash.next_charge'));
+    }
+
+    /**
+     * $state === null (no tariff cost to judge the balance against) means
+     * the "will it last" note never fires — but a subscriber with no tariff
+     * at all still needs a next step, not a silent hero card.
+     */
+    #[Test]
+    public function a_tariff_less_account_is_offered_a_way_to_choose_one(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 0,
+                // No curr_tariff_name/curr_tariff_id at all.
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee(trans('app.cabinet.no_tariff_hint'))
+            ->assertSee('href="'.route('tariff').'"', escape: false);
+    }
+
+    /**
+     * TariffController 403s a legal entity on /tariffs outright — the same
+     * rule the "current tariff" card already respects by staying
+     * non-clickable for them (AbonentProfile::isLegalEntity()).
+     */
+    #[Test]
+    public function the_no_tariff_prompt_is_not_offered_to_a_legal_entity(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Firma OOO',
+                'saldo' => 0,
+                'legal' => 'Юридическое лицо',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertDontSee(trans('app.cabinet.no_tariff_hint'));
     }
 
     /**
@@ -470,6 +595,30 @@ final class CabinetTest extends TestCase
     }
 
     /**
+     * Billing's current tariff catalog names every tariff "<Plan> - <price>
+     * <currency word>" (confirmed live 2026-08-28) — the current-tariff
+     * heading used to repeat the price the $terms line already states.
+     */
+    #[Test]
+    public function the_current_tariffs_heading_does_not_repeat_the_price_already_shown_below_it(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 0,
+                'curr_tariff_id' => '1185',
+                'curr_tariff_name' => 'Smart 50 - 125 000 сум',
+                'tariff_price' => '125000',
+            ]),
+        ]);
+
+        $content = (string) $this->verifiedSubscriber()->get('/tariffs')->getContent();
+
+        $this->assertStringContainsString('Smart 50', $content);
+        $this->assertSame(1, substr_count($content, '125 000'));
+    }
+
+    /**
      * The timing modal's "from next period" choice shows the actual date it
      * will take effect — the same date connect() charges against, so the two
      * never drift apart. With no known charge date in this fixture (no
@@ -669,6 +818,42 @@ final class CabinetTest extends TestCase
         $this->verifiedSubscriber()->get('/finance')
             ->assertSee(trans('app.payment.id'), escape: false)
             ->assertSee('1062960');
+    }
+
+    /**
+     * `/acct/payments` started sending a `note` field (2026-08-28,
+     * undocumented until now — see docs/api/SOLA_API.md §7). It says
+     * nothing `payment_status` already covers, so it's additional
+     * information appended to the status label, not a replacement for it.
+     */
+    #[Test]
+    public function a_note_mentioning_credit_marks_the_payment_as_credit(): void
+    {
+        $this->fakeSola([
+            '*/acct/payments' => Http::response([
+                'payments' => [
+                    ['payment_id' => '1', 'payment_date' => now()->format('Y-m-d').' 10:00:00', 'amount' => 2500000, 'payment_system' => 'PayNet', 'payment_status' => "to'langan", 'note' => 'Оплата в кредита'],
+                ],
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/finance')
+            ->assertSee(trans('app.payment.credit'));
+    }
+
+    #[Test]
+    public function a_note_without_credit_leaves_the_status_unmarked(): void
+    {
+        $this->fakeSola([
+            '*/acct/payments' => Http::response([
+                'payments' => [
+                    ['payment_id' => '1', 'payment_date' => now()->format('Y-m-d').' 10:00:00', 'amount' => 2500000, 'payment_system' => 'PayNet', 'payment_status' => "to'langan", 'note' => 'Обычная оплата'],
+                ],
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/finance')
+            ->assertDontSee(trans('app.payment.credit'));
     }
 
     /**

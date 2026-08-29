@@ -47,7 +47,6 @@
             @isset($profile)
                 <dl class="u-id-facts ml-5 hidden min-w-0 items-center gap-x-7 xl:flex">
                     @foreach ([
-                        ['label' => __('app.cabinet.fio'), 'value' => $profile->fullName()],
                         ['label' => __('app.dash.contract'), 'value' => $profile->contractNumber()],
                     ] as $fact)
                         @continue(blank($fact['value']))
@@ -128,13 +127,25 @@
             <dl class="mx-3 mb-3 mt-4 space-y-2.5 rounded-xl bg-surface-2 px-4 py-3.5">
                 @foreach ([
                     ['label' => __('app.cabinet.fio'), 'value' => $profile->fullName()],
-                    ['label' => __('app.dash.contract'), 'value' => $profile->contractNumber()],
-                    ['label' => __('app.accounts.personal'), 'value' => request()->cookie('account')],
+                    ['label' => __('app.dash.contract'), 'value' => $profile->contractNumber(), 'copyable' => true],
+                    ['label' => __('app.accounts.personal'), 'value' => request()->cookie('account'), 'copyable' => true],
                 ] as $fact)
                     @continue(blank($fact['value']))
                     <div>
                         <dt class="u-label">{{ $fact['label'] }}</dt>
-                        <dd class="text-base font-semibold text-ink">{{ $fact['value'] }}</dd>
+                        @if ($fact['copyable'] ?? false)
+                            <dd class="flex items-center gap-2">
+                                <span class="text-base font-semibold text-ink">{{ $fact['value'] }}</span>
+                                <button type="button" data-copy="{{ $fact['value'] }}" data-copy-done="@lang('app.ui.copied')"
+                                        class="u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink">
+                                    <span data-copy-icon-default><x-icon name="copy" size="size-4"/></span>
+                                    <span data-copy-icon-done hidden style="color: var(--c-action)"><x-icon name="check" size="size-4"/></span>
+                                    <span data-copy-text role="status" class="sr-only">@lang('app.ui.copy')</span>
+                                </button>
+                            </dd>
+                        @else
+                            <dd class="text-base font-semibold text-ink">{{ $fact['value'] }}</dd>
+                        @endif
                     </div>
                 @endforeach
             </dl>

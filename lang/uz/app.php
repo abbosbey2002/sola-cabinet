@@ -103,6 +103,7 @@ return [
         'status' => 'Holat',
         'total_between' => ':start — :end oralig\'ida jami',
         'charge' => 'Yechib olindi',
+        'credit' => 'Kredit',
     ],
 
     'services' => [
@@ -248,9 +249,7 @@ return [
         'next_charge' => 'Keyingi hisobdan yechish',
         'account_state' => 'Hisob holati',
         'last_payment' => 'Oxirgi to\'lov',
-        'active_of' => ':active / :total faol',
-        'offline_count' => '{1} Bittasi oflayn|[2,*] :count tasi oflayn',
-        'all_online' => 'Hammasi onlayn',
+        'devices_total' => '{1} Bitta qurilma|[2,*] :count ta qurilma',
         'days_left' => '{1} Yechishgacha 1 kun qoldi|[2,*] Yechishgacha :days kun qoldi',
         // Paired with the day count shown separately (the ring's own big
         // number), so this never repeats it — unlike days_left above.
@@ -268,6 +267,7 @@ return [
         'current_tariff' => 'Joriy tarif',
         'available' => 'O\'tish uchun mavjud tariflar',
         'change_tariff' => 'Tarifni o\'zgartirish',
+        'choose_tariff' => 'Tarif tanlash',
         'extra_device' => 'Qo\'shimcha qurilma',
         'connect' => 'Ulash',
         'connect_extra' => 'Qo\'shimcha qurilma ulash',
@@ -291,6 +291,29 @@ return [
         'loading' => 'Yuklanmoqda…',
         'sort_asc' => 'O\'sish bo\'yicha',
         'sort_desc' => 'Kamayish bo\'yicha',
+    ],
+
+    'topup' => [
+        'title' => 'Hisobni to\'ldirish',
+        'intro' => 'Uzcard yoki Humo karta orqali, iWon xizmati vositasida hisobingizni to\'ldiring.',
+        'amount_label' => 'Summa',
+        'amount_hint' => 'Kamida 1 000 so\'m.',
+        'amount_presets' => 'Tezkor summalar',
+        'submit' => 'iWon orqali to\'lash',
+        'redirect_note' => 'Siz iWon\'ning xavfsiz to\'lov sahifasiga yo\'naltirilasiz. Karta ma\'lumotlari shu yerda kiritilmaydi.',
+        'pay_card_button' => 'Hisobni to\'ldirish',
+        'pay_card_title' => 'Karta orqali to\'ldiring',
+        'pay_card_hint' => 'Uzcard yoki Humo kartangiz bilan darhol to\'ldiring.',
+        'checking_title' => 'To\'lov tekshirilmoqda',
+        'checking_text' => 'Balansingiz yangilanishini kutyapmiz — bu sahifa o\'zi yangilanadi, hech narsa bosish shart emas.',
+        'success_title' => 'Hisob to\'ldirildi',
+        'success_text' => 'Balansingizga :amount :currency qo\'shildi.',
+        'timeout_title' => 'Hali tasdiqlanmadi',
+        'timeout_text' => 'To\'lov hali balansda ko\'rinmayapti. Odatda bir necha soniyada yetib keladi — biroz kutib qayta tekshiring yoki to\'lovlar tarixidan holatni ko\'ring.',
+        'check_again' => 'Qayta tekshirish',
+        'no_pending' => 'Tekshiriladigan to\'lov topilmadi. Iltimos, qaytadan boshlang.',
+        'opened_in_new_tab' => 'iWon to\'lov sahifasi yangi oynada ochildi. To\'lovni yakunlagach, shu yerga qaytib holatni tekshiring.',
+        'check_status' => 'Holatni tekshirish',
     ],
 
     'promo' => [

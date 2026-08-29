@@ -128,6 +128,22 @@ final class BillingHistory
     }
 
     /**
+     * Whether a payment row's free-text `note` marks it as made on credit.
+     *
+     * `/acct/payments` started sending `note` on 2026-08-28 — undocumented
+     * until now (docs/api/SOLA_API.md §7) and not covered by
+     * `payment_status`, which says nothing about credit either way. Matched
+     * on the raw Cyrillic word rather than folded through paymentTone()'s
+     * apostrophe/case normalisation: this is not a status, and billing has
+     * only been observed sending the note in Russian so far — broaden the
+     * match if a Uzbek/English `note` ever turns up.
+     */
+    public static function isCreditNote(?string $note): bool
+    {
+        return str_contains(mb_strtolower((string) $note), 'кредита');
+    }
+
+    /**
      * The most recent payment that nothing later reverses.
      *
      * Billing does not send a "this reverses payment X" reference — a

@@ -10,6 +10,7 @@ use App\Http\Controllers\DeviceController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TariffController;
+use App\Http\Controllers\TopUpController;
 use App\Http\Controllers\TrafficController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,17 @@ Route::middleware('abonent.verified')->group(function (): void {
 
     Route::get('/finance', [PaymentController::class, 'index'])->name('payment');
     Route::post('/finance', [PaymentController::class, 'filter'])->name('payment.filter');
+
+    // iWon's own integration has no callback — /return is where the
+    // subscriber's browser lands after the hosted card form, never trusted
+    // on its own (see TopUpController). Gated closed at config('iwon.active')
+    // until the service id/account param are live, same pattern as the
+    // tariff-visibility admin gate.
+    Route::prefix('topup')->group(function (): void {
+        Route::get('/', [TopUpController::class, 'index'])->name('topup');
+        Route::post('/', [TopUpController::class, 'store'])->name('topup.store');
+        Route::get('/return', [TopUpController::class, 'checkReturn'])->name('topup.return');
+    });
 
     /*
      * The three write actions below were GET. A GET request carries no CSRF

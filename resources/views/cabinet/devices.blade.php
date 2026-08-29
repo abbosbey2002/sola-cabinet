@@ -57,7 +57,6 @@
                     <thead>
                         <tr>
                             <th scope="col">@lang('app.header.mac')</th>
-                            <th scope="col">@lang('app.header.status')</th>
                             <th scope="col">@lang('app.header.date_connect')</th>
                             <th scope="col" class="text-right">@lang('app.actions')</th>
                         </tr>
@@ -67,18 +66,6 @@
                             <tr>
                                 <td data-label="{{ __('app.header.mac') }}">
                                     <span class="font-semibold">{{ $device['mac'] ?: __('app.header.no_mac') }}</span>
-                                </td>
-
-                                <td data-label="{{ __('app.header.status') }}">
-                                    @if ($device['ip'])
-                                        <span class="u-pill-ok">
-                                            <x-icon name="check" size="size-4"/>@lang('app.header.online')
-                                        </span>
-                                    @else
-                                        <span class="u-pill-neutral">
-                                            <x-icon name="minus" size="size-4"/>@lang('app.header.offline')
-                                        </span>
-                                    @endif
                                 </td>
 
                                 <td data-label="{{ __('app.header.date_connect') }}">

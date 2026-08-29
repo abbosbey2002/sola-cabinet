@@ -1,6 +1,8 @@
 import '../css/app.css';
 
 import initAjaxForms from './modules/ajax.js';
+import initAmountMask from './modules/amount-mask.js';
+import initAmountPresets from './modules/amount-presets.js';
 import initBulkSelect from './modules/bulk-select.js';
 import initConfirm from './modules/confirm.js';
 import initCopy from './modules/copy.js';
@@ -12,6 +14,7 @@ import initPrefs from './modules/prefs.js';
 import initTables from './modules/table.js';
 import initTariff from './modules/tariff.js';
 import initToasts from './modules/toast.js';
+import initTopUp from './modules/topup.js';
 
 /**
  * The cabinet is server-rendered; this is the whole client runtime. Every
@@ -26,11 +29,14 @@ function boot() {
     initCopy();
     initNav();
     initPhoneMask();
+    initAmountMask();
+    initAmountPresets();
     initTables();
     initBulkSelect();
     initAjaxForms();
     initTariff();
     initToasts();
+    initTopUp();
 }
 
 document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', boot) : boot();

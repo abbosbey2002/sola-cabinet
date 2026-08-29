@@ -73,7 +73,17 @@
             <div class="border-b-2 border-line px-4 py-3.5">
                 <p class="u-label">@lang('app.accounts.personal')</p>
                 <p class="mt-1 truncate text-base font-semibold text-ink">{{ $name ?: '—' }}</p>
-                <p class="mt-0.5 text-sm text-muted">{{ $current }}</p>
+                @if ($current)
+                    <span class="mt-1 flex items-center gap-2">
+                        <span class="truncate text-base font-semibold text-ink">{{ $current }}</span>
+                        <button type="button" data-copy="{{ $current }}" data-copy-done="@lang('app.ui.copied')"
+                                class="u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink">
+                            <span data-copy-icon-default><x-icon name="copy" size="size-4"/></span>
+                            <span data-copy-icon-done hidden style="color: var(--c-action)"><x-icon name="check" size="size-4"/></span>
+                            <span data-copy-text role="status" class="sr-only">@lang('app.ui.copy')</span>
+                        </button>
+                    </span>
+                @endif
             </div>
 
             @if ($others)
@@ -92,16 +102,11 @@
                                 <span class="block truncate text-base font-semibold text-ink">
                                     {{-- abonName is frequently blank in billing's own traffic
                                          (docs/api/SOLA_API.md) — login is the reliable field in
-                                         the same accs[] row, so it stands in first; the account
-                                         type badge is the last-resort fallback if even that is
-                                         somehow blank. --}}
-                                    @if (filled($account['abonName'] ?? null))
-                                        {{ $account['abonName'] }}
-                                    @elseif (filled($account['login'] ?? null))
-                                        {{ $account['login'] }}
-                                    @else
-                                        <x-account-type :type="$account['abonType']" as="text"/>
-                                    @endif
+                                         the same accs[] row, so it stands in for a blank name.
+                                         No further fallback to an account-type label (temporary/
+                                         one-time/current): that badge reads as noise here, not
+                                         an identifier a subscriber recognises their account by. --}}
+                                    {{ filled($account['abonName'] ?? null) ? $account['abonName'] : ($account['login'] ?? '') }}
                                 </span>
                                 <span class="block truncate text-sm text-muted">{{ $account['accId'] }}</span>
                             </span>

@@ -47,13 +47,30 @@
         // figures a hyphen reads as a dash between two numbers.
         $signed = fn (float $value): string => str_replace('-', '−', $money($value));
 
+        // The cycle ring: how much of the billing month is left, read as a
+        // share so it can share x-arc's geometry with the traffic gauge —
+        // the one other place a number in this cabinet is a fraction of
+        // something. Colour follows $tone so a subscriber who is short on
+        // balance sees the same amber/red on the ring as on the balance
+        // figure, not two unrelated signals.
+        // totalDays is always >= 1 (ChargeCycle::endingAt clamps it), so no
+        // division-by-zero guard is needed beyond the null check.
+        $ringFraction = $cycle !== null
+            ? $cycle->daysLeft / $cycle->totalDays
+            : 0.0;
+        $ringColor = $tone['fg'] ?? 'var(--c-action)';
+
         $note = match ($state) {
+            // Full dd.mm.yyyy, matching the "Следующее списание" row above —
+            // that row and this sentence state the same date, and showing it
+            // two different ways in one card read as a typo (QA finding F-1,
+            // 2026-08-29).
             'ok' => __('app.dash.balance_ok', [
-                'date' => $cycle?->end->format('d.m'),
+                'date' => $cycle?->end->format('d.m.Y'),
                 'amount' => $money((float) $cost),
             ]),
             'low' => __('app.dash.balance_low', [
-                'date' => $cycle?->end->format('d.m'),
+                'date' => $cycle?->end->format('d.m.Y'),
                 'amount' => $money((float) $cost - $balance),
             ]),
             'negative' => __('app.dash.balance_negative', [
@@ -62,9 +79,7 @@
             default => null,
         };
 
-        $active = $activeDevices;
         $total = $totalDevices;
-        $offline = max(0, $total - $active);
     @endphp
 
     {{-- Extra padding versus the plain u-card default (p-5/p-6): this is the
@@ -72,50 +87,90 @@
          gets more breathing room than the list-style cards below it — the
          same "most important thing gets the most space" hierarchy the
          balance figure itself already carries. --}}
-    <section class="u-card u-rise p-6 sm:p-8" aria-labelledby="hero-title">
+    <section class="u-card u-card-hero u-rise p-6 sm:p-8" aria-labelledby="hero-title">
         <h2 id="hero-title" class="sr-only">@lang('app.dash.account_state')</h2>
 
-        <div class="flex flex-wrap items-start justify-between gap-x-8 gap-y-5">
-            <div>
-                <p class="u-label">@lang('app.header.balance')</p>
-                <p class="mt-1.5 flex flex-wrap items-baseline gap-x-2.5">
+        {{-- The balance is the one figure the subscriber's whole visit is
+             about, so it gets its own top zone at full hero size rather than
+             sharing a row with two other facts — the ring beside it answers
+             the very next question ("when") in the same glance, coloured to
+             match so the two signals read as one verdict, not two separate
+             widgets. --}}
+        <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+            <div class="min-w-0">
+                <p class="u-label flex items-center gap-2">
+                    <x-icon name="wallet" size="size-4"/>
+                    @lang('app.header.balance')
+                </p>
+                <p class="mt-2 flex flex-wrap items-baseline gap-x-2.5">
                     <span class="u-figure text-4xl" @if ($balance < 0) style="color: var(--c-danger)" @endif>{{ $signed($balance) }}</span>
                     <span class="text-lg font-semibold text-muted">@lang('app.ye')</span>
                 </p>
             </div>
 
             @if ($cycle !== null)
-                <div class="sm:text-right">
-                    <p class="u-label">@lang('app.dash.next_charge')</p>
-                    <p class="mt-1.5 flex flex-wrap items-baseline gap-x-2.5 sm:justify-end">
-                        @if ($cost !== null)
-                            <span class="u-figure text-xl text-ink">{{ $money($cost) }}</span>
-                            <span class="text-base text-muted">@lang('app.ye') · {{ $cycle->end->format('d.m.Y') }}</span>
+                <div class="flex shrink-0 justify-center" role="img"
+                     aria-label="{{ $cycle->isChargeDay() ? __('app.dash.charge_today') : ($cycle->isOverdue() ? __('app.dash.charge_passed') : trans_choice('app.dash.days_left', $cycle->daysLeft, ['days' => $cycle->daysLeft])) }}">
+                    <x-arc class="w-40 sm:w-44" :segments="[['fraction' => $ringFraction, 'color' => $ringColor]]" aria-hidden="true">
+                        @if ($cycle->isChargeDay())
+                            <span class="block text-base font-semibold text-ink">@lang('app.dash.charge_today')</span>
+                        @elseif ($cycle->isOverdue())
+                            <span class="block text-base font-semibold text-ink">@lang('app.dash.charge_passed')</span>
                         @else
-                            <span class="u-figure text-xl text-ink">{{ $cycle->end->format('d.m.Y') }}</span>
+                            <span class="u-figure block text-3xl text-ink">{{ $cycle->daysLeft }}</span>
+                            <span class="block text-sm font-semibold text-muted">{{ trans_choice('app.dash.days_left_unit', $cycle->daysLeft) }}</span>
                         @endif
-                    </p>
+                    </x-arc>
                 </div>
             @endif
         </div>
 
-        {{-- A rule, not just a gap: this is account metadata, not a third
-             balance figure, and the divider says so before the eye even
-             reads the label. --}}
-        @if ($billingLogin !== '')
-            <div class="mt-6 border-t border-line pt-5">
-                <p class="u-label">@lang('app.cabinet.login')</p>
-                <p class="mt-1.5 text-lg font-semibold text-ink">{{ $billingLogin }}</p>
-            </div>
-        @endif
+        {{-- Next charge and login stay as a compact secondary strip below the
+             hero zone — same recessed-panel treatment as before, just no
+             longer carrying the balance row too. --}}
+        <div class="mt-5 space-y-2.5 border-t border-line pt-5">
+            @if ($cycle !== null)
+                <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 rounded-xl p-4" style="background: var(--c-bg)">
+                    <p class="u-label">@lang('app.dash.next_charge')</p>
+                    <p class="flex flex-wrap items-baseline gap-x-2">
+                        @if ($cost !== null)
+                            <span class="u-figure text-base text-ink">{{ $money($cost) }}</span>
+                            <span class="text-sm text-muted">@lang('app.ye') · {{ $cycle->end->format('d.m.Y') }}</span>
+                        @else
+                            <span class="u-figure text-base text-ink">{{ $cycle->end->format('d.m.Y') }}</span>
+                        @endif
+                    </p>
+                </div>
+            @endif
+
+            {{-- text-sm/text-muted, not the text-base/text-ink weight the
+                 money row above uses: this is a reference id to copy
+                 elsewhere, not a figure the subscriber came here to read —
+                 giving it the same weight as the next-charge row made it
+                 compete with the number that actually matters. --}}
+            @if ($billingLogin !== '')
+                <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 rounded-xl p-4" style="background: var(--c-bg)">
+                    <p class="u-label">@lang('app.cabinet.login')</p>
+                    <span class="flex items-center gap-2">
+                        <span class="text-sm font-medium text-muted">{{ $billingLogin }}</span>
+                        <button type="button" data-copy="{{ $billingLogin }}" data-copy-done="@lang('app.ui.copied')"
+                                class="u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink">
+                            <span data-copy-icon-default><x-icon name="copy" size="size-4"/></span>
+                            <span data-copy-icon-done hidden style="color: var(--c-action)"><x-icon name="check" size="size-4"/></span>
+                            <span data-copy-text role="status" class="sr-only">@lang('app.ui.copy')</span>
+                        </button>
+                    </span>
+                </div>
+            @endif
+        </div>
 
         {{-- The icon sits on its own surface-coloured tile rather than bare
              on the tinted strip — the same "chip on a tinted ground" reading
-             the pay-card and the services entry below already use, so the
-             one alert this page ever shows still looks like it belongs to
-             the same product instead of a plain system warning box. --}}
+             x-pay-card already uses, so the one alert this page ever shows
+             still looks like it belongs to the same product instead of a
+             plain system warning box. --}}
         @if ($note !== null)
-            <div class="mt-5 flex items-center gap-3.5 rounded-xl px-4 py-3.5 text-base text-ink"
+            <div class="mt-4 flex items-center gap-3.5 rounded-xl px-4 py-3.5 text-base text-ink"
                  style="background: {{ $tone['bg'] }}">
                 <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-surface" style="color: {{ $tone['fg'] }}">
                     <x-icon :name="$tone['icon']" size="size-4"/>
@@ -123,13 +178,33 @@
                 <span>{{ $note }}</span>
             </div>
         @endif
+
+        {{-- $state === null means no cost to judge the balance against, so
+             the "will it last" note above never fires — but a subscriber
+             with literally no tariff yet still needs a next step, not
+             silence. Not shown for a legal entity: TariffController 403s
+             them on /tariffs the same way the "current tariff" card below
+             already declines to link there for them. --}}
+        @if ($note === null && $profile->currentTariff() === null && ! $profile->isLegalEntity())
+            <div class="mt-4 flex flex-wrap items-center gap-3.5 rounded-xl px-4 py-3.5 text-base text-ink" style="background: var(--c-action-soft)">
+                <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-surface" style="color: var(--c-action)">
+                    <x-icon name="tag" size="size-4"/>
+                </span>
+                <span class="min-w-0 flex-1">@lang('app.cabinet.no_tariff_hint')</span>
+                <a href="{{ route('tariff') }}" class="u-btn-ghost u-btn-sm shrink-0">@lang('app.dash.choose_tariff')</a>
+            </div>
+        @endif
     </section>
 
     {{-- The one actionable thing when the balance needs attention: the
          contract number, sized and copyable rather than folded into the
-         sentence above. Not shown for $state === null (no tariff cost to
-         judge the balance against) — that's "no verdict", not "trouble". --}}
-    @if (in_array($state, ['low', 'negative'], true) && filled($contract))
+         sentence above, and/or the iWon top-up button. Not shown for
+         $state === null (no tariff cost to judge the balance against) —
+         that's "no verdict", not "trouble". Shown even without a contract
+         number (billing does not send one for every account) as long as
+         iWon is active — pay-card itself skips the contract half when
+         $contract is blank, but the top-up button never depends on it. --}}
+    @if (in_array($state, ['low', 'negative'], true) && (filled($contract) || config('iwon.active')))
         <x-pay-card :contract="$contract" :tone="$state === 'negative' ? 'danger' : 'warn'" class="mt-4"/>
     @endif
 
@@ -147,8 +222,9 @@
             $cards = [
                 [
                     'route' => 'tariff',
+                    'icon' => 'tag',
                     'label' => __('app.dash.current_tariff'),
-                    'value' => $profile->currentTariff() ?: __('app.header.no_tariff'),
+                    'value' => $profile->currentTariffDisplayName() ?: __('app.header.no_tariff'),
                     'hint' => $currentCost !== null ? $money($currentCost).' '.__('app.ye') : null,
                     // A legal entity (yuridik shaxs) may not switch tariffs —
                     // TariffController::index()/connect() still 403s them, see
@@ -158,14 +234,18 @@
                 ],
                 [
                     'route' => 'devices',
+                    'icon' => 'router',
                     'label' => __('app.nav.devices'),
-                    'value' => __('app.dash.active_of', ['active' => $active, 'total' => $total]),
-                    'hint' => $offline > 0
-                        ? trans_choice('app.dash.offline_count', $offline, ['count' => $offline])
-                        : __('app.dash.all_online'),
+                    // Just the count now, no active/offline breakdown — a
+                    // per-device online status is no longer shown anywhere
+                    // in the cabinet (dropped at the user's request,
+                    // 2026-08-28, alongside the status column on /devices).
+                    'value' => trans_choice('app.dash.devices_total', $total, ['count' => $total]),
+                    'hint' => null,
                 ],
                 [
                     'route' => 'payment',
+                    'icon' => 'receipt',
                     'label' => __('app.dash.last_payment'),
                     // A "no payments this month" sentence is not a value, so it
                     // is not set at value size: three cards side by side, one
@@ -184,9 +264,12 @@
             @php($clickable = $card['clickable'] ?? true)
             <{{ $clickable ? 'a' : 'div' }}
                @if ($clickable) href="{{ route($card['route']) }}" @endif
-               class="u-card u-rise flex items-start justify-between gap-4 no-underline{{ $clickable ? ' group transition-[border-color,transform] hover:-translate-y-px hover:border-action' : ' cursor-default' }}"
+               class="u-card u-rise flex items-start gap-4 no-underline{{ $clickable ? ' group transition-[border-color,transform,box-shadow] hover:-translate-y-0.5 hover:border-action' : ' cursor-default' }}"
                style="--i:{{ $i + 1 }}">
-                <span class="min-w-0">
+                <span class="grid size-11 shrink-0 place-items-center rounded-xl" style="background: var(--c-action-soft); color: var(--c-action)">
+                    <x-icon :name="$card['icon']" size="size-5"/>
+                </span>
+                <span class="min-w-0 flex-1">
                     <span class="u-label block">{{ $card['label'] }}</span>
                     @if ($card['value'])
                         <span class="mt-1.5 block text-xl font-semibold text-ink">{{ $card['value'] }}</span>
@@ -196,7 +279,7 @@
                     @endif
                 </span>
                 @if ($clickable)
-                    <x-icon name="chevron-right" class="mt-1 text-muted transition-transform group-hover:translate-x-0.5"/>
+                    <x-icon name="chevron-right" class="mt-1 shrink-0 text-muted transition-transform group-hover:translate-x-0.5"/>
                 @endif
             </{{ $clickable ? 'a' : 'div' }}>
         @endforeach

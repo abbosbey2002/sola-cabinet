@@ -78,6 +78,13 @@
                                 filled($payment['payment_status'] ?? null) => $payment['payment_status'],
                                 default => __('app.dash.unknown'),
                             };
+
+                            // Appended, not swapped in: the payment is still
+                            // whatever payment_status says, on credit is
+                            // additional information about how it was paid.
+                            if (BillingHistory::isCreditNote($payment['note'] ?? null)) {
+                                $label .= ' · '.__('app.payment.credit');
+                            }
                         @endphp
 
                         <tr>

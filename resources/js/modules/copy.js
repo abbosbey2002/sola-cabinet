@@ -1,14 +1,19 @@
 /**
- * Copy-to-clipboard for the contract number on x-pay-card.
+ * Copy-to-clipboard for contract numbers, logins and account ids.
  *
  * Markup contract:
- *   <button data-copy="998xxxxxxxx" data-copy-label="Copy" data-copy-done="Copied">
- *     <span data-copy-text>Copy</span>
+ *   <button data-copy="998xxxxxxxx" data-copy-done="Copied">
+ *     <span data-copy-icon-default>...</span>
+ *     <span data-copy-icon-done hidden>...</span>
+ *     <span data-copy-text class="sr-only">Copy</span>
  *   </button>
  *
- * The button's own label swaps to the "done" word for a moment instead of
- * raising a toast — the confirmation sits right where the subscriber is
- * already looking, on the control they just pressed.
+ * The buttons are icon-only — no visible label sits in these already-tight
+ * rows — so the confirmation has to be something a sighted subscriber can
+ * actually see without a word: the icon itself swaps to a checkmark for a
+ * moment. The sr-only text still updates in lockstep (via the same
+ * `role="status"` element the markup already carries) so a screen reader
+ * gets the same "Copied" announcement a visible label would have given.
  */
 
 // navigator.clipboard needs a secure context; local dev over plain http and
@@ -48,17 +53,23 @@ export default function initCopy() {
         if (!button) return;
 
         const label = button.querySelector('[data-copy-text]');
+        const iconDefault = button.querySelector('[data-copy-icon-default]');
+        const iconDone = button.querySelector('[data-copy-icon-done]');
         if (button.dataset.copying) return;
 
         copyText(button.dataset.copy).then((copied) => {
-            if (!copied || !label) return;
+            if (!copied) return;
 
-            const original = label.textContent;
             button.dataset.copying = '1';
-            label.textContent = button.dataset.copyDone ?? original;
+            const original = label?.textContent;
+            if (label) label.textContent = button.dataset.copyDone ?? original;
+            if (iconDefault) iconDefault.hidden = true;
+            if (iconDone) iconDone.hidden = false;
 
             setTimeout(() => {
-                label.textContent = original;
+                if (label) label.textContent = original;
+                if (iconDefault) iconDefault.hidden = false;
+                if (iconDone) iconDone.hidden = true;
                 delete button.dataset.copying;
             }, 1600);
         });

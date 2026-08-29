@@ -11,6 +11,16 @@
         $next = $profile->nextTariff();
         $canSwitch = $isPermanent || blank($current);
 
+        // Display-only cleanup: billing's own tariff names now embed the
+        // price ("Smart 50 - 125 000 сум"), which this page already shows
+        // again as its own figure a few lines down ($terms/$cost, and
+        // app.tariff.next_is). currentTariff()/nextTariff() stay raw above —
+        // $find() below matches by name against /tariff/available's own raw
+        // tariff_name when no id is given, and a cleaned string would never
+        // match there.
+        $currentDisplay = $profile->currentTariffDisplayName() ?? $current;
+        $nextDisplay = $profile->nextTariffDisplayName() ?? $next;
+
         // Locate a tariff in the switchable list. Prefer the id /abonent/info
         // reports: billing pads some names with a trailing space ("Paket 5 soat "),
         // so matching on the name alone silently loses the row. The name is only
@@ -59,7 +69,7 @@
         <h2 id="current-title" class="u-label">@lang('app.tariff.current')</h2>
 
         @if (filled($current))
-            <p class="mt-1.5 text-2xl font-bold text-ink">{{ $current }}</p>
+            <p class="mt-1.5 text-2xl font-bold text-ink">{{ $currentDisplay }}</p>
 
             @if ($terms)
                 <p class="mt-1 text-base text-muted">{{ implode(' · ', $terms) }}</p>
@@ -79,7 +89,7 @@
             <x-icon name="clock" class="mt-1 text-muted"/>
             <span>
                 @if (filled($next))
-                    @lang('app.tariff.next_is', ['tariff' => $next])
+                    @lang('app.tariff.next_is', ['tariff' => $nextDisplay])
                 @elseif (filled($current))
                     @lang('app.tariff.next_continues')
                 @else

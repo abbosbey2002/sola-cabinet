@@ -84,6 +84,10 @@
     --c-danger-soft: #fbe7e3;
 
     --shadow-card: 0 1px 2px rgba(20, 29, 9, .06), 0 12px 28px -20px rgba(20, 29, 9, .30);
+    /* The one card per page that earns extra lift: the Home hero. Same
+       recipe as --shadow-card, just deeper, so it does not read as a
+       different material — only as the same card raised further. */
+    --shadow-card-lg: 0 2px 4px rgba(20, 29, 9, .08), 0 28px 56px -24px rgba(20, 29, 9, .38);
 }
 
 /* System preference wins unless the subscriber explicitly picked light. */
@@ -110,6 +114,7 @@
         --c-danger-soft: #31201c;
 
         --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
+        --shadow-card-lg: 0 1px 0 rgba(255, 255, 255, .05), 0 32px 64px -28px rgba(0, 0, 0, .95);
     }
 }
 
@@ -136,6 +141,7 @@
     --c-danger-soft: #31201c;
 
     --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
+    --shadow-card-lg: 0 1px 0 rgba(255, 255, 255, .05), 0 32px 64px -28px rgba(0, 0, 0, .95);
 }
 
 @theme inline {
@@ -297,6 +303,20 @@
     .u-card {
         @apply rounded-card border border-line bg-surface p-5 sm:p-6;
         box-shadow: var(--shadow-card);
+    }
+
+    /* The one primary card a page is built around — the Home balance card,
+       the top-up form — not every card: a quiet brand-tinted glow in the
+       corner, blended between --c-action-soft and --c-surface, both already
+       close in lightness in each theme, so --c-ink text over the gradient
+       keeps essentially the same contrast it already has on plain
+       --c-surface elsewhere — plus the deeper shadow above, so that one
+       card reads as raised rather than just "another card, first in the
+       list". Reused sparingly: a page with three equal cards names none of
+       them hero. */
+    .u-card-hero {
+        background: linear-gradient(160deg, var(--c-action-soft) 0%, var(--c-surface) 45%);
+        box-shadow: var(--shadow-card-lg);
     }
 
     /* Buttons ----------------------------------------------------------

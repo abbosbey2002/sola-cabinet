@@ -41,6 +41,7 @@ final class AuthTest extends TestCase
         // phone the subscriber typed, deliberately given a different value
         // here to prove one is not silently aliasing the other.
         $response->assertCookie('billing_login', 'TESTER01');
+        $response->assertCookie('full_name', 'Tester');
 
         Http::assertSent(fn ($request): bool => $request['phn'] === '998901234567'
             && $request['sendsms'] === 1);
@@ -122,6 +123,48 @@ final class AuthTest extends TestCase
         $response->assertOk();
         $response->assertSee('First');
         $response->assertSee('Second');
+    }
+
+    /**
+     * The subscriber's display name is sourced from /identify's own
+     * `abonName`/`login` — never /abonent/info's `name`, which was observed
+     * live 2026-08-28 on account 1000033 (abonType "1", one-off) returning
+     * the literal string "Разовый абонент" (billing's own generic label for
+     * the account type) instead of a real name or null. `abonName` is
+     * documented as "often blank", so `login` — /identify's reliable field
+     * for that same row — stands in when it is (see
+     * AuthController::resolveFullName()).
+     */
+    #[Test]
+    public function switching_account_falls_back_to_login_when_billings_own_name_is_blank(): void
+    {
+        Http::fake(['*/identify' => Http::response([
+            'accs' => [
+                ['accId' => 1000033, 'abonType' => 1, 'abonName' => '', 'login' => '998907654321'],
+            ],
+        ])]);
+
+        $response = $this->withCookies(['verify' => '1', 'phone' => '998901234567'])
+            ->get(route('set.account', 1000033));
+
+        $response->assertRedirect(route('cabinet'));
+        $response->assertCookie('full_name', '998907654321');
+    }
+
+    #[Test]
+    public function switching_account_uses_the_account_own_name(): void
+    {
+        Http::fake(['*/identify' => Http::response([
+            'accs' => [
+                ['accId' => 1001, 'abonType' => 2, 'abonName' => 'Абдуллаев Абдулла', 'login' => 'TESTER01'],
+            ],
+        ])]);
+
+        $response = $this->withCookies(['verify' => '1', 'phone' => '998901234567'])
+            ->get(route('set.account', 1001));
+
+        $response->assertRedirect(route('cabinet'));
+        $response->assertCookie('full_name', 'Абдуллаев Абдулла');
     }
 
     #[Test]

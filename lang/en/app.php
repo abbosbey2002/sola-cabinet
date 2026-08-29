@@ -103,6 +103,7 @@ return [
         'status' => 'Status',
         'total_between' => 'Total from :start to :end',
         'charge' => 'Charge',
+        'credit' => 'Credit',
     ],
 
     'services' => [
@@ -248,9 +249,7 @@ return [
         'next_charge' => 'Next charge',
         'account_state' => 'Account status',
         'last_payment' => 'Last payment',
-        'active_of' => ':active / :total active',
-        'offline_count' => '{1} One is offline|[2,*] :count are offline',
-        'all_online' => 'All online',
+        'devices_total' => '{1} One device|[2,*] :count devices',
         'days_left' => '{1} 1 day until the charge|[2,*] :days days until the charge',
         // Paired with the day count shown separately (the ring's own big
         // number), so this never repeats it — unlike days_left above.
@@ -268,6 +267,7 @@ return [
         'current_tariff' => 'Current tariff',
         'available' => 'Tariffs available to switch to',
         'change_tariff' => 'Change tariff',
+        'choose_tariff' => 'Choose a tariff',
         'extra_device' => 'Additional device',
         'connect' => 'Connect',
         'connect_extra' => 'Connect an additional device',
@@ -291,6 +291,29 @@ return [
         'loading' => 'Loading…',
         'sort_asc' => 'Ascending',
         'sort_desc' => 'Descending',
+    ],
+
+    'topup' => [
+        'title' => 'Top up balance',
+        'intro' => 'Top up your balance with an Uzcard or Humo card via iWon.',
+        'amount_label' => 'Amount',
+        'amount_hint' => 'At least 1,000 so\'m.',
+        'amount_presets' => 'Quick amounts',
+        'submit' => 'Pay with iWon',
+        'redirect_note' => 'You will be redirected to iWon\'s secure payment page. Card details are entered there, not here.',
+        'pay_card_button' => 'Top up balance',
+        'pay_card_title' => 'Top up with a card',
+        'pay_card_hint' => 'Instantly, with an Uzcard or Humo card.',
+        'checking_title' => 'Checking your payment',
+        'checking_text' => 'Waiting for your balance to update — this page refreshes itself, nothing to click.',
+        'success_title' => 'Balance topped up',
+        'success_text' => ':amount :currency was added to your balance.',
+        'timeout_title' => 'Not confirmed yet',
+        'timeout_text' => 'The payment has not shown up on your balance yet. It usually arrives within seconds — wait and check again, or see the payment history for its status.',
+        'check_again' => 'Check again',
+        'no_pending' => 'No payment to check was found. Please start again.',
+        'opened_in_new_tab' => 'The iWon payment page opened in a new tab. Once you have paid, come back here and check the status.',
+        'check_status' => 'Check status',
     ],
 
     'promo' => [

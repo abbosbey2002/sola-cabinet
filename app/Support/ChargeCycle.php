@@ -10,12 +10,13 @@ use Carbon\CarbonImmutable;
  * The billing cycle that ends at the subscriber's next charge, expressed as
  * countable days.
  *
- * The Home page dashboard reads only end() from this today (the "next
- * charge" date and amount) — it used to also drive a day-meter widget that
- * read start()/daysLeft()/isOverdue()/isChargeDay(), removed 2026-08-28. The
- * rest of this class's API is kept: it is a correct, tested value object for
- * the cycle, not something to trim just because its one caller stopped
- * reading it, and a future dashboard element is free to read it again.
+ * The Home page dashboard reads end() (the "next charge" date and amount)
+ * plus daysLeft()/totalDays()/isOverdue()/isChargeDay(), which drive the
+ * hero card's cycle ring (2026-08-30) — a day-meter widget reading the same
+ * four methods was removed 2026-08-28 and later replaced by the ring, not
+ * restored as-is. start() has no current reader; kept because it is a
+ * correct, tested part of this value object, not something to trim just
+ * because nothing reads it today.
  *
  * Billing reports only the NEXT charge date, never the cycle's start, so the
  * start is taken as one month back. That is right for the monthly tariffs the
