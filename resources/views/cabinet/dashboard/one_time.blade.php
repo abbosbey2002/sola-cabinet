@@ -7,8 +7,6 @@
     <x-dashboard.one-time-aside
         class="lg:col-span-2"
         :dash="$dash"
-        :total-devices="$totalDevices"
-        :device-metric-hint="$deviceMetricHint"
         :last-payment="$lastPayment"/>
 </div>
 
