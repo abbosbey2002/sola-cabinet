@@ -36,12 +36,6 @@
             @endif
         </div>
 
-        @if ($dash->cryptoUsd !== null)
-            <p class="mt-2 text-sm font-semibold" style="color: var(--c-web3)">
-                @lang('app.web3.crypto_equiv', ['amount' => number_format($dash->cryptoUsd, 2, '.', '')])
-            </p>
-        @endif
-
         @if ($dash->note !== null && $dash->tone !== null)
             <div class="mt-3 flex items-center gap-3.5 rounded-xl px-4 py-3.5 text-base text-ink"
                 style="background: {{ $dash->tone['bg'] }}">
@@ -66,12 +60,6 @@
                         @if ($dash->balance < 0) style="color: var(--c-danger)" @endif>{{ $dash->formatSigned($dash->balance) }}</span>
                     <span class="text-lg font-semibold text-muted">@lang('app.ye')</span>
                 </p>
-
-                @if ($dash->cryptoUsd !== null)
-                    <p class="mt-1 text-sm font-semibold" style="color: var(--c-web3)">
-                        @lang('app.web3.crypto_equiv', ['amount' => number_format($dash->cryptoUsd, 2, '.', '')])
-                    </p>
-                @endif
             </div>
 
             @if ($dash->canTopUp)

@@ -61,6 +61,23 @@ final class CabinetTest extends TestCase
             ->assertSee('AA:BB:CC:DD:EE:FF');
     }
 
+    #[Test]
+    public function the_topbar_shows_the_balance_before_settings_on_a_phone_too(): void
+    {
+        $this->fakeSola();
+
+        $html = $this->verifiedSubscriber()->get('/devices')->assertOk()->getContent();
+
+        $this->assertStringContainsString('data-nav-balance', $html);
+        $this->assertDoesNotMatchRegularExpression('/data-nav-balance[^>]*\bhidden\b/', $html);
+
+        $balance = strpos($html, 'data-nav-balance');
+        $settings = strpos($html, 'name="sola-theme"');
+        $this->assertNotFalse($balance);
+        $this->assertNotFalse($settings);
+        $this->assertLessThan($settings, $balance);
+    }
+
     /**
      * The dashboard shows the device count only — no active/offline split,
      * dropped at the user's request (2026-08-28) alongside the status
@@ -467,7 +484,7 @@ final class CabinetTest extends TestCase
 
             $response->assertOk();
             $response->assertSee('<h1', escape: false);
-            $response->assertSee('u-page-head__icon', escape: false);
+            $response->assertDontSee('u-page-head__title', escape: false);
             $response->assertSee(trans($heading));
 
             // Exactly one nav entry is marked current — once in the desktop
@@ -621,11 +638,14 @@ final class CabinetTest extends TestCase
 
         // /abonent/info gives the tariff's name but none of its terms, so the
         // matched row is what fills them in. The current-tariff card states
-        // them as one line — speed, validity, volume, price.
+        // them as one line — speed, volume, price. Validity is left off: a
+        // "30 days" / "5 hours" figure reads as a countdown.
         $this->assertStringContainsString(
-            '500 '.trans('app.tariff.unit_mb').' · 5 '.trans('app.tariff.hour').' · '.trans('app.tariff.no_limit'),
+            '500 '.trans('app.tariff.unit_mb').' · '.trans('app.tariff.no_limit'),
             $content,
         );
+        $this->assertStringNotContainsString('5 '.trans('app.tariff.hour'), $content);
+        $this->assertStringNotContainsString('30 '.trans('app.tariff.day'), $content);
     }
 
     /**
@@ -1078,12 +1098,16 @@ final class CabinetTest extends TestCase
             ]),
         ]);
 
-        $this->verifiedSubscriber(type: 1)->get('/')
+        $html = $this->verifiedSubscriber(type: 1)->get('/')
             ->assertOk()
             ->assertDontSee(trans('app.nav.tariff'))
             ->assertDontSee(trans('app.dash.active_tariff'))
             ->assertDontSee(trans('app.dash.current_tariff'))
-            ->assertDontSee('Guest WiFi');
+            ->assertDontSee('Guest WiFi')
+            ->assertDontSee(trans('app.dash.account_state'))
+            ->getContent();
+
+        $this->assertSame(1, substr_count($html, trans('app.dash.last_payment')));
     }
 
     #[Test]

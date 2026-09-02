@@ -3,15 +3,10 @@
 ])
 
 {{--
-    Page identity strip. The section icon sits on the TITLE row only — the
-    lead, when there is one, starts under the words, not under the chip. That
-    is the placement that reads as "this page, this section", rather than a
-    stacked card header.
-
-    Icon names follow the same sprite as the top nav, so a subscriber who
-    tapped "Qurilmalar" lands under the same mark. Unknown names fall back
-    to the route map; a name that is in neither is omitted rather than
-    rendering the alert glyph (icon.blade.php's unknown-name fallback).
+    Page identity strip. The visible H1 title was dropped: the top nav already
+    names the section. The title stays in an sr-only heading for the document
+    outline. Icon + lead remain when the page has a lead; the toolbar (period
+    filters) still sits on the right.
 --}}
 
 @php
@@ -32,24 +27,27 @@
     $resolved = is_string($icon) && $icon !== '' ? $icon : ($fromRoute[request()->route()?->getName()] ?? null);
     $resolved = in_array($resolved, $allowed, true) ? $resolved : null;
     $hasLead = isset($lead) && ! $lead->isEmpty();
+    $hasToolbar = isset($toolbar);
 @endphp
 
-<div {{ $attributes->merge(['class' => 'u-page-head u-rise']) }}>
-    <div @class(['u-page-head__identity', 'u-page-head__identity--plain' => $resolved === null])>
-        @if ($resolved !== null)
-            <span class="u-page-head__icon u-no-print" aria-hidden="true">
-                <x-icon :name="$resolved" size="size-6"/>
-            </span>
+<h1 class="sr-only">{{ $title }}</h1>
+
+@if ($hasLead || $hasToolbar)
+    <div {{ $attributes->merge(['class' => 'u-page-head u-rise']) }}>
+        @if ($hasLead)
+            <div @class(['u-page-head__identity', 'u-page-head__identity--plain' => $resolved === null])>
+                @if ($resolved !== null)
+                    <span class="u-page-head__icon u-no-print" aria-hidden="true">
+                        <x-icon :name="$resolved" size="size-6"/>
+                    </span>
+                @endif
+
+                <p class="u-page-head__lead">{{ $lead }}</p>
+            </div>
         @endif
 
-        <h1 class="u-page-head__title">{{ $title }}</h1>
-
-        @if ($hasLead)
-            <p class="u-page-head__lead">{{ $lead }}</p>
+        @if ($hasToolbar)
+            <div class="u-page-head__toolbar">{{ $toolbar }}</div>
         @endif
     </div>
-
-    @isset($toolbar)
-        <div class="u-page-head__toolbar">{{ $toolbar }}</div>
-    @endisset
-</div>
+@endif

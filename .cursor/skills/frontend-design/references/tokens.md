@@ -14,7 +14,6 @@ Source of truth: `resources/css/app.css` `:root` and `@layer components`. Do not
 | `--c-signal` | `#8fd400` | Graphic only — progress bar, live pip. Never as text on light |
 | `--c-warn` | `#8a5a00` | Offline, timeout, low balance |
 | `--c-danger` | `#a32014` | Negative balance, destructive |
-| `--c-web3` | `#0891b2` | Web3 module only, gated by `config('web3.active')` |
 
 Dark theme flips these on `:root[data-theme='dark']` and `prefers-color-scheme`. New CSS must use the tokens so both themes follow.
 

@@ -41,10 +41,9 @@
 
     <main id="content" class="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-16 pt-7 sm:px-6">
         @hasSection('heading')
-            {{-- Icon + title share one row; a lead (if any) sits under the
-                 words. items-end keeps the period form's buttons on the
-                 heading cluster's baseline. Wrap: the Russian title plus the
-                 two date fields do not share a line below ~900px. --}}
+            {{-- Visible title is gone: the top nav already names the section.
+                 x-page-heading keeps an sr-only H1. Lead / period toolbar still
+                 render when the page sets those sections. --}}
             <x-page-heading :icon="trim($__env->yieldContent('heading-icon')) ?: null">
                 <x-slot:title>@yield('heading')</x-slot:title>
                 @hasSection('lead')

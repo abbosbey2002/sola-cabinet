@@ -3,52 +3,23 @@
 @php
     $compact = $compact ?? false;
     $showHeadline = ($showHeadline ?? true) && ! $compact;
-
-    $paymentLogos = [
-        ['name' => 'Payme', 'file' => 'payme_blue.png', 'slug' => 'payme'],
-        ['name' => 'Click', 'file' => 'click-logo.png', 'slug' => 'click', 'dark' => true],
-        ['name' => 'Uzcard', 'file' => 'Uzcard.png', 'slug' => 'uzcard'],
-        ['name' => 'Humo', 'file' => 'humo-card.png', 'slug' => 'humo'],
-    ];
 @endphp
 
 <div class="u-topup">
     @if ($showHeadline)
         <header class="u-topup-hero">
             <p class="text-sm font-semibold text-ink">@lang('app.topup.headline')</p>
-            <p class="mt-1 text-sm text-muted">@lang('app.topup.subline')</p>
         </header>
     @endif
 
-    {{-- Payme/Click/Uzcard/Humo are informational; checkout runs via iWon only. --}}
-    <div @class(['u-topup-methods', 'mt-3' => $showHeadline])>
-        <div class="u-topup-methods-grid">
-            @foreach ($paymentLogos as $method)
-                <div class="u-topup-method">
-                    <span @class([
-                        'u-topup-method-icon',
-                        'u-topup-method-icon-dark' => $method['dark'] ?? false,
-                    ])>
-                        <img src="{{ asset('img/logos/'.$method['file']) }}"
-                             alt=""
-                             class="u-topup-method-logo u-topup-method-logo--{{ $method['slug'] }}"
-                             width="32" height="32" loading="lazy">
-                    </span>
-                    <span class="u-topup-method-name">{{ $method['name'] }}</span>
-                </div>
-            @endforeach
+    {{-- Checkout is iWon; cards are chosen on their page. One quiet row, no method picker. --}}
+    <div @class(['u-topup-iwon', 'mt-3' => $showHeadline])>
+        <span class="u-topup-iwon-logo-wrap" aria-hidden="true">
+            <img src="{{ asset('img/iwon-logo.svg') }}" alt="" class="u-topup-iwon-logo" width="91" height="32">
+        </span>
+        <div class="min-w-0">
+            <p class="u-topup-iwon-title">@lang('app.topup.iwon_via')</p>
         </div>
-
-        <div class="u-topup-iwon-active" aria-current="true">
-            <span class="u-topup-iwon-icon" aria-hidden="true">
-                <img src="{{ asset('img/logos/iwon.png') }}" alt="" class="u-topup-iwon-logo" width="48" height="20">
-            </span>
-            <p class="min-w-0 text-sm leading-snug text-ink">
-                <strong class="font-semibold">iWon</strong>
-                <span class="ml-1">@lang('app.topup.iwon_via')</span>
-            </p>
-        </div>
-        <p class="sr-only">@lang('app.topup.methods_note')</p>
     </div>
 
     <form action="{{ route('topup.store') }}" method="post" target="_blank" rel="noopener" data-topup-form class="u-topup-form">
@@ -86,7 +57,7 @@
                         $isPopular = $preset === 500000;
                     @endphp
                     <button type="button" data-amount-preset="{{ $preset }}" aria-pressed="false"
-                        @if ($isPopular) aria-label="{{ __('app.topup.preset_popular').': '.$formatted }}" @endif
+                        @if ($isPopular) aria-label="{{ __('app.topup.preset_popular').': '.$formatted.' '.__('app.ye') }}" @endif
                         @class([
                             'u-choice u-topup-preset',
                             'u-topup-preset-popular' => $isPopular,

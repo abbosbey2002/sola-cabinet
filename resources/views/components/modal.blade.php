@@ -52,7 +52,7 @@
                     @if ($title !== null)
                         <h2 id="{{ $titleId }}" @class([
                             'u-display leading-snug text-ink',
-                            'text-xl font-bold' => $isTopup,
+                            'text-2xl font-bold' => $isTopup,
                             'text-lg' => ! $isTopup,
                         ])>{{ $title }}</h2>
                     @elseif ($label !== null)

@@ -20,18 +20,6 @@
         @endif
     </div>
 
-    {{-- Above the history, not below it: "how do I pay" is why a subscriber
-         with a low or negative balance opens this page at all, and a muted
-         footnote under a full table was answering that question last. The
-         contract number does not change with the period, so this sits
-         outside the AJAX region. The payment systems are named in plain text
-         on purpose — an approximated Payme or Click mark, drawn rather than
-         taken from the brand's own press kit, is what a phishing page
-         looks like. --}}
-    @if (config('iwon.active') && ! $profile->isLegalEntity())
-        <x-pay-card class="mb-4"/>
-    @endif
-
     <div id="payments-result" data-ajax-region>
         @include('payment.result')
     </div>

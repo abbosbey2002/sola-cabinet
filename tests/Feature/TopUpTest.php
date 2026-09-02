@@ -47,8 +47,8 @@ final class TopUpTest extends TestCase
         $this->verifiedSubscriber()->get('/topup')
             ->assertOk()
             ->assertSee(trans('app.topup.submit'))
-            ->assertSee('u-page-head__icon', escape: false)
-            ->assertSee(trans('app.topup.subline'));
+            ->assertDontSee('u-page-head__title', escape: false)
+            ->assertSee(trans('app.topup.title'));
     }
 
     #[Test]
@@ -138,6 +138,17 @@ final class TopUpTest extends TestCase
         $this->fakeSola();
 
         $this->verifiedSubscriber()->get('/topup/return')->assertNotFound();
+    }
+
+    #[Test]
+    public function the_finance_page_does_not_offer_a_top_up_card(): void
+    {
+        $this->fakeSola();
+
+        $this->verifiedSubscriber()->get('/finance')
+            ->assertOk()
+            ->assertDontSee(trans('app.topup.pay_card_button'))
+            ->assertDontSee(trans('app.topup.pay_card_title'));
     }
 
     #[Test]

@@ -1,0 +1,11 @@
+# Drop finance top-up card
+- **Date:** 2026-09-02_14-36
+- **Mode:** SaaS + Multi-market
+- **Screens/components delivered**
+  - `/finance` is history only: removed `x-pay-card` (contract copy + iWon top-up). Deleted the unused component.
+- **Decisions:** why this signature, what you refused
+  - This page's job is the payment table. Top-up already lives on Home (button + modal) and `/topup`. Refused leaving a dead `pay-card` Blade file.
+- **Quality floor result**
+  - Finance no longer duplicates the Home CTA. Feature test asserts the pay-card copy is absent on `/finance` while iWon is on.
+- **Left for later**
+  - Unused `app.topup.pay_card_title` / `pay_card_hint` strings (button label still used on Home).

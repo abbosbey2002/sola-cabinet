@@ -57,12 +57,12 @@ final class TopUpRequest extends FormRequest
 
     /**
      * The form this validates renders in two places: the full /topup page,
-     * and the quick-top-up modal x-pay-card opens on Home and Payments. The
-     * framework default (redirect back to wherever the request came from)
-     * would send a failure opened from the modal back to Home or Payments —
-     * pages that don't render this form's error/old-input state at all, so
-     * the subscriber would see no explanation. Always landing on the real
-     * page keeps that guarantee regardless of which copy was submitted.
+     * and the quick-top-up modal on Home. The framework default (redirect
+     * back to wherever the request came from) would send a failure opened
+     * from the modal back to Home — a page that doesn't render this form's
+     * error/old-input state at all, so the subscriber would see no
+     * explanation. Always landing on the real page keeps that guarantee
+     * regardless of which copy was submitted.
      */
     protected function getRedirectUrl(): string
     {

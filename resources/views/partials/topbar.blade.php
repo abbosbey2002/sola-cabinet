@@ -52,6 +52,10 @@
                     </a>
                 @endif
 
+                @isset($profile)
+                    <x-nav-balance :profile="$profile"/>
+                @endisset
+
                 <x-view-settings/>
 
                 {{-- Both of these are dropped from the top row on a phone and
@@ -59,8 +63,6 @@
                      place: enlarging the text is needed more often than
                      switching language, and its icon is not self-explanatory. --}}
                 <x-lang-switch class="hidden sm:block"/>
-
-                <x-wallet-connect/>
 
                 @isset($accounts)
                     <x-account-menu :accounts="$accounts" class="hidden sm:block"/>

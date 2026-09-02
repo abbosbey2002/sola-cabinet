@@ -1,0 +1,12 @@
+# Drop Web3 and cabinet page titles
+- **Date:** 2026-09-02_14-34
+- **Mode:** SaaS + Multi-market
+- **Screens/components delivered**
+  - Removed Web3 dashboard panel, wallet-connect chip, `config/web3.php`, USDT equivalent on the balance card, and all `lang/{en,ru,uz}` Web3 strings.
+  - Cabinet/admin `x-page-heading`: visible `u-page-head__title` gone; sr-only `<h1>` kept. Lead (services) and period toolbar (finance/traffic) still show. Auth/503 titles unchanged.
+- **Decisions:** why this signature, what you refused
+  - Nav already names the section, so a second H1 on every inner page was noise. Refused deleting the document heading — screen readers still get one. Refused touching login/verify/select-account/503 titles (those screens have no cabinet nav).
+- **Quality floor result**
+  - Tokens `--c-web3*` and `.u-btn-web3` removed so unused cyan cannot leak into new UI. Feature tests assert cabinet pages do not emit `u-page-head__title`; login still has the icon+title cluster.
+- **Left for later**
+  - Services still shows the page-head icon beside the intro lead; drop that too if the strip still feels like a leftover title.

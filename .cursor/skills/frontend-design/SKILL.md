@@ -36,7 +36,7 @@ Then read only what you need:
 - Layouts: `layouts/app.blade.php` (cabinet), `layouts/guest.blade.php` (auth). Reuse `x-*` and `partials/topbar`. Traffic views stay under **`trafic/`**.
 - Copy: `lang/{uz,ru,en}/app.php` **together**. Sentence case, no ALL-CAPS Cyrillic. A control names the outcome (`Balansni to'ldirish`, not `Yuborish`).
 - Vite on the **host** (`npm run build`). Docker has no Node. `public/build` is gitignored.
-- Hide promo / loyalty / chat / Web3 / top-up until the matching `config()` flag is on. Legal entities: hide tariff nav (controller 403 is the real gate).
+- Hide promo / loyalty / chat / top-up until the matching `config()` flag is on. Legal entities: hide tariff nav (controller 403 is the real gate).
 
 ## Motion
 

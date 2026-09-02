@@ -1,0 +1,11 @@
+# Drop tariff validity period
+- **Date:** 2026-09-02_14-38
+- **Mode:** SaaS + Multi-market
+- **Screens/components delivered**
+  - Subscriber `/tariffs`: current card and switch list no longer show billing `tprd`/`prdu` ("30 дней", "5 час(ов)"). Speed, volume, price stay. Admin catalog still shows duration.
+- **Decisions:** why this signature, what you refused
+  - That figure looks like a countdown and fights the real next-charge date. Refused inventing a "month" label — hide the field. Refused changing admin (catalog needs the term).
+- **Quality floor result**
+  - Feature test now forbids `5 hours` / `30 days` on the matched current-tariff line.
+- **Left for later**
+  - Unused `app.tariff.validity` string on the subscriber side (admin still uses hour/day/minut).

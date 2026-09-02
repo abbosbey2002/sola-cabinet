@@ -32,7 +32,6 @@ final readonly class DashboardView
         /** @var array{bg: string, fg: string, icon: string}|null */
         public ?array $tone,
         public ?string $note,
-        public ?float $cryptoUsd,
         public bool $showCycle,
         public float $ringFraction,
         public string $ringColor,
@@ -92,11 +91,6 @@ final readonly class DashboardView
             default => null,
         };
 
-        $usdtRate = config('web3.usdt_rate');
-        $cryptoUsd = config('web3.active') && is_numeric($usdtRate) && (float) $usdtRate > 0
-            ? round($balance / (float) $usdtRate, 2)
-            : null;
-
         $showCycle = $hasTariff && $cycle !== null;
         $ringFraction = $showCycle ? $cycle->daysLeft / $cycle->totalDays : 0.0;
         $ringColor = $tone['fg'] ?? 'var(--c-action)';
@@ -113,7 +107,6 @@ final readonly class DashboardView
             state: $state,
             tone: $tone,
             note: $note,
-            cryptoUsd: $cryptoUsd,
             showCycle: $showCycle,
             ringFraction: $ringFraction,
             ringColor: $ringColor,

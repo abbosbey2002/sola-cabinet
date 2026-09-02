@@ -161,7 +161,7 @@ final class AbonentProfileTest extends TestCase
     /**
      * Confirmed by the client (2026-08-30): /identify's `login` field is the
      * subscriber's real contract number. It must win over any legacy
-     * /abonent/info guess field so pay-card and the topbar dropdown finally
+     * /abonent/info guess field so the topbar dropdown finally
      * show a value on the accounts that were falling back to "—".
      */
     #[Test]

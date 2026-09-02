@@ -80,13 +80,8 @@
        brand family is a warning nobody sees. */
     --c-warn: #8a5a00;
     --c-warn-soft: #faeed8;
-    --c-danger: #a32014;
+        --c-danger: #a32014;
     --c-danger-soft: #fbe7e3;
-
-    /* Web3 accent — dashboard module only; inactive when config('web3.active') is false. */
-    --c-web3: #0891b2;
-    --c-web3-soft: #ecfeff;
-    --c-web3-line: #a5f3fc;
 
     /* Logo graphic green — progress bar and live pip, never as text on light. */
     --c-signal: #8fd400;
@@ -122,10 +117,6 @@
         --c-danger: #ff8f79;
         --c-danger-soft: #31201c;
 
-        --c-web3: #22d3ee;
-        --c-web3-soft: #083344;
-        --c-web3-line: #155e75;
-
         --c-signal: #90d600;
 
         --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
@@ -155,10 +146,6 @@
     --c-warn-soft: #2c2412;
     --c-danger: #ff8f79;
     --c-danger-soft: #31201c;
-
-    --c-web3: #22d3ee;
-    --c-web3-soft: #083344;
-    --c-web3-line: #155e75;
 
     --c-signal: #90d600;
 
@@ -372,6 +359,12 @@
         @apply max-w-[52ch] text-base text-muted;
     }
 
+    /* Cabinet pages hide the visible H1 (nav already names the section).
+       The lead then sits on the icon's row instead of under a missing title. */
+    .u-page-head__identity:not(:has(.u-page-head__title)) .u-page-head__lead {
+        grid-row: 1;
+    }
+
     .u-page-head__identity--plain .u-page-head__lead {
         grid-column: 1;
     }
@@ -471,11 +464,6 @@
         @apply flex min-h-[3rem] items-start gap-3 rounded-xl border border-line bg-surface/80 px-4 py-3 text-sm text-ink;
     }
 
-    .u-card-web3 {
-        background: linear-gradient(160deg, var(--c-web3-soft) 0%, var(--c-surface) 55%);
-        border-color: var(--c-web3-line);
-    }
-
     .u-badge-network {
         @apply inline-flex min-h-[1.75rem] items-center rounded-full px-3 text-xs font-semibold;
         background: var(--c-action-soft);
@@ -483,83 +471,37 @@
         border: 1px solid var(--c-line);
     }
 
-    .u-wallet-pill {
-        background: var(--c-web3-soft);
-        color: var(--c-web3);
-        border: 1px solid var(--c-web3-line);
+    /* Top-up — Figma hisobni-toldirish-modal. */
+    .u-topup {
+        container-type: inline-size;
+        @apply flex flex-col gap-7;
     }
 
-    /* Top-up — Figma hisobni-toldirish-modal. */
     .u-topup-hero {
         @apply rounded-2xl border px-3.5 py-3;
         border-color: var(--c-line);
         background: var(--c-action-soft);
     }
 
-    .u-topup-methods {
-        @apply rounded-2xl border p-3;
-        border-color: var(--c-line);
-        background: #fafbf8;
+    /* Quiet one-line: iWon mark + how you pay. No purple card, no PSP picker. */
+    .u-topup-iwon {
+        @apply flex items-center gap-2.5;
     }
 
-    .u-topup-methods-grid {
-        @apply grid grid-cols-2 gap-2 sm:grid-cols-4;
-    }
-
-    .u-topup-method {
-        @apply flex min-h-[2.625rem] items-center gap-1.5 rounded-[0.875rem] border bg-white px-1.5 py-1.5;
-        border-color: var(--c-line);
-    }
-
-    .u-topup-method-icon {
-        @apply flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-white p-0.5;
-        border-color: var(--c-line);
-    }
-
-    .u-topup-method-icon-dark {
-        @apply border-transparent bg-[#101010] p-0;
-    }
-
-    .u-topup-method-logo {
-        @apply block max-h-full max-w-full object-contain;
-    }
-
-    .u-topup-method-logo--payme {
-        @apply h-4 w-auto;
-    }
-
-    .u-topup-method-logo--click {
-        @apply size-8 object-cover;
-    }
-
-    .u-topup-method-logo--uzcard,
-    .u-topup-method-logo--humo {
-        @apply h-7 w-auto max-w-[1.875rem];
-    }
-
-    .u-topup-method-name {
-        @apply min-w-0 truncate text-[0.6875rem] font-semibold leading-none text-ink sm:text-xs;
-    }
-
-    .u-topup-iwon-active {
-        @apply mt-2 flex items-center gap-2.5 rounded-[0.875rem] border px-2.5 py-2;
-        border-color: #e4daf5;
-        background: linear-gradient(90deg, #f7f3ff 0%, #fff 72%);
-        box-shadow: -6px 0 16px -10px rgba(107, 70, 193, .55);
-    }
-
-    .u-topup-iwon-icon {
-        @apply flex h-9 w-12 shrink-0 items-center justify-center rounded-lg border bg-white px-1.5;
-        border-color: #ebe3f8;
-        box-shadow: 0 0 0 3px rgba(107, 70, 193, .1);
+    .u-topup-iwon-logo-wrap {
+        @apply flex shrink-0 items-center rounded-md bg-white px-1.5 py-1;
     }
 
     .u-topup-iwon-logo {
-        @apply block h-[1.125rem] w-auto max-w-full object-contain;
+        @apply block h-8 w-auto;
+    }
+
+    .u-topup-iwon-title {
+        @apply text-sm font-semibold leading-snug text-ink;
     }
 
     .u-topup-form {
-        @apply mt-4 space-y-4;
+        @apply space-y-7;
     }
 
     .u-topup-amount-head {
@@ -594,11 +536,17 @@
     }
 
     .u-topup-presets {
-        @apply mt-2.5 grid grid-cols-2 gap-2 sm:grid-cols-4;
+        @apply mt-2.5 grid grid-cols-2 gap-1.5;
+    }
+
+    @container (min-width: 22rem) {
+        .u-topup-presets {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
     }
 
     .u-topup-preset {
-        @apply min-h-[2.375rem] rounded-full px-2 text-[0.6875rem] font-semibold sm:text-xs;
+        @apply min-h-[2.375rem] whitespace-nowrap rounded-full px-1 text-[0.625rem] font-semibold;
         border-width: 1.5px;
     }
 
@@ -641,16 +589,6 @@
 
     .u-btn-outline:hover { @apply border-action bg-surface-2; }
     .u-btn-outline:active { @apply translate-y-px; }
-
-    .u-btn-web3 {
-        @apply inline-flex min-h-[2.75rem] select-none items-center justify-center gap-2.5
-               rounded-full px-5 py-2.5 text-sm font-semibold leading-tight text-white no-underline
-               transition-[background-color,transform] duration-200;
-        background: var(--c-web3);
-        transition-timing-function: var(--ease-out-soft);
-    }
-
-    .u-btn-web3:disabled { @apply cursor-not-allowed opacity-60; }
 
     /* Buttons ----------------------------------------------------------
        The shared shape is written once through the selector list: @apply of
@@ -911,8 +849,12 @@
     }
 
     .u-modal-panel-topup {
-        @apply max-w-[min(100%,28rem)] rounded-t-[1.75rem] border sm:rounded-[1.75rem];
-        border-color: var(--c-line);
+        @apply max-w-[min(100%,28rem)] gap-7 overflow-visible border-0 bg-surface p-10
+               rounded-t-[1.75rem] sm:rounded-[1.75rem];
+        box-shadow:
+            0 2px 8px 0 rgba(20, 29, 9, .06),
+            0 24px 48px 0 rgba(20, 29, 9, .15),
+            0 4px 12px 0 rgba(20, 29, 9, .08);
     }
 
     .u-modal-handle {
@@ -924,7 +866,7 @@
     }
 
     .u-modal-header-topup {
-        @apply border-b-0 px-5 pb-0 pt-5;
+        @apply border-b-0 p-0;
     }
 
     .u-modal-body {
@@ -932,7 +874,7 @@
     }
 
     .u-modal-body-topup {
-        @apply px-5 pb-5 pt-3 sm:py-5;
+        @apply p-0;
     }
 
     .u-modal-body-confirm {
@@ -1135,8 +1077,7 @@
     .u-btn-primary.is-loading,
     .u-btn-ghost.is-loading,
     .u-btn-outline.is-loading,
-    .u-btn-danger.is-loading,
-    .u-btn-web3.is-loading {
+    .u-btn-danger.is-loading {
         position: relative;
         pointer-events: none;
         /* Text nodes are not matched by > *, so color has to go transparent
@@ -1148,16 +1089,14 @@
     .u-btn-primary.is-loading > *,
     .u-btn-ghost.is-loading > *,
     .u-btn-outline.is-loading > *,
-    .u-btn-danger.is-loading > *,
-    .u-btn-web3.is-loading > * {
+    .u-btn-danger.is-loading > * {
         visibility: hidden;
     }
 
     .u-btn-primary.is-loading::after,
     .u-btn-ghost.is-loading::after,
     .u-btn-outline.is-loading::after,
-    .u-btn-danger.is-loading::after,
-    .u-btn-web3.is-loading::after {
+    .u-btn-danger.is-loading::after {
         content: '';
         position: absolute;
         top: 50%;
@@ -1183,11 +1122,6 @@
     }
 
     .u-btn-danger-solid.is-loading::after {
-        border-color: color-mix(in srgb, #fff 30%, transparent);
-        border-top-color: #fff;
-    }
-
-    .u-btn-web3.is-loading::after {
         border-color: color-mix(in srgb, #fff 30%, transparent);
         border-top-color: #fff;
     }

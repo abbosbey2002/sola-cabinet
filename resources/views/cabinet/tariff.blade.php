@@ -41,12 +41,6 @@
 
         $speed = fn (array $t): string => $t['tspd'].' '.($t['spdu'] === 'Mbps' ? __('app.tariff.unit_mb') : __('app.tariff.unit_kb'));
 
-        $validity = fn (array $t): string => $t['tprd'].' '.match ($t['prdu']) {
-            'HOUR' => __('app.tariff.hour'),
-            'MIN' => __('app.tariff.minut'),
-            default => __('app.tariff.day'),
-        };
-
         $volume = fn (array $t): string => (int) $t['vol'] === 0
             ? __('app.tariff.no_limit')
             : number_format((float) $t['vol'], 0, '', ' ').' '.__('app.traffic.mb');
@@ -56,10 +50,11 @@
 
         // /abonent/info gives a tariff's name but none of its terms. When the
         // same tariff also appears in the switchable list its speed and
-        // validity are right there, so they are shown rather than left blank.
+        // volume are right there, so they are shown rather than left blank.
+        // Validity (tprd/prdu) is omitted — billing's "30 days" reads as a
+        // countdown and collides with the real next-charge date.
         $terms = array_values(array_filter([
             $currentMatch !== null ? $speed($currentMatch) : null,
-            $currentMatch !== null ? $validity($currentMatch) : null,
             $currentMatch !== null ? $volume($currentMatch) : null,
             $cost !== null ? number_format($cost, 0, '', ' ').' '.__('app.ye') : null,
         ]));
@@ -124,7 +119,7 @@
                                 <span class="text-sm font-normal text-muted">@lang('app.ye')</span>
                             </span>
                         </span>
-                        <span class="mt-0.5 block text-sm text-muted">{{ $speed($tariff) }} · {{ $validity($tariff) }}</span>
+                        <span class="mt-0.5 block text-sm text-muted">{{ $speed($tariff) }}</span>
                     </li>
                 @endforeach
             </ul>
@@ -172,7 +167,7 @@
                                         </span>
                                     </span>
                                     <span class="mt-0.5 block text-sm text-muted">
-                                        {{ $speed($tariff) }} · {{ $validity($tariff) }}
+                                        {{ $speed($tariff) }}
                                         @if ((int) $tariff['vol'] !== 0)
                                             · {{ $volume($tariff) }}
                                         @endif
