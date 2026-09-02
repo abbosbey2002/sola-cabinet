@@ -1442,8 +1442,11 @@ final class CabinetTest extends TestCase
     {
         $this->fakeSola();
 
-        // 9 is the one id the fake's */tariff/available response offers, but
-        // no admin has ever enabled it — the whitelist starts empty.
+        // 9 is the one id the fake's */tariff/available response offers.
+        // Local sqlite can already have that id from an admin click; wipe it
+        // so this test is the empty-whitelist case even on a used machine.
+        (new TariffVisibility)->disable(9);
+
         $this->verifiedSubscriber()
             ->post('/tariffs/connect', ['tariff' => 9, 'timing' => 'now'])
             ->assertForbidden();

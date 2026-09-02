@@ -15,6 +15,8 @@ final class DashboardViewTest extends TestCase
     #[Test]
     public function one_off_subscribers_get_the_one_time_layout_kind(): void
     {
+        config(['iwon.active' => true]);
+
         $view = DashboardView::make(
             $this->profile(['saldo' => '1000', 'curr_tariff_name' => 'Guest']),
             null,
@@ -25,6 +27,20 @@ final class DashboardViewTest extends TestCase
         $this->assertFalse($view->showTariff);
         $this->assertTrue($view->canTopUp);
         $this->assertSame(3, $view->metricColumnCount());
+    }
+
+    #[Test]
+    public function one_off_subscribers_cannot_top_up_when_iwon_is_inactive(): void
+    {
+        config(['iwon.active' => false]);
+
+        $view = DashboardView::make(
+            $this->profile(['saldo' => '1000', 'curr_tariff_name' => 'Guest']),
+            null,
+            isOneTime: true,
+        );
+
+        $this->assertFalse($view->canTopUp);
     }
 
     #[Test]

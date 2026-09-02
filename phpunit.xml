@@ -27,5 +27,6 @@
         <env name="SOLA_USERNAME" value="test"/>
         <env name="SOLA_PASSWORD" value="secret"/>
         <env name="SOLA_SECRET_KEY" value="secret-key"/>
+        <env name="IWON_ACTIVE" value="false"/>
     </php>
 </phpunit>
