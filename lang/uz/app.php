@@ -257,7 +257,7 @@ return [
         'contract' => 'Shartnoma raqami',
         'next_tariff' => 'Keyingi tarif',
         'next_charge' => 'Keyingi to\'lov',
-        'account_state' => 'Hisobingiz',
+        'account_state' => 'Balans va keyingi to\'lov',
         'last_payment' => 'So\'nggi to\'lov',
         'devices_total' => '{0} Qurilma yo\'q|{1} 1 ta qurilma|[2,*] :count ta qurilma',
         'days_left' => '{1} Tarif to\'lovigacha 1 kun qoldi|[2,*] Tarif to\'lovigacha :days kun qoldi',
