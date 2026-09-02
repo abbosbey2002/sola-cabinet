@@ -186,7 +186,7 @@ return [
     ],
 
     'footer' => [
-        'copy' => '© :year Sola. All rights reserved.<br>Built by Usoft.',
+        'copy' => '© :year Sola. All rights reserved.<br>Built by :site.',
     ],
 
     'accounts' => [

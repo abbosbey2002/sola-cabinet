@@ -83,6 +83,12 @@ return [
     'call_phone' => env('CALL_PHONE'),
 
     /*
+     * The public site the cabinet's footer credits. A permanent address like
+     * the speed test below, not an opt-in campaign URL.
+     */
+    'site_url' => env('SOLA_SITE_URL', 'https://sola.uz'),
+
+    /*
     |--------------------------------------------------------------------------
     | Entry Points
     |--------------------------------------------------------------------------

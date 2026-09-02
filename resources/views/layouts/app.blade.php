@@ -60,7 +60,11 @@
 
     <footer class="border-t-2 border-line px-4 py-8 sm:px-6">
         <p class="mx-auto max-w-[1240px] text-center text-sm text-muted">
-            {!! trans('app.footer.copy', ['year' => date('Y')]) !!}
+            {!! trans('app.footer.copy', [
+                'year' => date('Y'),
+                'site' => '<a href="'.e(config('sola.site_url')).'" target="_blank" rel="noopener"
+                    class="font-semibold no-underline" style="color: var(--c-action)">Sola</a>',
+            ]) !!}
         </p>
     </footer>
 </div>

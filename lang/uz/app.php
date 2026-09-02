@@ -186,7 +186,7 @@ return [
     ],
 
     'footer' => [
-        'copy' => '© :year Sola. Barcha huquqlar himoyalangan.<br>Usoft tomonidan ishlab chiqilgan.',
+        'copy' => '© :year Sola. Barcha huquqlar himoyalangan.<br>:site tomonidan ishlab chiqilgan.',
     ],
 
     'accounts' => [
