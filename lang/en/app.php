@@ -257,7 +257,7 @@ return [
         'contract' => 'Contract number',
         'next_tariff' => 'Next tariff',
         'next_charge' => 'Next payment',
-        'account_state' => 'Balance and next charge',
+        'account_state' => 'Your account',
         'last_payment' => 'Last payment',
         'devices_total' => '{1} One device|[2,*] :count devices',
         'days_left' => '{1} 1 day until the tariff charge|[2,*] :days days until the tariff charge',

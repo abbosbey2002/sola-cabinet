@@ -1078,12 +1078,20 @@ final class CabinetTest extends TestCase
             ]),
         ]);
 
-        $this->verifiedSubscriber(type: 1)->get('/')
+        $html = $this->verifiedSubscriber(type: 1)->get('/')
             ->assertOk()
             ->assertDontSee(trans('app.nav.tariff'))
             ->assertDontSee(trans('app.dash.active_tariff'))
             ->assertDontSee(trans('app.dash.current_tariff'))
-            ->assertDontSee('Guest WiFi');
+            ->assertDontSee('Guest WiFi')
+            ->assertSee(trans('app.dash.account_state'))
+            ->assertSee(trans('app.services.entry_title'))
+            ->getContent();
+
+        // The one-time aside is the only place these labels appear. The
+        // metrics row used to repeat them as a second set of cards.
+        $this->assertSame(1, substr_count($html, trans('app.dash.last_payment')));
+        $this->assertSame(1, substr_count($html, trans_choice('app.dash.devices_total', 1, ['count' => 1])));
     }
 
     #[Test]

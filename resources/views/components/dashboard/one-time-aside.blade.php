@@ -49,4 +49,17 @@
         </span>
         <x-icon name="chevron-right" class="mt-2 shrink-0 text-muted"/>
     </a>
+
+    <a href="{{ route('services') }}"
+        class="flex items-start gap-3.5 rounded-xl border-2 px-4 py-3.5 no-underline transition-[border-color,transform] hover:-translate-y-0.5 hover:border-action"
+        style="border-color: var(--c-line)">
+        <span class="grid size-10 shrink-0 place-items-center rounded-lg" style="background: var(--c-action-soft); color: var(--c-action)">
+            <x-icon name="gift" size="size-5"/>
+        </span>
+        <span class="min-w-0 flex-1">
+            <span class="block text-sm font-semibold text-muted">@lang('app.services.entry_title')</span>
+            <span class="mt-0.5 block text-lg font-semibold text-ink">@lang('app.services.entry_text')</span>
+        </span>
+        <x-icon name="chevron-right" class="mt-2 shrink-0 text-muted"/>
+    </a>
 </aside>

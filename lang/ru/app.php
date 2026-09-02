@@ -258,7 +258,7 @@ return [
         'contract' => 'Номер договора',
         'next_tariff' => 'Следующий тариф',
         'next_charge' => 'Следующий платёж',
-        'account_state' => 'Баланс и следующее списание',
+        'account_state' => 'Ваш аккаунт',
         'last_payment' => 'Последний платёж',
         // Same three-form rule as days_left below — no explicit ranges, so
         // 22 gets «устройства» from the language's own plural rule instead
