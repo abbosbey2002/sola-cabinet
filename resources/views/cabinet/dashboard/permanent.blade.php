@@ -1,5 +1,5 @@
 {{-- Permanent individual: full balance + tariff hero and clickable tariff metric. --}}
-<div class="grid items-start gap-4 lg:grid-cols-2 lg:gap-5">
+<div class="grid gap-4 lg:grid-cols-2 lg:gap-5">
     <x-dashboard.balance-card :dash="$dash" :profile="$profile"/>
 
     <x-dashboard.tariff-card :dash="$dash" :profile="$profile" :cycle="$cycle"/>

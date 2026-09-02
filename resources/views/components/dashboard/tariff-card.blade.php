@@ -4,7 +4,7 @@
     'cycle' => null,
 ])
 
-<section {{ $attributes->merge(['class' => 'u-card u-rise p-6 sm:p-8', 'style' => '--i:1']) }} aria-labelledby="dash-tariff-title">
+<section {{ $attributes->merge(['class' => 'u-card u-rise flex h-full flex-col', 'style' => '--i:1']) }} aria-labelledby="dash-tariff-title">
     <h2 id="dash-tariff-title" class="u-label">@lang('app.dash.active_tariff')</h2>
 
     @if (! $dash->hasTariff)
@@ -31,7 +31,7 @@
         @endif
 
         @if ($dash->showCycle && $cycle !== null)
-            <div class="mt-5 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            <div class="mt-5 flex flex-1 flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 rounded-xl p-4 w-full sm:flex-1"
                     style="background: var(--c-bg)">
                     <p class="u-label">@lang('app.dash.next_charge')</p>

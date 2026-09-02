@@ -9,7 +9,7 @@
     $contract = $showContract ? $profile->contractNumber() : null;
 @endphp
 
-<section {{ $attributes->merge(['class' => 'u-card u-card-dash-balance u-rise p-5 sm:p-6', 'style' => '--i:0']) }}
+<section {{ $attributes->merge(['class' => 'u-card u-card-dash-balance u-rise flex h-full flex-col', 'style' => '--i:0']) }}
     aria-labelledby="dash-balance-title">
     <h2 id="dash-balance-title" class="sr-only">@lang('app.header.balance')</h2>
 
@@ -72,17 +72,21 @@
     @endif
 
     @if (filled($contract))
-        <div class="mt-3 flex items-start justify-between gap-3 rounded-xl p-4" style="background: var(--c-bg)">
-            <div class="min-w-0">
-                <p class="u-label">@lang('app.dash.contract')</p>
-                <p class="mt-1 u-figure text-xl text-ink">{{ $contract }}</p>
+        {{-- Wrapper keeps the contract block glued to the bottom edge when the
+             neighbouring tariff card makes this column taller. --}}
+        <div class="mt-3 flex flex-1 items-end">
+            <div class="flex w-full items-start justify-between gap-3 rounded-xl p-4" style="background: var(--c-bg)">
+                <div class="min-w-0">
+                    <p class="u-label">@lang('app.dash.contract')</p>
+                    <p class="mt-1 u-figure text-xl text-ink">{{ $contract }}</p>
+                </div>
+                <button type="button" data-copy="{{ $contract }}" data-copy-done="@lang('app.ui.copied')"
+                    class="u-icon-btn u-no-print shrink-0" aria-label="@lang('app.ui.copy')">
+                    <span data-copy-icon-default><x-icon name="copy" size="size-4"/></span>
+                    <span data-copy-icon-done hidden style="color: var(--c-action)"><x-icon name="check" size="size-4"/></span>
+                    <span data-copy-text role="status" class="sr-only">@lang('app.ui.copy')</span>
+                </button>
             </div>
-            <button type="button" data-copy="{{ $contract }}" data-copy-done="@lang('app.ui.copied')"
-                class="u-icon-btn u-no-print shrink-0" aria-label="@lang('app.ui.copy')">
-                <span data-copy-icon-default><x-icon name="copy" size="size-4"/></span>
-                <span data-copy-icon-done hidden style="color: var(--c-action)"><x-icon name="check" size="size-4"/></span>
-                <span data-copy-text role="status" class="sr-only">@lang('app.ui.copy')</span>
-            </button>
         </div>
     @endif
 </section>
