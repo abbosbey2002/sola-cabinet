@@ -198,40 +198,36 @@
 @endsection
 
 @push('js')
-    <x-modal name="tariff-confirm" :label="__('app.ui.confirm')">
-        <div class="text-center">
-            <div class="mx-auto grid size-12 place-items-center rounded-xl"
-                 style="background: var(--c-warn-soft); color: var(--c-warn)">
-                <x-icon name="alert" size="size-6"/>
-            </div>
-            <p class="mt-4 text-base font-semibold leading-snug text-ink">@lang('app.modal.are_you_sure')</p>
-            <p data-tariff-name-slot class="mt-1 text-base font-semibold" style="color: var(--c-action)"></p>
+    <x-modal name="tariff-confirm" :label="__('app.ui.confirm')" :header="false">
+        <div class="u-modal-icon" style="background: var(--c-warn-soft); color: var(--c-warn)">
+            <x-icon name="alert" size="size-6"/>
         </div>
 
-        <div class="mt-6 flex flex-wrap gap-3">
-            <button type="button" data-modal-close class="u-btn-ghost flex-1">@lang('app.no')</button>
-            <button type="button" data-tariff-accept class="u-btn-primary flex-1">@lang('app.yes')</button>
+        <p class="mt-4 text-center text-base font-semibold leading-snug text-ink">@lang('app.modal.are_you_sure')</p>
+        <p data-tariff-name-slot class="mt-1 text-center text-base font-semibold" style="color: var(--c-action)"></p>
+
+        <div class="u-modal-actions">
+            <button type="button" data-modal-close class="u-btn-ghost">@lang('app.no')</button>
+            <button type="button" data-tariff-accept class="u-btn-primary">@lang('app.yes')</button>
         </div>
     </x-modal>
 
     @if ($isPermanent)
-        <x-modal name="tariff-timing" :title="__('app.modal.to_connect')">
-            <p data-tariff-name-slot class="-mt-2 mb-4 text-base font-semibold" style="color: var(--c-action)"></p>
+        <x-modal name="tariff-timing" :title="__('app.modal.to_connect')" :subtitle="__('app.modal.timing_subtitle')">
+            <p data-tariff-name-slot class="mb-4 text-base font-semibold" style="color: var(--c-action)"></p>
 
-            <div class="space-y-2.5">
+            <div class="space-y-2">
                 @foreach ([
                     ['timing' => 'now', 'icon' => 'speed', 'title' => __('app.modal.now'), 'hint' => __('app.modal.now_hint')],
                     ['timing' => 'month', 'icon' => 'calendar', 'title' => __('app.modal.month'), 'hint' => __('app.modal.month_hint', ['date' => $nextPeriodStart->format('d.m.Y')])],
                 ] as $choice)
-                    <button type="button" data-tariff-timing="{{ $choice['timing'] }}"
-                            class="flex w-full items-center gap-3.5 rounded-xl border-2 border-line p-4 text-left transition-colors hover:border-action hover:bg-surface-2">
-                        <span class="grid size-11 shrink-0 place-items-center rounded-xl"
-                              style="background: var(--c-action-soft); color: var(--c-action)">
+                    <button type="button" data-tariff-timing="{{ $choice['timing'] }}" class="u-modal-option">
+                        <span class="u-modal-option-icon">
                             <x-icon :name="$choice['icon']"/>
                         </span>
-                        <span>
+                        <span class="min-w-0">
                             <span class="block text-base font-semibold text-ink">{{ $choice['title'] }}</span>
-                            <span class="block text-sm text-muted">{{ $choice['hint'] }}</span>
+                            <span class="mt-0.5 block text-sm leading-snug text-muted">{{ $choice['hint'] }}</span>
                         </span>
                     </button>
                 @endforeach

@@ -3,7 +3,12 @@
 
 @section('content')
     <div class="u-card u-rise p-6 sm:p-7" style="--i:1">
-        <h1 class="u-display text-2xl text-ink">@lang('app.admin.login_title')</h1>
+        <div class="u-page-head__identity">
+            <span class="u-page-head__icon" aria-hidden="true">
+                <x-icon name="shield" size="size-6"/>
+            </span>
+            <h1 class="u-page-head__title text-2xl">@lang('app.admin.login_title')</h1>
+        </div>
 
         <form action="{{ route('admin.login') }}" method="post" class="mt-7 space-y-5" novalidate>
             @csrf

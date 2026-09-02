@@ -154,6 +154,12 @@ final class AbonentSession
         return $type !== null && $type >= self::TYPE_PERMANENT;
     }
 
+    /** Billing's one-off (razoviy) subscriber — tariffs are managed elsewhere. */
+    public function isOneTime(): bool
+    {
+        return $this->abonentType() === self::TYPE_ONE_TIME;
+    }
+
     public function setLocale(string $locale): void
     {
         $this->pending['lang'] = $locale;

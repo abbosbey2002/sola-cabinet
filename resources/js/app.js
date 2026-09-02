@@ -15,6 +15,9 @@ import initTables from './modules/table.js';
 import initTariff from './modules/tariff.js';
 import initToasts from './modules/toast.js';
 import initTopUp from './modules/topup.js';
+import initMotion from './modules/motion.js';
+import initOffline from './modules/offline.js';
+import initOtp from './modules/otp.js';
 
 /**
  * The cabinet is server-rendered; this is the whole client runtime. Every
@@ -37,6 +40,11 @@ function boot() {
     initTariff();
     initToasts();
     initTopUp();
+    initOtp();
+    initOffline();
+    // Last: sees defaultPrevented from ajax / tariff / modal so it does not
+    // start a page-progress bar on a fetch that never leaves this page.
+    initMotion();
 }
 
 document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', boot) : boot();

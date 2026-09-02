@@ -7,7 +7,10 @@ namespace App\Http\Controllers;
 use App\Support\AbonentProfile;
 use App\Support\BillingHistory;
 use App\Support\ChargeCycle;
+use App\Support\ConnectedDevices;
 use App\Support\ConnectedTariff;
+use App\Support\DashboardView;
+use App\Support\IpLocation;
 use App\Support\Period;
 use Illuminate\Contracts\View\View;
 
@@ -21,11 +24,11 @@ use Illuminate\Contracts\View\View;
  */
 final class CabinetController extends Controller
 {
-    public function index(): View
+    public function index(IpLocation $geo): View
     {
         $accountId = $this->accountId();
 
-        $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
+        $profile = AbonentProfile::from($this->sola->abonentInfo($accountId), $this->session->billingLogin());
 
         // Billing sends the upcoming payment date directly as /abonent/info's
         // `charge_date` — see AbonentProfile::nextChargeDate(). The extra round
@@ -37,12 +40,10 @@ final class CabinetController extends Controller
             $profile->currentTariffId(),
         )?->nextChargeDate();
 
-        // The last payment card. The current month is one API round trip; a
-        // wider window would be several, and this page already makes four.
-        // When the month is empty the card says so rather than reaching back
-        // for an older payment the subscriber did not ask about.
+        // The last payment card looks back one year — one API round trip with
+        // pay_begin/pay_end — before it admits there were none in that window.
         $payments = (new BillingHistory($this->sola))
-            ->payments($accountId, Period::currentMonth());
+            ->payments($accountId, Period::lastYear());
 
         // The dashboard shows the device count only, not an active/offline
         // breakdown (dropped at the user's request, 2026-08-28) — but it
@@ -51,13 +52,21 @@ final class CabinetController extends Controller
         // billing's own separate counter.
         $devices = (array) $this->sola->devices($accountId)->get('devices', []);
 
+        $chargeCycle = $charge !== null ? ChargeCycle::endingAt($charge) : null;
+
         return $this->view->make('cabinet.index', [
             'profile' => $profile,
             'accounts' => $this->accounts(),
+            'dash' => DashboardView::make(
+                $profile,
+                $chargeCycle,
+                $this->session->isOneTime(),
+            ),
             // No charge date from billing means no "next charge" block: a
             // guessed date would be a confident lie.
-            'cycle' => $charge !== null ? ChargeCycle::endingAt($charge) : null,
+            'cycle' => $chargeCycle,
             'totalDevices' => count($devices),
+            'deviceMetricHint' => ConnectedDevices::metricHint($devices, $geo),
             'billingLogin' => $this->session->billingLogin(),
             'lastPayment' => BillingHistory::lastRealPayment($payments['rows']),
         ]);
@@ -70,7 +79,7 @@ final class CabinetController extends Controller
     public function services(): View
     {
         return $this->view->make('cabinet.services', [
-            'profile' => AbonentProfile::from($this->sola->abonentInfo($this->accountId())),
+            'profile' => AbonentProfile::from($this->sola->abonentInfo($this->accountId()), $this->session->billingLogin()),
             'accounts' => $this->accounts(),
         ]);
     }

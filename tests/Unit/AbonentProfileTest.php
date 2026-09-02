@@ -6,6 +6,7 @@ namespace Tests\Unit;
 
 use App\Services\Sola\SolaResponse;
 use App\Support\AbonentProfile;
+use Illuminate\Support\Facades\Log;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
@@ -158,10 +159,68 @@ final class AbonentProfileTest extends TestCase
     }
 
     /**
+     * Confirmed by the client (2026-08-30): /identify's `login` field is the
+     * subscriber's real contract number. It must win over any legacy
+     * /abonent/info guess field so pay-card and the topbar dropdown finally
+     * show a value on the accounts that were falling back to "—".
+     */
+    #[Test]
+    public function the_identify_login_is_preferred_over_a_legacy_contract_field(): void
+    {
+        $profile = $this->profile(['contract_number' => 'D-100145'], billingLogin: 'TESTOV01');
+
+        $this->assertSame('TESTOV01', $profile->contractNumber());
+    }
+
+    #[Test]
+    public function a_legacy_contract_field_is_used_when_there_is_no_identify_login(): void
+    {
+        $profile = $this->profile(['contract_number' => 'D-100145'], billingLogin: null);
+
+        $this->assertSame('D-100145', $profile->contractNumber());
+    }
+
+    #[Test]
+    public function an_empty_identify_login_falls_back_to_the_legacy_contract_field_too(): void
+    {
+        $profile = $this->profile(['contract_number' => 'D-100145'], billingLogin: '');
+
+        $this->assertSame('D-100145', $profile->contractNumber());
+    }
+
+    #[Test]
+    public function no_identify_login_and_no_legacy_field_is_null(): void
+    {
+        $this->assertNull($this->profile([], billingLogin: null)->contractNumber());
+    }
+
+    /**
+     * A disagreement between the confirmed source and the legacy guess field
+     * is not a case either has ever been observed to hit — but if it ever
+     * does, it must not fail silently: see currentTariffCost()'s identical
+     * tariff_price-vs-legacy-field guard for the established pattern.
+     */
+    #[Test]
+    public function a_disagreement_between_the_identify_login_and_a_legacy_field_is_logged(): void
+    {
+        Log::spy();
+
+        $profile = $this->profile(['contract_number' => 'D-100145'], billingLogin: 'TESTOV01');
+        $profile->contractNumber();
+
+        Log::shouldHaveReceived('warning')
+            ->once()
+            ->with('AbonentProfile: identify login disagrees with a legacy contract-number field', [
+                'billing_login' => 'TESTOV01',
+                'legacy_contract_number' => 'D-100145',
+            ]);
+    }
+
+    /**
      * @param  array<string, mixed>  $body
      */
-    private function profile(array $body): AbonentProfile
+    private function profile(array $body, ?string $billingLogin = null): AbonentProfile
     {
-        return AbonentProfile::from(new SolaResponse(200, $body));
+        return AbonentProfile::from(new SolaResponse(200, $body), $billingLogin);
     }
 }

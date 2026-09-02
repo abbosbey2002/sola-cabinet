@@ -1,0 +1,295 @@
+{
+  "facts": [
+    {
+      "step": "A.1 ru light 1440 first paint",
+      "url": "http://127.0.0.1:8080/auth/login",
+      "lang": "ru",
+      "theme": null,
+      "title": "Вход в кабинет",
+      "lead": "Укажите номер телефона — пришлём код в SMS. Обычно это занимает меньше минуты.",
+      "badge": "Телефон",
+      "hint": "Номер, на который оформлен договор с SOLA.",
+      "input": {
+        "name": "login",
+        "type": "tel",
+        "inputmode": "tel",
+        "autocomplete": "tel",
+        "required": true,
+        "autofocus": true,
+        "value": "+998",
+        "placeholder": "+998 90 123 45 67",
+        "mask": true
+      },
+      "submit": {
+        "text": "Получить код",
+        "className": "u-btn-primary w-full text-lg"
+      },
+      "progress": true,
+      "offlineHidden": true,
+      "orbs": true,
+      "asideDisplay": "flex",
+      "skipSr": "absolute",
+      "scroll": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "hScroll": false,
+      "bodyBg": "rgb(241, 246, 237)",
+      "ink": "rgb(20, 29, 9)"
+    },
+    {
+      "step": "phone-mask",
+      "masked": "+998 90 123 45 67"
+    },
+    {
+      "step": "ru dark 1440",
+      "url": "http://127.0.0.1:8080/auth/login",
+      "lang": "ru",
+      "theme": "dark",
+      "title": "Вход в кабинет",
+      "lead": "Укажите номер телефона — пришлём код в SMS. Обычно это занимает меньше минуты.",
+      "badge": "Телефон",
+      "hint": "Номер, на который оформлен договор с SOLA.",
+      "input": {
+        "name": "login",
+        "type": "tel",
+        "inputmode": "tel",
+        "autocomplete": "tel",
+        "required": true,
+        "autofocus": true,
+        "value": "+998",
+        "placeholder": "+998 90 123 45 67",
+        "mask": true
+      },
+      "submit": {
+        "text": "Получить код",
+        "className": "u-btn-primary w-full text-lg"
+      },
+      "progress": true,
+      "offlineHidden": true,
+      "orbs": true,
+      "asideDisplay": "flex",
+      "skipSr": "absolute",
+      "scroll": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "hScroll": false,
+      "bodyBg": "rgb(241, 246, 237)",
+      "ink": "rgb(20, 29, 9)"
+    },
+    {
+      "step": "uz after lang switch",
+      "url": "http://127.0.0.1:8080/auth/login",
+      "lang": "uz",
+      "theme": "dark",
+      "title": "Kabinetga kiring",
+      "lead": "Telefon raqamingizni yozing — tasdiqlash kodini SMS bilan yuboramiz. Odatda bir daqiqadan kam vaqt oladi.",
+      "badge": "Telefon",
+      "hint": "SOLA xizmatiga ro'yxatdan o'tgan raqam bo'lishi kerak.",
+      "input": {
+        "name": "login",
+        "type": "tel",
+        "inputmode": "tel",
+        "autocomplete": "tel",
+        "required": true,
+        "autofocus": true,
+        "value": "+998",
+        "placeholder": "+998 90 123 45 67",
+        "mask": true
+      },
+      "submit": {
+        "text": "Kodni olish",
+        "className": "u-btn-primary w-full text-lg"
+      },
+      "progress": true,
+      "offlineHidden": true,
+      "orbs": true,
+      "asideDisplay": "flex",
+      "skipSr": "absolute",
+      "scroll": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "hScroll": false,
+      "bodyBg": "rgb(13, 19, 7)",
+      "ink": "rgb(229, 237, 221)"
+    },
+    {
+      "step": "en after lang switch",
+      "url": "http://127.0.0.1:8080/auth/login",
+      "lang": "en",
+      "theme": "dark",
+      "title": "Sign in",
+      "lead": "Enter your phone number — we'll text you a code. Usually takes less than a minute.",
+      "badge": "Phone",
+      "hint": "The number registered with SOLA.",
+      "input": {
+        "name": "login",
+        "type": "tel",
+        "inputmode": "tel",
+        "autocomplete": "tel",
+        "required": true,
+        "autofocus": true,
+        "value": "+998",
+        "placeholder": "+998 90 123 45 67",
+        "mask": true
+      },
+      "submit": {
+        "text": "Get the code",
+        "className": "u-btn-primary w-full text-lg"
+      },
+      "progress": true,
+      "offlineHidden": true,
+      "orbs": true,
+      "asideDisplay": "flex",
+      "skipSr": "absolute",
+      "scroll": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "hScroll": false,
+      "bodyBg": "rgb(13, 19, 7)",
+      "ink": "rgb(229, 237, 221)"
+    },
+    {
+      "step": "en light 1440",
+      "url": "http://127.0.0.1:8080/auth/login",
+      "lang": "en",
+      "theme": "light",
+      "title": "Sign in",
+      "lead": "Enter your phone number — we'll text you a code. Usually takes less than a minute.",
+      "badge": "Phone",
+      "hint": "The number registered with SOLA.",
+      "input": {
+        "name": "login",
+        "type": "tel",
+        "inputmode": "tel",
+        "autocomplete": "tel",
+        "required": true,
+        "autofocus": true,
+        "value": "+998",
+        "placeholder": "+998 90 123 45 67",
+        "mask": true
+      },
+      "submit": {
+        "text": "Get the code",
+        "className": "u-btn-primary w-full text-lg"
+      },
+      "progress": true,
+      "offlineHidden": true,
+      "orbs": true,
+      "asideDisplay": "flex",
+      "skipSr": "absolute",
+      "scroll": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "hScroll": false,
+      "bodyBg": "rgb(13, 19, 7)",
+      "ink": "rgb(229, 237, 221)"
+    },
+    {
+      "step": "390 first (cookie lang/theme persist?)",
+      "url": "http://127.0.0.1:8080/auth/login",
+      "lang": "en",
+      "theme": "light",
+      "title": "Sign in",
+      "lead": "Enter your phone number — we'll text you a code. Usually takes less than a minute.",
+      "badge": "Phone",
+      "hint": "The number registered with SOLA.",
+      "input": {
+        "name": "login",
+        "type": "tel",
+        "inputmode": "tel",
+        "autocomplete": "tel",
+        "required": true,
+        "autofocus": true,
+        "value": "+998",
+        "placeholder": "+998 90 123 45 67",
+        "mask": true
+      },
+      "submit": {
+        "text": "Get the code",
+        "className": "u-btn-primary w-full text-lg"
+      },
+      "progress": true,
+      "offlineHidden": true,
+      "orbs": true,
+      "asideDisplay": "none",
+      "skipSr": "absolute",
+      "scroll": {
+        "scrollWidth": 390,
+        "clientWidth": 390
+      },
+      "hScroll": false,
+      "bodyBg": "rgb(241, 246, 237)",
+      "ink": "rgb(20, 29, 9)"
+    },
+    {
+      "step": "call-center-390",
+      "callVisible": {
+        "found": true,
+        "display": "block",
+        "text": "1130"
+      }
+    },
+    {
+      "step": "aside-390",
+      "asideHidden": "none"
+    },
+    {
+      "step": "A.9 finance guest",
+      "url": "http://127.0.0.1:8080/auth/login"
+    },
+    {
+      "step": "A.2 before submit",
+      "beforeA2": "+998 90 000 00 00"
+    },
+    {
+      "step": "A.2 after submit",
+      "url": "http://127.0.0.1:8080/auth/login",
+      "lang": "en",
+      "theme": "light",
+      "title": "Sign in",
+      "lead": "Enter your phone number — we'll text you a code. Usually takes less than a minute.",
+      "badge": "Phone",
+      "hint": "The number registered with SOLA.",
+      "input": {
+        "name": "login",
+        "type": "tel",
+        "inputmode": "tel",
+        "autocomplete": "tel",
+        "required": true,
+        "autofocus": true,
+        "value": "+998",
+        "placeholder": "+998 90 123 45 67",
+        "mask": true
+      },
+      "submit": {
+        "text": "Get the code",
+        "className": "u-btn-primary w-full text-lg"
+      },
+      "progress": true,
+      "offlineHidden": true,
+      "orbs": true,
+      "asideDisplay": "flex",
+      "skipSr": "absolute",
+      "scroll": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440
+      },
+      "hScroll": false,
+      "bodyBg": "rgb(241, 246, 237)",
+      "ink": "rgb(20, 29, 9)"
+    },
+    {
+      "step": "A.2 body-snippet",
+      "has110": false,
+      "snippet": "Skip to content Balance, plan and payments — all in one place Your phone is all you need. No password. Keep the code to yourself — it's how we know it's you. Your data stays protected. Need help? Call 1130 Display Language: EN Phone Sign in Enter your phone number — we'll text you a code. Usually takes less than a minute. Phone number The number registered with SOLA. Get the code Тип абонента ВРЕМЕННЫЙ не имеет доступа к ПК",
+      "url": "http://127.0.0.1:8080/auth/login"
+    }
+  ],
+  "console": [],
+  "failed": []
+}

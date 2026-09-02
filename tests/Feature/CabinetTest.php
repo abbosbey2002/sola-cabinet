@@ -52,6 +52,8 @@ final class CabinetTest extends TestCase
             ->assertOk()
             ->assertSee('Tester Testov')
             ->assertSee('125 000')
+            ->assertSee('data-count-up="125000"', false)
+            ->assertSee('data-progress', false)
             ->assertDontSee('AA:BB:CC:DD:EE:FF');
 
         $this->verifiedSubscriber()->get('/devices')
@@ -89,8 +91,39 @@ final class CabinetTest extends TestCase
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
             ->assertSee(trans_choice('app.dash.devices_total', 2, ['count' => 2]))
+            ->assertSee(__('app.dash.devices_connected_on', ['date' => '01.02.2026']))
             ->assertDontSee(trans('app.header.offline'))
             ->assertDontSee(trans('app.header.online'));
+    }
+
+    #[Test]
+    public function the_device_card_adds_city_and_country_when_geo_lookup_is_enabled(): void
+    {
+        config(['geoip.active' => true]);
+
+        $this->fakeSola([
+            'https://ipwho.is/*' => Http::response([
+                'success' => true,
+                'city' => 'Tashkent',
+                'country' => 'Uzbekistan',
+            ]),
+            '*/device/list' => Http::response([
+                'devices' => [
+                    [
+                        'mac' => 'AA:BB:CC:DD:EE:FF',
+                        'ip' => '185.139.68.1',
+                        'connect_date' => '2026-02-01',
+                        'readonly' => false,
+                        'permit_id' => '77',
+                    ],
+                ],
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee('Tashkent, Uzbekistan')
+            ->assertSee(__('app.dash.devices_connected_on', ['date' => '01.02.2026']));
     }
 
     /**
@@ -219,10 +252,9 @@ final class CabinetTest extends TestCase
 
         $this->assertStringContainsString('Smart 50', $content);
         $this->assertStringNotContainsString('Smart 50 - 125 000', $content);
-        // The "next charge" figure, the balance-shortfall note, and the
-        // tariff card's own price hint each legitimately state 125 000
-        // once — never a fourth time from the raw, unstripped name.
-        $this->assertSame(3, substr_count($content, '125 000'));
+        // Next charge, balance note, active-tariff card price, and the metric
+        // card hint each state 125 000 once — never a fifth from the raw name.
+        $this->assertSame(4, substr_count($content, '125 000'));
     }
 
     /**
@@ -355,7 +387,7 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertSee(trans('app.cabinet.no_tariff_hint'))
+            ->assertSee(trans('app.dash.no_active_plan'))
             ->assertSee('href="'.route('tariff').'"', escape: false);
     }
 
@@ -377,7 +409,8 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()->get('/')
             ->assertOk()
-            ->assertDontSee(trans('app.cabinet.no_tariff_hint'));
+            ->assertSee(trans('app.dash.no_active_plan'))
+            ->assertDontSee('href="'.route('tariff').'"', escape: false);
     }
 
     /**
@@ -434,6 +467,7 @@ final class CabinetTest extends TestCase
 
             $response->assertOk();
             $response->assertSee('<h1', escape: false);
+            $response->assertSee('u-page-head__icon', escape: false);
             $response->assertSee(trans($heading));
 
             // Exactly one nav entry is marked current — once in the desktop
@@ -1021,7 +1055,7 @@ final class CabinetTest extends TestCase
     }
 
     #[Test]
-    public function the_home_page_shows_billings_login_when_the_session_carries_one(): void
+    public function the_home_page_shows_the_contract_number_on_the_balance_card_for_a_permanent_individual(): void
     {
         $this->fakeSola();
 
@@ -1029,8 +1063,60 @@ final class CabinetTest extends TestCase
             ->withCookie('billing_login', 'TESTOV01')
             ->get('/')
             ->assertOk()
-            ->assertSee(trans('app.cabinet.login'))
+            ->assertSee(trans('app.dash.contract'))
             ->assertSee('TESTOV01');
+    }
+
+    #[Test]
+    public function a_one_off_subscriber_sees_no_tariff_section_and_no_tariff_nav(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Nodira Yusupova',
+                'saldo' => -5000,
+                'curr_tariff_name' => 'Guest WiFi',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber(type: 1)->get('/')
+            ->assertOk()
+            ->assertDontSee(trans('app.nav.tariff'))
+            ->assertDontSee(trans('app.dash.active_tariff'))
+            ->assertDontSee(trans('app.dash.current_tariff'))
+            ->assertDontSee('Guest WiFi');
+    }
+
+    #[Test]
+    public function the_last_payment_card_says_when_nothing_was_paid_in_the_last_year(): void
+    {
+        $this->fakeSola([
+            '*/acct/payments' => Http::response(['payments' => []]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee(trans('app.dash.empty_payment_year'));
+    }
+
+    #[Test]
+    public function a_legal_entity_cannot_top_up_from_the_dashboard_or_the_topup_route(): void
+    {
+        config(['iwon.active' => true]);
+
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Firma OOO',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+                'legal' => 'Юридическое лицо',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertDontSee(trans('app.topup.pay_card_button'));
+
+        $this->verifiedSubscriber()->get('/topup')->assertForbidden();
     }
 
     #[Test]
@@ -1410,7 +1496,10 @@ final class CabinetTest extends TestCase
 
         $this->verifiedSubscriber()
             ->get('/')
-            ->assertStatus(503);
+            ->assertStatus(503)
+            ->assertSee(trans('errors.service_unavailable'), false)
+            ->assertSee(trans('errors.service_unavailable_retry'), false)
+            ->assertDontSee('cURL error');
     }
 
     /**

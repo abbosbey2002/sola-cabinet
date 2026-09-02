@@ -8,6 +8,10 @@
         fn ($account) => (string) ($account['accId'] ?? '') !== (string) $current
     ));
     $name = request()->cookie('full_name');
+    $billingLogin = request()->cookie('billing_login');
+    $contractDisplay = (! ($isOneTime ?? false) && isset($profile) && $profile->isLegalEntity())
+        ? ($profile->contractNumber() ?: null)
+        : null;
 
     // Initials for the avatar. mb_* throughout: the names arrive in Uzbek Latin
     // and in Cyrillic, and substr() would cut a two-byte letter in half.
@@ -74,15 +78,24 @@
                 <p class="u-label">@lang('app.accounts.personal')</p>
                 <p class="mt-1 truncate text-base font-semibold text-ink">{{ $name ?: '—' }}</p>
                 @if ($current)
-                    <span class="mt-1 flex items-center gap-2">
-                        <span class="truncate text-base font-semibold text-ink">{{ $current }}</span>
+                    <div class="mt-2 flex items-center justify-between gap-2">
+                        <p class="min-w-0 text-xs text-muted">
+                            <span class="u-label">@lang('app.dash.account_id')</span>
+                            <span class="ml-1 text-sm font-semibold text-ink">{{ $current }}</span>
+                        </p>
                         <button type="button" data-copy="{{ $current }}" data-copy-done="@lang('app.ui.copied')"
                                 class="u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink">
                             <span data-copy-icon-default><x-icon name="copy" size="size-4"/></span>
                             <span data-copy-icon-done hidden style="color: var(--c-action)"><x-icon name="check" size="size-4"/></span>
                             <span data-copy-text role="status" class="sr-only">@lang('app.ui.copy')</span>
                         </button>
-                    </span>
+                    </div>
+                @endif
+                @if (filled($contractDisplay))
+                    <p class="mt-1.5 text-xs text-muted">
+                        <span class="u-label">@lang('app.dash.contract')</span>
+                        <span class="ml-1 text-sm font-semibold text-ink">{{ $contractDisplay }}</span>
+                    </p>
                 @endif
             </div>
 

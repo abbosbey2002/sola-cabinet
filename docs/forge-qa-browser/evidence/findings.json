@@ -1,0 +1,28 @@
+{
+  "findings": [
+    {
+      "id": "copy-target",
+      "sev": "MEDIUM",
+      "seen": "copy button 0×0"
+    }
+  ],
+  "logs": [
+    "shot 00-login-before",
+    "shot 00-verify",
+    "logged in at http://localhost:8080/",
+    "shot 01-dash-uz-dark-1440",
+    "facts1440 heading=Мой счёт",
+    "cta contrast 5.75",
+    "shot 02-topup-modal-uz-dark",
+    "topup modal visible=false",
+    "tariff metric href present",
+    "shot 03-devices-uz-dark-1440",
+    "shot 04-dash-uz-light-1440",
+    "shot 05-dash-ru-dark-1440",
+    "shot 06-dash-en-dark-1440",
+    "390 overflow=false inner=390 scroll=390 client=390",
+    "shot 07-dash-uz-dark-390",
+    "shot 08-nav-drawer-uz-dark-390",
+    "console/network issues: 0"
+  ]
+}

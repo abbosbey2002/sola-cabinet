@@ -1,0 +1,27 @@
+---
+description: PHP and Laravel conventions for this cabinet
+globs: "**/*.php"
+alwaysApply: false
+---
+
+# PHP
+
+`declare(strict_types=1);` Pint PSR-12. Final classes like the rest of `app/`.
+
+- Inject `SolaClient`, `AbonentSession`, `ViewFactory`. Do not new up HTTP in a controller.
+- Sign the **exact** JSON bytes. Encode once. Do not add `lang` to `/tariff/connect`.
+- `/identify` (SMS) and `/verify` are not retried. Reads may retry on `ConnectionException` only (`throw: false` so HTTP 400 stays a `SolaResponse`).
+- `SolaUnavailableException` → global 503. Do not wrap every SOLA call.
+- Validation only in FormRequests. Flash `flashInfo` / `flashDanger`. User errors via `ErrorMessages` + `lang/*/errors.php`.
+- `"0000-00-00"` → null (Carbon year -1). Year `< 2000` is unset.
+- Fake billing attaches to the HTTP factory in **local** only.
+
+```php
+// ❌ BAD
+$som = $info->get('saldo') / 100;
+$charge = $profile->nextChargeDate() ?? now()->addMonth();
+
+// ✅ GOOD
+$som = $profile->balance();           // already soʻm
+$charge = $profile->nextChargeDate(); // null → omit the block
+```

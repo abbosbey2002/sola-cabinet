@@ -10,9 +10,8 @@ return [
     | A plain browser redirect, not an API integration: no signature, no
     | server-to-server call, no callback. The subscriber's browser is sent to
     | iWon's own hosted form (Uzcard/Humo, one-step authorize+capture) and
-    | comes back to `topup.return`, which confirms the top-up the same way
-    | Payme/Click confirmations already work everywhere else in this app: by
-    | asking billing for the current balance, never by trusting the redirect.
+    | lands back on the cabinet home URL when done. Billing credits the
+    | balance on its own — there is no return handler in this app.
     |
     | See docs/api/iwon-api.md for the provider's own reference.
     |

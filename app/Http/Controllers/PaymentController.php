@@ -23,7 +23,7 @@ final class PaymentController extends Controller
         $period = Period::currentMonth();
 
         return $this->view->make('payment.index', [
-            'profile' => AbonentProfile::from($this->sola->abonentInfo($this->accountId())),
+            'profile' => AbonentProfile::from($this->sola->abonentInfo($this->accountId()), $this->session->billingLogin()),
             'accounts' => $this->accounts(),
             'period' => $period,
             'payments' => $this->history()->payments($this->accountId(), $period),

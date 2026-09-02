@@ -1,0 +1,22 @@
+# Motion, loading, retention
+
+- **Date:** 2026-08-31 19:49 +05
+- **Mode:** SaaS + Multi-market
+- **Screens/components delivered**
+  - Home: balance + days-left count-up (`data-count-up`), cycle arc still draws once
+  - Layouts: logo-green page-progress strip (`data-progress`)
+  - Auth: ambient orbs + hero-icon pulse while waiting for SMS
+  - Nav drawer: slide + fade instead of a hard cut
+  - Forms / AJAX: button spinner, region signal bar, 12s timeout → retry toast
+  - Toasts: exit animation; copy-to-clipboard check pops
+- **Decisions:**
+  - Signature is the **live signal** — the same 3px logo-green strip for navigation and for period-filter refresh. Count-up is the Home orchestrated moment (money / remaining days), not scattered decoration.
+  - Loaders exist only for in-flight work. Static Blade content is never skeletoned. AJAX abort at 12s with `app.ui.timeout` in uz/ru/en.
+  - Motion is `transform`/`opacity` only; `prefers-reduced-motion` still zeroes everything via the existing global rule.
+- **Quality floor result:**
+  - Contrast unchanged (tokens only gained `--c-signal` for graphic use).
+  - Keyboard/focus: loading buttons are inert (`pointer-events: none` + `aria-busy`); drawer still returns focus to the toggle.
+  - No CDN, no invented billing fields; SSR figure text stays in the HTML for tests and no-JS.
+- **Left for later:**
+  - Browser pass on 360px Android (no browser MCP in this session).
+  - Optional success burst after iWon return once billing confirms saldo.

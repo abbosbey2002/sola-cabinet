@@ -66,6 +66,12 @@
                             <tr>
                                 <td data-label="{{ __('app.header.mac') }}">
                                     <span class="font-semibold">{{ $device['mac'] ?: __('app.header.no_mac') }}</span>
+                                    @if (filled($device['ip'] ?? null))
+                                        <span class="mt-0.5 block text-sm text-muted">{{ $device['ip'] }}</span>
+                                    @endif
+                                    @if (filled($device['location'] ?? null))
+                                        <span class="mt-0.5 block text-sm text-muted">{{ $device['location'] }}</span>
+                                    @endif
                                 </td>
 
                                 <td data-label="{{ __('app.header.date_connect') }}">

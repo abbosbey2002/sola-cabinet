@@ -83,11 +83,20 @@
     --c-danger: #a32014;
     --c-danger-soft: #fbe7e3;
 
+    /* Web3 accent — dashboard module only; inactive when config('web3.active') is false. */
+    --c-web3: #0891b2;
+    --c-web3-soft: #ecfeff;
+    --c-web3-line: #a5f3fc;
+
+    /* Logo graphic green — progress bar and live pip, never as text on light. */
+    --c-signal: #8fd400;
+
     --shadow-card: 0 1px 2px rgba(20, 29, 9, .06), 0 12px 28px -20px rgba(20, 29, 9, .30);
     /* The one card per page that earns extra lift: the Home hero. Same
        recipe as --shadow-card, just deeper, so it does not read as a
        different material — only as the same card raised further. */
     --shadow-card-lg: 0 2px 4px rgba(20, 29, 9, .08), 0 28px 56px -24px rgba(20, 29, 9, .38);
+    --shadow-modal: 0 0 0 1px rgba(20, 29, 9, .04), 0 24px 48px -12px rgba(20, 29, 9, .28), 0 48px 96px -32px rgba(20, 29, 9, .18);
 }
 
 /* System preference wins unless the subscriber explicitly picked light. */
@@ -113,8 +122,15 @@
         --c-danger: #ff8f79;
         --c-danger-soft: #31201c;
 
+        --c-web3: #22d3ee;
+        --c-web3-soft: #083344;
+        --c-web3-line: #155e75;
+
+        --c-signal: #90d600;
+
         --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
         --shadow-card-lg: 0 1px 0 rgba(255, 255, 255, .05), 0 32px 64px -28px rgba(0, 0, 0, .95);
+        --shadow-modal: 0 0 0 1px rgba(255, 255, 255, .06), 0 32px 64px -16px rgba(0, 0, 0, .85);
     }
 }
 
@@ -140,8 +156,15 @@
     --c-danger: #ff8f79;
     --c-danger-soft: #31201c;
 
+    --c-web3: #22d3ee;
+    --c-web3-soft: #083344;
+    --c-web3-line: #155e75;
+
+    --c-signal: #90d600;
+
     --shadow-card: 0 1px 0 rgba(255, 255, 255, .04), 0 18px 40px -26px rgba(0, 0, 0, .9);
     --shadow-card-lg: 0 1px 0 rgba(255, 255, 255, .05), 0 32px 64px -28px rgba(0, 0, 0, .95);
+    --shadow-modal: 0 0 0 1px rgba(255, 255, 255, .06), 0 32px 64px -16px rgba(0, 0, 0, .85);
 }
 
 @theme inline {
@@ -290,6 +313,73 @@
         @apply font-extrabold tracking-[-0.02em];
     }
 
+    /* Page identity: icon on the title row, lead under the words, toolbar
+       flush with the cluster's baseline. The chip is 48px so it optically
+       matches text-3xl Manrope, not a caption glyph floating beside it. */
+    .u-page-head {
+        @apply mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-4;
+    }
+
+    .u-page-head__identity {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        grid-template-rows: auto auto;
+        column-gap: 1rem;
+        row-gap: 0.25rem;
+        align-items: center;
+        min-width: 0;
+    }
+
+    .u-page-head__identity--plain {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .u-page-head__icon {
+        grid-column: 1;
+        grid-row: 1;
+        @apply grid size-12 shrink-0 place-items-center rounded-2xl;
+        background: var(--c-action-soft);
+        color: var(--c-action);
+    }
+
+    /* On the tinted hero card the action-soft chip would vanish into the
+       same wash, so it lifts to a surface plate instead. */
+    .u-card-hero .u-page-head__icon {
+        background: var(--c-surface);
+        box-shadow: var(--shadow-card);
+        animation: live-icon 2.4s var(--ease-out-soft) infinite;
+    }
+
+    .u-page-head__title {
+        grid-column: 2;
+        grid-row: 1;
+        font-family: var(--font-display);
+        @apply min-w-0 font-extrabold tracking-[-0.02em] text-ink;
+        line-height: 1.15;
+    }
+
+    .u-page-head > .u-page-head__identity > .u-page-head__title {
+        @apply text-3xl;
+    }
+
+    .u-page-head__identity--plain .u-page-head__title {
+        grid-column: 1;
+    }
+
+    .u-page-head__lead {
+        grid-column: 2;
+        grid-row: 2;
+        @apply max-w-[52ch] text-base text-muted;
+    }
+
+    .u-page-head__identity--plain .u-page-head__lead {
+        grid-column: 1;
+    }
+
+    .u-page-head__toolbar {
+        @apply flex flex-wrap items-end gap-3;
+    }
+
     .u-figure {
         font-family: var(--font-display);
         @apply font-extrabold tracking-[-0.01em] tabular-nums;
@@ -318,6 +408,249 @@
         background: linear-gradient(160deg, var(--c-action-soft) 0%, var(--c-surface) 45%);
         box-shadow: var(--shadow-card-lg);
     }
+
+    .u-card-dash-balance {
+        background: linear-gradient(160deg, var(--c-action-soft) 0%, var(--c-surface) 50%);
+        box-shadow: var(--shadow-card-lg);
+    }
+
+    /* Guest auth — full-viewport split; form column gets a calm surface. */
+    .u-auth-bg {
+        background: var(--c-bg);
+    }
+
+    .u-auth-shell {
+        min-height: 100dvh;
+    }
+
+    .u-auth-aside {
+        background: linear-gradient(165deg, var(--c-action-soft) 0%, color-mix(in srgb, var(--c-surface) 88%, var(--c-action-soft)) 62%);
+        border-right: 2px solid var(--c-line);
+    }
+
+    .u-auth-main {
+        background:
+            radial-gradient(ellipse 70% 45% at 50% 0%, color-mix(in srgb, var(--c-action-soft) 55%, transparent), transparent),
+            var(--c-bg);
+    }
+
+    .u-auth-orbs {
+        pointer-events: none;
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+    }
+
+    .u-auth-orb {
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(48px);
+        opacity: .45;
+        animation: orb-drift 14s ease-in-out infinite alternate;
+    }
+
+    .u-auth-orb-a {
+        width: 18rem;
+        height: 18rem;
+        top: -4rem;
+        right: -3rem;
+        background: var(--c-action-soft);
+    }
+
+    .u-auth-orb-b {
+        width: 14rem;
+        height: 14rem;
+        bottom: 8%;
+        left: -4rem;
+        background: color-mix(in srgb, var(--c-signal) 28%, transparent);
+        animation-delay: -5s;
+        animation-duration: 18s;
+    }
+
+    .u-auth-trust {
+        @apply flex min-h-[3rem] items-start gap-3 rounded-xl border border-line bg-surface/80 px-4 py-3 text-sm text-ink;
+    }
+
+    .u-card-web3 {
+        background: linear-gradient(160deg, var(--c-web3-soft) 0%, var(--c-surface) 55%);
+        border-color: var(--c-web3-line);
+    }
+
+    .u-badge-network {
+        @apply inline-flex min-h-[1.75rem] items-center rounded-full px-3 text-xs font-semibold;
+        background: var(--c-action-soft);
+        color: var(--c-action);
+        border: 1px solid var(--c-line);
+    }
+
+    .u-wallet-pill {
+        background: var(--c-web3-soft);
+        color: var(--c-web3);
+        border: 1px solid var(--c-web3-line);
+    }
+
+    /* Top-up — Figma hisobni-toldirish-modal. */
+    .u-topup-hero {
+        @apply rounded-2xl border px-3.5 py-3;
+        border-color: var(--c-line);
+        background: var(--c-action-soft);
+    }
+
+    .u-topup-methods {
+        @apply rounded-2xl border p-3;
+        border-color: var(--c-line);
+        background: #fafbf8;
+    }
+
+    .u-topup-methods-grid {
+        @apply grid grid-cols-2 gap-2 sm:grid-cols-4;
+    }
+
+    .u-topup-method {
+        @apply flex min-h-[2.625rem] items-center gap-1.5 rounded-[0.875rem] border bg-white px-1.5 py-1.5;
+        border-color: var(--c-line);
+    }
+
+    .u-topup-method-icon {
+        @apply flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg border bg-white p-0.5;
+        border-color: var(--c-line);
+    }
+
+    .u-topup-method-icon-dark {
+        @apply border-transparent bg-[#101010] p-0;
+    }
+
+    .u-topup-method-logo {
+        @apply block max-h-full max-w-full object-contain;
+    }
+
+    .u-topup-method-logo--payme {
+        @apply h-4 w-auto;
+    }
+
+    .u-topup-method-logo--click {
+        @apply size-8 object-cover;
+    }
+
+    .u-topup-method-logo--uzcard,
+    .u-topup-method-logo--humo {
+        @apply h-7 w-auto max-w-[1.875rem];
+    }
+
+    .u-topup-method-name {
+        @apply min-w-0 truncate text-[0.6875rem] font-semibold leading-none text-ink sm:text-xs;
+    }
+
+    .u-topup-iwon-active {
+        @apply mt-2 flex items-center gap-2.5 rounded-[0.875rem] border px-2.5 py-2;
+        border-color: #e4daf5;
+        background: linear-gradient(90deg, #f7f3ff 0%, #fff 72%);
+        box-shadow: -6px 0 16px -10px rgba(107, 70, 193, .55);
+    }
+
+    .u-topup-iwon-icon {
+        @apply flex h-9 w-12 shrink-0 items-center justify-center rounded-lg border bg-white px-1.5;
+        border-color: #ebe3f8;
+        box-shadow: 0 0 0 3px rgba(107, 70, 193, .1);
+    }
+
+    .u-topup-iwon-logo {
+        @apply block h-[1.125rem] w-auto max-w-full object-contain;
+    }
+
+    .u-topup-form {
+        @apply mt-4 space-y-4;
+    }
+
+    .u-topup-amount-head {
+        @apply mb-2 flex items-baseline justify-between gap-3;
+    }
+
+    .u-topup-amount-label {
+        @apply text-sm font-semibold text-ink;
+    }
+
+    .u-topup-amount-hint {
+        @apply text-xs text-muted;
+    }
+
+    .u-topup-amount-field {
+        @apply min-h-[3.25rem] w-full rounded-2xl border-[2.5px] border-action bg-surface
+               py-2.5 pl-4 pr-[4.75rem] text-[1.625rem] font-bold leading-none text-ink
+               transition-[border-color,box-shadow] duration-200
+               focus:border-action focus:outline-none focus:ring-4 focus:ring-action/15;
+    }
+
+    .u-topup-amount-field::placeholder {
+        @apply font-bold text-muted/60;
+    }
+
+    .u-topup-amount-field-error {
+        border-color: var(--c-danger) !important;
+    }
+
+    .u-topup-currency {
+        @apply pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-muted;
+    }
+
+    .u-topup-presets {
+        @apply mt-2.5 grid grid-cols-2 gap-2 sm:grid-cols-4;
+    }
+
+    .u-topup-preset {
+        @apply min-h-[2.375rem] rounded-full px-2 text-[0.6875rem] font-semibold sm:text-xs;
+        border-width: 1.5px;
+    }
+
+    .u-topup-preset-popular {
+        border-color: var(--c-action);
+        font-weight: 700;
+    }
+
+    .u-topup-submit {
+        @apply min-h-[3.125rem] rounded-full text-base;
+        box-shadow: 0 12px 28px -14px rgba(74, 113, 0, .65);
+        background: linear-gradient(180deg, #5f9100 0%, var(--c-primary) 52%, #3f6000 100%);
+    }
+
+    .u-topup-submit:hover {
+        background: linear-gradient(180deg, #679900 0%, var(--c-primary-hover) 52%, #466800 100%);
+    }
+
+    .u-topup-footnote {
+        @apply text-center text-xs leading-snug text-muted;
+    }
+
+    .u-topup-opened {
+        @apply mt-4 flex items-start gap-3 rounded-2xl px-4 py-3.5 text-sm text-ink;
+        background: var(--c-action-soft);
+    }
+
+    .u-topup-opened-icon {
+        @apply grid size-9 shrink-0 place-items-center rounded-xl bg-surface;
+        color: var(--c-action);
+    }
+
+    .u-btn-outline {
+        @apply inline-flex min-h-[2.75rem] select-none items-center justify-center gap-2.5
+               rounded-full border-2 border-line bg-surface px-5 py-2.5
+               text-sm font-semibold leading-tight text-ink no-underline
+               transition-[background-color,border-color,transform] duration-200;
+        transition-timing-function: var(--ease-out-soft);
+    }
+
+    .u-btn-outline:hover { @apply border-action bg-surface-2; }
+    .u-btn-outline:active { @apply translate-y-px; }
+
+    .u-btn-web3 {
+        @apply inline-flex min-h-[2.75rem] select-none items-center justify-center gap-2.5
+               rounded-full px-5 py-2.5 text-sm font-semibold leading-tight text-white no-underline
+               transition-[background-color,transform] duration-200;
+        background: var(--c-web3);
+        transition-timing-function: var(--ease-out-soft);
+    }
+
+    .u-btn-web3:disabled { @apply cursor-not-allowed opacity-60; }
 
     /* Buttons ----------------------------------------------------------
        The shared shape is written once through the selector list: @apply of
@@ -561,6 +894,93 @@
         outline-offset: 3px;
     }
 
+    /* Modals — bottom sheet on narrow viewports, centered panel on desktop. */
+    .u-modal {
+        @apply fixed inset-0 z-[60] flex items-end justify-center p-0 sm:items-center sm:p-4;
+    }
+
+    .u-modal-overlay {
+        @apply absolute inset-0 bg-[rgba(12,18,8,.55)] backdrop-blur-[2px];
+    }
+
+    .u-modal-panel {
+        @apply relative flex max-h-[min(92dvh,720px)] w-full flex-col overflow-hidden
+               rounded-t-[1.25rem] border-2 border-line-strong bg-surface
+               sm:max-h-[min(88dvh,680px)] sm:rounded-card;
+        box-shadow: var(--shadow-modal);
+    }
+
+    .u-modal-panel-topup {
+        @apply max-w-[min(100%,28rem)] rounded-t-[1.75rem] border sm:rounded-[1.75rem];
+        border-color: var(--c-line);
+    }
+
+    .u-modal-handle {
+        @apply mx-auto mt-2.5 h-1 w-10 shrink-0 rounded-full bg-line sm:hidden;
+    }
+
+    .u-modal-header {
+        @apply flex shrink-0 items-start gap-2 border-b border-line px-4 pb-3.5 pt-1 sm:px-5 sm:pb-4;
+    }
+
+    .u-modal-header-topup {
+        @apply border-b-0 px-5 pb-0 pt-5;
+    }
+
+    .u-modal-body {
+        @apply flex-1 overflow-y-auto px-4 py-4 sm:px-5 sm:py-5;
+    }
+
+    .u-modal-body-topup {
+        @apply px-5 pb-5 pt-3 sm:py-5;
+    }
+
+    .u-modal-body-confirm {
+        @apply flex flex-col items-center pt-3 text-center sm:pt-4;
+    }
+
+    .u-modal-close {
+        @apply grid size-10 shrink-0 place-items-center rounded-full text-muted
+               transition-colors hover:bg-surface-2 hover:text-ink;
+    }
+
+    .u-modal-close-topup {
+        @apply size-9 bg-surface-2 text-ink/70 hover:bg-[#eef1ea];
+    }
+
+    .u-modal-close-floating {
+        @apply absolute right-2 top-2 z-10 sm:right-3 sm:top-3;
+    }
+
+    .u-modal-close:focus-visible {
+        outline: 3px solid var(--c-action);
+        outline-offset: 2px;
+    }
+
+    .u-modal-icon {
+        @apply mx-auto grid size-12 place-items-center rounded-2xl;
+    }
+
+    .u-modal-actions {
+        @apply mt-5 flex w-full flex-wrap gap-2.5 sm:gap-3;
+    }
+
+    .u-modal-actions > * {
+        @apply min-h-[2.75rem] flex-1;
+    }
+
+    .u-modal-option {
+        @apply flex w-full items-center gap-3.5 rounded-xl border-2 border-line p-3.5 text-left
+               transition-[border-color,background-color,transform] duration-200
+               hover:border-action hover:bg-surface-2 active:translate-y-px;
+    }
+
+    .u-modal-option-icon {
+        @apply grid size-11 shrink-0 place-items-center rounded-xl;
+        background: var(--c-action-soft);
+        color: var(--c-action);
+    }
+
     /* Admin ------------------------------------------------------------
        layouts/admin.blade.php sets data-theme="light" directly (staff at a
        desk, not a subscriber's phone — the dark theme and the "match my
@@ -587,7 +1007,9 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Motion — one orchestrated load-in, then nothing that moves on its own.
+   Motion — one orchestrated load-in (rise + count-up + arc), then a live
+   signal only while the network is actually working. Nothing decorative
+   loops on a finished screen.
 --------------------------------------------------------------------------- */
 @layer utilities {
     @keyframes rise {
@@ -600,7 +1022,39 @@
         animation-delay: calc(var(--i, 0) * 55ms);
     }
 
-    /* The traffic arc draws itself once on load. The dash geometry is set
+    @keyframes modal-overlay-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes modal-panel-in {
+        from { opacity: 0; transform: translateY(1.25rem); }
+        to { opacity: 1; transform: none; }
+    }
+
+    @media (min-width: 640px) {
+        @keyframes modal-panel-in {
+            from { opacity: 0; transform: translateY(.75rem) scale(.98); }
+            to { opacity: 1; transform: none; }
+        }
+    }
+
+    .u-modal:not([hidden]) .u-modal-overlay {
+        animation: modal-overlay-in .22s var(--ease-out-soft) both;
+    }
+
+    .u-modal:not([hidden]) .u-modal-panel {
+        animation: modal-panel-in .32s var(--ease-out-soft) both;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .u-modal:not([hidden]) .u-modal-overlay,
+        .u-modal:not([hidden]) .u-modal-panel {
+            animation: none;
+        }
+    }
+
+    /* The traffic / billing arc draws itself once on load. Geometry is set
        inline per-instance by the arc component. */
     @keyframes draw {
         from { stroke-dashoffset: var(--arc-len); }
@@ -609,13 +1063,211 @@
 
     .u-draw {
         stroke-dasharray: var(--arc-len) 360;
-        animation: draw 1s var(--ease-out-soft) .15s both;
+        animation: draw .65s var(--ease-out-soft) .15s both;
     }
 
     /* An AJAX block mid-refresh: dimmed and inert, never removed — swapping in
-       a spinner would collapse the layout under the cursor. */
+       a spinner would collapse the layout under the cursor. A 3px signal bar
+       along the top is the same language as the page-progress strip. */
     .is-busy {
         @apply pointer-events-none opacity-50 transition-opacity duration-150;
+    }
+
+    [data-ajax-region] {
+        position: relative;
+    }
+
+    [data-ajax-region].is-busy::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        height: 3px;
+        width: 100%;
+        transform-origin: left center;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--c-primary), var(--c-signal));
+        animation: progress-run 8s var(--ease-out-soft) forwards;
+    }
+
+    /* Page-navigation signal — logo-green, scaleX only. */
+    .u-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 80;
+        height: 3px;
+        width: 100%;
+        pointer-events: none;
+        transform: scaleX(0);
+        transform-origin: left center;
+        background: linear-gradient(90deg, var(--c-primary), var(--c-signal));
+        opacity: 0;
+    }
+
+    .u-progress.is-on {
+        opacity: 1;
+        animation: progress-run 8s var(--ease-out-soft) forwards;
+    }
+
+    .u-progress.is-done {
+        opacity: 1;
+        animation: progress-done .28s var(--ease-out-soft) forwards;
+    }
+
+    @keyframes progress-run {
+        0%   { transform: scaleX(0); }
+        18%  { transform: scaleX(.42); }
+        48%  { transform: scaleX(.68); }
+        100% { transform: scaleX(.88); }
+    }
+
+    @keyframes progress-done {
+        from { transform: scaleX(.88); opacity: 1; }
+        to   { transform: scaleX(1); opacity: 0; }
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .u-btn-primary.is-loading,
+    .u-btn-ghost.is-loading,
+    .u-btn-outline.is-loading,
+    .u-btn-danger.is-loading,
+    .u-btn-web3.is-loading {
+        position: relative;
+        pointer-events: none;
+        /* Text nodes are not matched by > *, so color has to go transparent
+           on the button itself. The spinner draws with explicit border
+           colours, not currentColor. */
+        color: transparent;
+    }
+
+    .u-btn-primary.is-loading > *,
+    .u-btn-ghost.is-loading > *,
+    .u-btn-outline.is-loading > *,
+    .u-btn-danger.is-loading > *,
+    .u-btn-web3.is-loading > * {
+        visibility: hidden;
+    }
+
+    .u-btn-primary.is-loading::after,
+    .u-btn-ghost.is-loading::after,
+    .u-btn-outline.is-loading::after,
+    .u-btn-danger.is-loading::after,
+    .u-btn-web3.is-loading::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin: -.625rem 0 0 -.625rem;
+        border-radius: 999px;
+        border: 2.5px solid color-mix(in srgb, var(--c-primary-on) 30%, transparent);
+        border-top-color: var(--c-primary-on);
+        animation: spin .65s linear infinite;
+    }
+
+    .u-btn-ghost.is-loading::after,
+    .u-btn-outline.is-loading::after {
+        border-color: color-mix(in srgb, var(--c-action) 30%, transparent);
+        border-top-color: var(--c-action);
+    }
+
+    .u-btn-danger.is-loading::after {
+        border-color: color-mix(in srgb, var(--c-danger) 30%, transparent);
+        border-top-color: var(--c-danger);
+    }
+
+    .u-btn-danger-solid.is-loading::after {
+        border-color: color-mix(in srgb, #fff 30%, transparent);
+        border-top-color: #fff;
+    }
+
+    .u-btn-web3.is-loading::after {
+        border-color: color-mix(in srgb, #fff 30%, transparent);
+        border-top-color: #fff;
+    }
+
+    @keyframes toast-out {
+        to { opacity: 0; transform: translateY(-.5rem); }
+    }
+
+    .u-toast-out {
+        animation: toast-out .2s var(--ease-out-soft) both;
+    }
+
+    @keyframes copy-pop {
+        from { opacity: 0; transform: scale(.6); }
+        to   { opacity: 1; transform: none; }
+    }
+
+    [data-copy-icon-done]:not([hidden]) {
+        animation: copy-pop .2s var(--ease-out-soft) both;
+        display: inline-flex;
+    }
+
+    @keyframes live-icon {
+        0%, 100% { transform: scale(1); }
+        50%      { transform: scale(1.05); }
+    }
+
+    .u-live-icon {
+        animation: live-icon 2.4s var(--ease-out-soft) infinite;
+    }
+
+    @keyframes orb-drift {
+        from { transform: translate3d(0, 0, 0); }
+        to   { transform: translate3d(1.5rem, 2rem, 0); }
+    }
+
+    [data-nav-drawer] [data-nav-scrim] {
+        opacity: 0;
+        transition: opacity .22s var(--ease-out-soft);
+    }
+
+    [data-nav-drawer].is-open [data-nav-scrim] {
+        opacity: 1;
+    }
+
+    .u-nav-panel {
+        transform: translateX(-100%);
+        transition: transform .32s var(--ease-out-soft);
+    }
+
+    [data-nav-drawer].is-open .u-nav-panel {
+        transform: none;
+    }
+
+    .u-offline {
+        position: fixed;
+        inset-inline: 0;
+        bottom: 0;
+        z-index: 55;
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+        background: var(--c-warn-soft);
+        color: var(--c-warn);
+        border-top: 2px solid var(--c-warn);
+    }
+
+    .u-ajax-fail {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        padding: 1rem 1.25rem;
+        border: 2px solid var(--c-warn);
+        border-radius: var(--radius-card);
+        background: var(--c-warn-soft);
     }
 }
 
@@ -698,6 +1350,17 @@
     }
 
     .u-no-print { display: none !important; }
+
+    /* Decorative chip is hidden above; without it the title must occupy
+       column 1, otherwise print leaves a blank gutter where the icon was. */
+    .u-page-head__identity {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .u-page-head__title,
+    .u-page-head__lead {
+        grid-column: 1;
+    }
 
     .u-card {
         border: 1px solid #b4b4b4;

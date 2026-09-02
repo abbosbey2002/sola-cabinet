@@ -1,0 +1,17 @@
+---
+description: How to write tests for the cabinet
+globs: "tests/**/*.php"
+alwaysApply: false
+---
+
+# Tests
+
+PHPUnit 12, `#[Test]`, suites in `tests/Unit` and `tests/Feature`.
+
+- `Http::preventStrayRequests()` whenever SOLA is involved.
+- Fake with `Http::fake([...])` keys like `*/abonent/info`. Start from `CabinetTest::fakeSola()`.
+- Verified subscriber = cookies (`verify`, `account`, `login`, `phone`, `data` JSON type). No User model. Encrypted cookies: `withCookies()` as existing tests do.
+- Writes to `enabled_tariffs` / `admins`: `DatabaseTransactions`.
+- `Carbon::setTestNow()` and clear in `tearDown` (charge cycle, connect date).
+- Assert units explicitly: saldo displayed without `/100`; payment amounts with `/100`; `d.m.Y` on payment/traffic requests.
+- Run `php artisan test`. Do not need a live billing API.

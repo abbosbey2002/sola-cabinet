@@ -1,15 +1,12 @@
 /**
- * Modal dialogs — the month picker and the tariff confirmation.
+ * Modal dialogs — bottom sheet on mobile, centered panel on desktop.
  *
  * Markup contract:
  *   <button data-modal-open="month">…</button>
- *   <div data-modal="month" hidden role="dialog" aria-modal="true">
- *     <div data-modal-overlay></div>
- *     <div data-modal-panel>… <button data-modal-close>…</button></div>
+ *   <div data-modal="month" hidden role="dialog" aria-modal="true" class="u-modal">
+ *     <div data-modal-overlay class="u-modal-overlay"></div>
+ *     <div data-modal-panel class="u-modal-panel">… <button data-modal-close>…</button></div>
  *   </div>
- *
- * Focus moves into the dialog on open, is trapped inside it, and returns to the
- * element that opened it on close.
  */
 
 const FOCUSABLE =

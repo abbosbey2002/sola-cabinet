@@ -1,13 +1,9 @@
 /**
- * The iWon top-up form opens in a new tab (target="_blank"), so submitting
- * it leaves this tab exactly where it was — nothing tells the subscriber
- * their payment is now open elsewhere unless this fills that gap. No JS
- * means no banner, but the form's own target="_blank" still opens the new
- * tab and the subscriber can navigate to /topup/return by hand — nothing
- * here is load-bearing for the actual payment flow.
+ * The iWon top-up form opens in a new tab (target="_blank"). This tab swaps
+ * the form for a short note so the subscriber knows where the payment opened.
  *
  * Markup contract:
- *   <form data-topup-form target="_blank">...<button type="submit">...</form>
+ *   <form data-topup-form target="_blank">...</form>
  *   <div data-topup-opened hidden>...</div>
  */
 export default function initTopUp() {

@@ -28,8 +28,8 @@
          on purpose — an approximated Payme or Click mark, drawn rather than
          taken from the brand's own press kit, is what a phishing page
          looks like. --}}
-    @if (filled($profile->contractNumber()))
-        <x-pay-card :contract="$profile->contractNumber()" class="mb-4"/>
+    @if (config('iwon.active') && ! $profile->isLegalEntity())
+        <x-pay-card class="mb-4"/>
     @endif
 
     <div id="payments-result" data-ajax-region>

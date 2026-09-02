@@ -27,4 +27,6 @@ return [
     '127' => 'Имеется устройство с не привязанным MAC адресом',
     'unknown' => "Xatolik yuz berdi, keyinroq urinib ko'ring",
     'service_unavailable' => "Xizmat vaqtincha mavjud emas, keyinroq urinib ko'ring",
+    'service_unavailable_hint' => 'Hisob-kitob tizimiga ulanib bo\'lmadi. Bir daqiqadan so\'ng sahifani yangilang.',
+    'service_unavailable_retry' => 'Sahifani yangilash',
 ];

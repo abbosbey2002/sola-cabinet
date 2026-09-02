@@ -26,7 +26,10 @@ use Throwable;
  */
 final class AbonentProfile
 {
-    /** Contract number — "Договор №" in the header. */
+    /**
+     * Contract number — "Договор №" in the header. Legacy fallback only; see
+     * contractNumber().
+     */
     private const CANDIDATE_CONTRACT = ['contract_number', 'contract_num', 'contract_no', 'contract', 'dogovor', 'agreement_number'];
 
     /** The tariff that takes over at the next billing date. */
@@ -51,12 +54,15 @@ final class AbonentProfile
      */
     private const CANDIDATE_NEXT_CHARGE = ['next_charge_date', 'next_payment_date', 'next_writeoff_date', 'nextpay_date', 'date_next_pay'];
 
-    /** @param array<string, mixed> $body */
-    private function __construct(private readonly array $body) {}
+    /**
+     * @param  array<string, mixed>  $body
+     * @param  ?string  $billingLogin  See contractNumber().
+     */
+    private function __construct(private readonly array $body, private readonly ?string $billingLogin = null) {}
 
-    public static function from(SolaResponse $info): self
+    public static function from(SolaResponse $info, ?string $billingLogin = null): self
     {
-        return new self($info->body);
+        return new self($info->body, $billingLogin);
     }
 
     // -- Fields the API has always returned ------------------------------
@@ -155,8 +161,32 @@ final class AbonentProfile
 
     // -- Fields the spec asks for, pending confirmation from billing -----
 
+    /**
+     * Confirmed by the client (2026-08-30): /identify's own `login` field —
+     * already read into AbonentSession as billingLogin() during sign-in — is
+     * the subscriber's contract number, not a lookalike. None of
+     * CANDIDATE_CONTRACT below has ever matched on a live /abonent/info
+     * response (account 1336708, 2026-08-28), so this is checked first, the
+     * same way currentTariffCost() above prefers its own confirmed field.
+     * The guess list stays as a fallback for whatever /abonent/info might
+     * still contribute on an account /identify has no login for, with a
+     * warning logged if the two ever disagree instead of failing silently.
+     */
     public function contractNumber(): ?string
     {
+        if ($this->billingLogin !== null && $this->billingLogin !== '') {
+            $legacy = $this->firstString(self::CANDIDATE_CONTRACT);
+
+            if ($legacy !== null && $legacy !== $this->billingLogin) {
+                Log::warning('AbonentProfile: identify login disagrees with a legacy contract-number field', [
+                    'billing_login' => $this->billingLogin,
+                    'legacy_contract_number' => $legacy,
+                ]);
+            }
+
+            return $this->billingLogin;
+        }
+
         return $this->firstString(self::CANDIDATE_CONTRACT);
     }
 

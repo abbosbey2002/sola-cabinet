@@ -1,11 +1,19 @@
 @extends('layouts.guest')
+@section('title', trans('app.auth.title').' - ')
 
 @section('content')
-    <div class="u-card u-rise p-6 sm:p-7" style="--i:1">
-        <h1 class="u-display text-2xl text-ink">@lang('app.auth.title')</h1>
-        <p class="mt-3 text-base text-muted">@lang('app.auth.intro')</p>
+    <section class="u-card u-card-hero u-rise w-full overflow-hidden p-6 sm:p-8" style="--i:1" aria-labelledby="auth-login-title">
+        <span class="u-badge-network">@lang('app.auth.step_phone')</span>
 
-        <form action="{{ route('login') }}" method="post" class="mt-7 space-y-5" novalidate>
+        <div class="u-page-head__identity mt-3">
+            <span class="u-page-head__icon" aria-hidden="true">
+                <x-icon name="phone" size="size-6"/>
+            </span>
+            <h1 id="auth-login-title" class="u-page-head__title text-2xl">@lang('app.auth.title')</h1>
+            <p class="u-page-head__lead">@lang('app.auth.intro')</p>
+        </div>
+
+        <form action="{{ route('login') }}" method="post" class="mt-8 space-y-5" novalidate>
             @csrf
 
             <div>
@@ -19,24 +27,23 @@
                        @error('login') aria-invalid="true" aria-errormessage="login-error" @enderror
                        class="u-field text-lg @error('login') !border-[var(--c-danger)] @enderror">
 
-                {{-- The error replaces the hint rather than stacking under it:
-                     two lines of small print below a field the subscriber has
-                     just got wrong is one line too many. --}}
                 @error('login')
                     <p id="login-error" class="mt-2 flex items-start gap-2 text-sm" style="color: var(--c-danger)">
-                        <x-icon name="alert" size="size-4" class="mt-1"/>{{ $message }}
+                        <x-icon name="alert" size="size-4" class="mt-0.5 shrink-0"/>{{ $message }}
                     </p>
                 @else
                     <p id="login-hint" class="mt-2 text-sm text-muted">@lang('app.auth.phone_hint')</p>
                 @enderror
             </div>
 
-            <button type="submit" class="u-btn-primary w-full text-lg">@lang('app.auth.send_code')</button>
+            <button type="submit" class="u-btn-primary w-full text-lg">
+                <x-icon name="phone" size="size-5"/>@lang('app.auth.send_code')
+            </button>
         </form>
-    </div>
+    </section>
 
     @if (config('sola.call_center'))
-        <p class="u-rise mt-6 text-center text-base text-muted" style="--i:2">
+        <p class="u-rise mt-5 text-center text-sm text-muted lg:hidden" style="--i:2">
             @lang('app.menu.call')
             <a href="tel:{{ config('sola.call_center') }}"
                class="font-semibold no-underline" style="color: var(--c-action)">{{ config('sola.call_center') }}</a>

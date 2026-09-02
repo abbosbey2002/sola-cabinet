@@ -26,7 +26,7 @@ final class TariffController extends Controller
     {
         $accountId = $this->accountId();
 
-        $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
+        $profile = AbonentProfile::from($this->sola->abonentInfo($accountId), $this->session->billingLogin());
 
         // A legal entity (yuridik shaxs) is not offered this page at all —
         // the nav link and dashboard card are already hidden for them, this

@@ -1,0 +1,76 @@
+{
+  "url": "http://localhost:8080/",
+  "lang": "en",
+  "theme": "dark",
+  "heading": "My account",
+  "navCurrent": "My account",
+  "title": "My account - Sola",
+  "mainStart": "My account\nBalance\n\nBalance\n\n0\nsum\n\nTop up account\nAdd 125 000 so'm by 24.09.2026 so your plan renews on time.\nYour plan\n\nSmart 50\n\n125 000 sum\n\nNext payment\n\n125 000\nsum · 24.09.2026\n\n23\ndays left\nYour plan\nSmart 50\n125 000 sum\nDevices\n2 devices\nLast connected: 13.08.2026\nLast payment\nNo payments in the last 12 months\nHelp and offers\nPromotions, rewards, call centre",
+  "tariffMentions": [
+    "Smart 50",
+    "Smart 50"
+  ],
+  "dateMentions": [
+    "24.09.2026",
+    "24.09.2026",
+    "13.08.2026"
+  ],
+  "copy": {
+    "className": "u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink",
+    "width": 0,
+    "height": 0,
+    "padding": "0px",
+    "minWidth": "0px",
+    "minHeight": "0px"
+  },
+  "ringStroke": "var(--c-warn)",
+  "ringComputed": "rgb(240, 194, 74)",
+  "warnCss": {
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(229, 237, 221)"
+  },
+  "figureColor": "rgb(229, 237, 221)",
+  "heroes": [
+    {
+      "padding": "24px",
+      "height": 225,
+      "label": "Balance"
+    },
+    {
+      "padding": "32px",
+      "height": 292,
+      "label": "Your plan"
+    }
+  ],
+  "metricCards": [
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/tariffs",
+      "text": "Your plan Smart 50 125 000 sum",
+      "height": 155
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/devices",
+      "text": "Devices 2 devices Last connected: 13.08.2026",
+      "height": 155
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/finance",
+      "text": "Last payment No payments in the last 12 months",
+      "height": 155
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/services",
+      "text": "Help and offers Promotions, rewards, call centre",
+      "height": 155
+    }
+  ],
+  "overflow": {
+    "innerWidth": 1440,
+    "clientWidth": 1440,
+    "scrollWidth": 1440
+  }
+}

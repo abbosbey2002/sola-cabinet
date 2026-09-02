@@ -1,4 +1,4 @@
-@props(['contract', 'tone' => 'action'])
+@props(['contract' => null, 'tone' => 'action'])
 
 {{--
     The one thing on a balance-trouble screen that is actually actionable: the
@@ -65,10 +65,24 @@
     {{-- The manual copy-the-contract-number flow above stays for Payme/Click/
          Uzum, since only iWon is actually integrated — closed at
          config('iwon.active') the same way TopUpController itself is, so the
-         button never appears offering a flow the route would 404 on. --}}
+         button never appears offering a flow the route would 404 on.
+
+         data-modal-open opens the quick-top-up modal below without leaving
+         this page — href stays a real link to route('topup') underneath it,
+         so the button still works exactly as before with JS off (modal.js
+         never attaches, the click just follows the link). --}}
     @if (config('iwon.active'))
-        <a href="{{ route('topup') }}" class="u-btn-primary u-no-print mt-4 flex w-full">
+        <a href="{{ route('topup') }}" data-modal-open="topup-modal" class="u-btn-primary u-no-print mt-4 flex w-full">
             <x-icon name="wallet" size="size-5"/>@lang('app.topup.pay_card_button')
         </a>
+
+        {{-- Same form partial the full /topup page renders — one source of
+             markup, see partials/topup-form.blade.php. A validation failure
+             always redirects to the real page (TopUpRequest::getRedirectUrl)
+             rather than back to wherever this modal was opened from, so an
+             error is never silently lost inside a page that can't show it. --}}
+        <x-modal name="topup-modal" variant="topup" :title="__('app.topup.title')" :subtitle="__('app.topup.subline')">
+            @include('cabinet.partials.topup-form', ['compact' => true])
+        </x-modal>
     @endif
 </div>

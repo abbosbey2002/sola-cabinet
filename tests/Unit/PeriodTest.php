@@ -36,4 +36,18 @@ final class PeriodTest extends TestCase
         $this->assertTrue($period->contains(CarbonImmutable::now()->format('Y-m-d').' 23:59:59'));
         $this->assertFalse($period->contains(CarbonImmutable::now()->addDay()->format('Y-m-d').' 00:00:00'));
     }
+
+    #[Test]
+    public function last_year_spans_twelve_months_through_today(): void
+    {
+        CarbonImmutable::setTestNow('2026-08-31 15:30:00');
+
+        $period = Period::lastYear();
+
+        $this->assertSame('31.08.2025', $period->paymentsStart());
+        $this->assertSame('31.08.2026', $period->paymentsEnd());
+        $this->assertTrue($period->contains('2025-08-31 00:00:01'));
+        $this->assertTrue($period->contains('2026-08-31 23:59:59'));
+        $this->assertFalse($period->contains('2025-08-30 23:59:59'));
+    }
 }

@@ -14,11 +14,18 @@
             ->implode('');
     @endphp
 
-    <div class="u-rise mb-4">
-        <h1 class="u-display text-2xl text-ink">@lang('app.accounts.choose')</h1>
-        <p class="mt-2.5 text-base text-muted">
-            {{ trans_choice('app.accounts.attached', count($accounts), ['count' => count($accounts)]) }}
-        </p>
+    <div class="u-rise mb-5" style="--i:0">
+        <span class="u-badge-network">@lang('app.auth.step_account')</span>
+
+        <div class="u-page-head__identity mt-3">
+            <span class="u-page-head__icon" aria-hidden="true">
+                <x-icon name="id" size="size-6"/>
+            </span>
+            <h1 class="u-page-head__title text-2xl">@lang('app.accounts.choose')</h1>
+            <p class="u-page-head__lead">
+                {{ trans_choice('app.accounts.attached', count($accounts), ['count' => count($accounts)]) }}
+            </p>
+        </div>
     </div>
 
     <div class="space-y-3">

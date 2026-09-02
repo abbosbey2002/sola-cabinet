@@ -3,7 +3,9 @@
       data-theme="light"
       data-app="admin"
       data-close-label="{{ __('app.ui.close') }}"
-      data-error-label="{{ __('app.ui.error') }}">
+      data-error-label="{{ __('app.ui.error') }}"
+      data-timeout-label="{{ __('app.ui.timeout') }}"
+      data-retry-label="{{ __('app.ui.retry') }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +17,7 @@
 
     <title>@yield('title'){{ config('app.name') }} Admin</title>
 
-    <link rel="icon" href="/img/favicon.png" type="image/png">
+    @include('partials.document-icons')
 
     {{-- No <x-view-boot/>: that component restores a STORED theme/text-size
          choice, and this page never lets one be made. --}}
@@ -25,6 +27,10 @@
 </head>
 
 <body class="min-h-dvh">
+
+<div class="u-progress u-no-print" data-progress hidden aria-hidden="true"></div>
+
+@include('partials.offline-banner')
 
 <a href="#content"
    class="sr-only z-[80] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-full focus:border-2 focus:border-action focus:bg-surface focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-ink">
@@ -85,9 +91,9 @@
 
         <main id="content" class="w-full flex-1 px-4 pb-16 pt-7 sm:px-8">
             @hasSection('heading')
-                <div class="u-rise mb-5 flex flex-wrap items-end justify-between gap-5">
-                    <h1 class="u-display text-3xl text-ink">@yield('heading')</h1>
-                </div>
+                <x-page-heading :icon="trim($__env->yieldContent('heading-icon')) ?: null">
+                    <x-slot:title>@yield('heading')</x-slot:title>
+                </x-page-heading>
             @endif
 
             @yield('content')

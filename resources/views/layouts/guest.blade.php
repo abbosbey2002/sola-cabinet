@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
       data-close-label="{{ __('app.ui.close') }}"
-      data-error-label="{{ __('app.ui.error') }}">
+      data-error-label="{{ __('app.ui.error') }}"
+      data-timeout-label="{{ __('app.ui.timeout') }}"
+      data-retry-label="{{ __('app.ui.retry') }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,7 +11,7 @@
 
     <title>@yield('title'){{ config('app.name') }}</title>
 
-    <link rel="icon" href="/img/favicon.png" type="image/png">
+    @include('partials.document-icons')
 
     <x-view-boot/>
 
@@ -17,35 +19,84 @@
     @stack('head')
 </head>
 
-<body class="min-h-dvh">
+<body class="u-auth-bg min-h-dvh">
+
+<div class="u-progress u-no-print" data-progress hidden aria-hidden="true"></div>
+
+@include('partials.offline-banner')
 
 <a href="#content"
    class="sr-only z-[80] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-full focus:border-2 focus:border-action focus:bg-surface focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-ink">
     @lang('app.ui.skip')
 </a>
 
-<div class="mx-auto flex min-h-dvh w-full max-w-[28rem] flex-col justify-center px-4 py-10">
+<div class="u-auth-shell grid min-h-dvh w-full lg:grid-cols-2">
 
-    {{-- relative z-20: u-rise animates opacity and transform, so this row opens
-         its own stacking context and the view panel's z-50 cannot escape it. If
-         the context had no z-index of its own, the card below — also u-rise, so
-         also its own context — would paint over the open panel. --}}
-    <div class="u-rise relative z-20 mb-6 flex flex-wrap items-center justify-between gap-3">
-        <x-logo :height="'h-10'"/>
-
-        {{-- The language switch stays on the guest screens even though the
-             prototype, being Uzbek-only, has no need of it: a Russian-speaking
-             subscriber has to be able to change it BEFORE reading the login
-             form, not after. --}}
-        <div class="flex items-center gap-2">
-            <x-view-settings/>
-            <x-lang-switch/>
+    {{-- Brand column — half the screen on desktop, hidden on phones. --}}
+    <aside class="u-auth-aside u-no-print hidden flex-col justify-between p-10 lg:flex xl:p-14"
+           aria-hidden="true">
+        <div>
+            <x-logo :height="'h-11'"/>
+            <p class="u-display mt-8 max-w-[20rem] text-[clamp(1.5rem,2.4vw,2rem)] leading-snug text-ink">
+                @lang('app.auth.tagline')
+            </p>
+            <p class="mt-3 max-w-[22rem] text-base text-muted">@lang('app.auth.tagline_hint')</p>
         </div>
-    </div>
 
-    <main id="content">
-        @yield('content')
-    </main>
+        <ul class="mt-10 max-w-[22rem] space-y-3">
+            <li class="u-auth-trust">
+                <span class="grid size-9 shrink-0 place-items-center rounded-lg"
+                      style="background: var(--c-action-soft); color: var(--c-action)">
+                    <x-icon name="phone" size="size-4"/>
+                </span>
+                <span>@lang('app.auth.trust_sms')</span>
+            </li>
+            <li class="u-auth-trust">
+                <span class="grid size-9 shrink-0 place-items-center rounded-lg"
+                      style="background: var(--c-action-soft); color: var(--c-action)">
+                    <x-icon name="shield" size="size-4"/>
+                </span>
+                <span>@lang('app.auth.trust_secure')</span>
+            </li>
+            @if (config('sola.call_center'))
+                <li class="u-auth-trust">
+                    <span class="grid size-9 shrink-0 place-items-center rounded-lg"
+                          style="background: var(--c-action-soft); color: var(--c-action)">
+                        <x-icon name="phone" size="size-4"/>
+                    </span>
+                    <span>
+                        @lang('app.auth.trust_support')
+                        <a href="tel:{{ config('sola.call_center') }}"
+                           class="mt-0.5 block font-semibold no-underline" style="color: var(--c-action)">
+                            {{ config('sola.call_center') }}
+                        </a>
+                    </span>
+                </li>
+            @endif
+        </ul>
+    </aside>
+
+    {{-- Form column — toolbar pinned top, card centred in the remaining height. --}}
+    <div class="u-auth-main relative flex min-h-dvh flex-col px-4 py-6 sm:px-8 sm:py-8 lg:px-12 lg:py-10">
+
+        <div class="u-auth-orbs" aria-hidden="true">
+            <span class="u-auth-orb u-auth-orb-a"></span>
+            <span class="u-auth-orb u-auth-orb-b"></span>
+        </div>
+
+        <div class="u-rise relative z-20 flex shrink-0 flex-wrap items-center justify-between gap-3">
+            <x-logo :height="'h-10'" class="lg:hidden"/>
+            <div class="ml-auto flex items-center gap-2">
+                <x-view-settings/>
+                <x-lang-switch/>
+            </div>
+        </div>
+
+        <main id="content"
+              class="mx-auto flex w-full max-w-[26rem] flex-1 flex-col justify-center py-6 lg:max-w-[28rem] lg:py-10">
+            @yield('content')
+        </main>
+    </div>
 </div>
 
 @if ($errors->any())

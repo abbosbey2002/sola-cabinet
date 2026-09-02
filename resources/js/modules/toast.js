@@ -54,7 +54,17 @@ export function toast(message, tone = 'info', timeout = 6000) {
     dismiss.innerHTML =
         '<svg viewBox="0 0 20 20" class="size-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg>';
 
-    const remove = () => node.remove();
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const remove = () => {
+        if (reduce) {
+            node.remove();
+
+            return;
+        }
+
+        node.classList.add('u-toast-out');
+        node.addEventListener('animationend', () => node.remove(), { once: true });
+    };
     dismiss.addEventListener('click', remove);
     dismiss.setAttribute('aria-label', document.documentElement.dataset.closeLabel ?? 'Close');
 

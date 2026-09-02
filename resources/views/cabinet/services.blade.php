@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('title', trans('app.nav.services').' - ')
 @section('heading', trans('app.nav.services'))
+@section('lead', trans('app.services.intro'))
 
 @section('content')
     @php
@@ -31,8 +32,6 @@
             ] : null,
         ]));
     @endphp
-
-    <p class="u-rise mb-5 max-w-[52ch] text-base text-muted">@lang('app.services.intro')</p>
 
     @if ($cards)
         <div class="grid gap-4 sm:grid-cols-2">

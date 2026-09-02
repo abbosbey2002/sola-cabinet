@@ -1,33 +1,92 @@
-{{-- $title renders a visible heading; $label names the dialog for assistive
-     tech without one, for dialogs whose content is its own headline. --}}
-@props(['name', 'title' => null, 'label' => null, 'size' => 'max-w-md'])
+{{--
+    Modal shell — bottom sheet on phones, centered card on desktop.
+
+    Props:
+      title / subtitle — visible header copy
+      label — accessible name when there is no visible title (confirm dialogs)
+      header — false hides the header bar; close floats top-right (confirm)
+      size — sm | md | lg
+--}}
+@props([
+    'name',
+    'title' => null,
+    'subtitle' => null,
+    'label' => null,
+    'header' => true,
+    'size' => 'md',
+    'variant' => null,
+])
+
+@php
+    $panelWidth = match ($size) {
+        'sm' => 'max-w-sm',
+        'lg' => 'max-w-lg',
+        default => 'max-w-md',
+    };
+
+    $isTopup = $variant === 'topup';
+    $hasHeaderBar = $header && ($title !== null || $subtitle !== null);
+    $titleId = 'modal-'.$name.'-title';
+    $ariaLabel = $label ?? $title;
+@endphp
 
 <div data-modal="{{ $name }}" hidden
-     class="u-no-print fixed inset-0 z-[60] flex items-end justify-center p-0 sm:items-center sm:p-4"
-     role="dialog" aria-modal="true"
-     aria-label="{{ $label ?? $title }}">
+    class="u-modal u-no-print"
+    role="dialog" aria-modal="true"
+    @if ($hasHeaderBar) aria-labelledby="{{ $titleId }}" @elseif ($ariaLabel) aria-label="{{ $ariaLabel }}" @endif>
 
-    <div data-modal-overlay class="absolute inset-0 bg-black/60"></div>
+    <div data-modal-overlay class="u-modal-overlay" aria-hidden="true"></div>
 
-    <div class="u-rise relative max-h-dvh w-full {{ $size }} overflow-y-auto rounded-t-card border-2 border-line-strong bg-surface p-5 sm:rounded-card sm:p-6"
-         style="box-shadow: var(--shadow-card)">
-        {{-- Thumb grip: on a phone this sheet rises from the bottom edge. --}}
-        <div class="mx-auto mb-4 h-1.5 w-12 rounded-full bg-line sm:hidden"></div>
+    <div data-modal-panel @class([
+        'u-modal-panel',
+        $panelWidth,
+        'u-modal-panel-topup' => $isTopup,
+    ])>
+        @unless ($isTopup)
+            <div class="u-modal-handle" aria-hidden="true"></div>
+        @endunless
 
-        <div class="mb-5 flex items-start justify-between gap-4">
-            @if ($title)
-                <h2 class="u-display text-xl text-ink">{{ $title }}</h2>
-            @else
-                <span></span>
-            @endif
-
+        @if ($hasHeaderBar)
+            <header @class(['u-modal-header', 'u-modal-header-topup' => $isTopup])>
+                <div class="min-w-0 flex-1 pr-2">
+                    @if ($title !== null)
+                        <h2 id="{{ $titleId }}" @class([
+                            'u-display leading-snug text-ink',
+                            'text-xl font-bold' => $isTopup,
+                            'text-lg' => ! $isTopup,
+                        ])>{{ $title }}</h2>
+                    @elseif ($label !== null)
+                        <h2 id="{{ $titleId }}" class="u-display text-lg leading-snug text-ink">{{ $label }}</h2>
+                    @endif
+                    @if ($subtitle !== null)
+                        <p @class([
+                            'leading-snug text-muted',
+                            'mt-1 text-sm' => ! $isTopup,
+                            'mt-0.5 text-[0.8125rem] leading-relaxed' => $isTopup,
+                        ])>{{ $subtitle }}</p>
+                    @endif
+                </div>
+                <button type="button" data-modal-close @class([
+                    'u-modal-close',
+                    'u-modal-close-topup' => $isTopup,
+                ]) aria-label="{{ __('app.ui.close') }}">
+                    <x-icon name="close" size="size-5"/>
+                </button>
+            </header>
+        @else
             <button type="button" data-modal-close
-                    class="-mr-2 -mt-2 grid size-12 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink"
-                    aria-label="{{ __('app.ui.close') }}">
-                <x-icon name="close" size="size-6"/>
+                class="u-modal-close u-modal-close-floating"
+                aria-label="{{ __('app.ui.close') }}">
+                <x-icon name="close" size="size-5"/>
             </button>
-        </div>
+        @endif
 
-        {{ $slot }}
+        <div @class([
+            'u-modal-body',
+            'u-modal-body-confirm' => ! $hasHeaderBar,
+            'u-modal-body-topup' => $isTopup,
+        ])>
+            {{ $slot }}
+        </div>
     </div>
 </div>

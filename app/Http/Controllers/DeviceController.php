@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Services\Sola\SolaResponse;
 use App\Support\AbonentProfile;
+use App\Support\ConnectedDevices;
+use App\Support\IpLocation;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -18,18 +20,19 @@ use Illuminate\Http\RedirectResponse;
  */
 final class DeviceController extends Controller
 {
-    public function index(): View
+    public function index(IpLocation $geo): View
     {
         $accountId = $this->accountId();
 
         // /device/list answers with the permits *and* what a further permit
         // costs, so both come out of the one call.
         $devices = $this->sola->devices($accountId);
+        $rows = ConnectedDevices::withLocations((array) $devices->get('devices', []), $geo);
 
         return $this->view->make('cabinet.devices', [
-            'profile' => AbonentProfile::from($this->sola->abonentInfo($accountId)),
+            'profile' => AbonentProfile::from($this->sola->abonentInfo($accountId), $this->session->billingLogin()),
             'accounts' => $this->accounts(),
-            'devices' => (array) $devices->get('devices', []),
+            'devices' => $rows,
             'connectCost' => $devices->get('connect_cost'),
         ]);
     }

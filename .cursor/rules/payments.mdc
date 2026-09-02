@@ -1,0 +1,14 @@
+---
+description: Payments, tariffs, devices, and iWon — money-moving paths
+globs: "{app/Http/Controllers/{TopUp,Tariff,Device,Payment}Controller.php,app/Support/{Iwon*,TariffVisibility,BillingHistory,Period}.php,app/Http/Requests/{TopUp,TariffConnect,Period}Request.php}"
+alwaysApply: false
+---
+
+# Money-moving paths
+
+State changes are POST + CSRF. Re-check permanence / legal entity / allow-list on the server; the Blade form is not a control.
+
+- Connect: tariff id must be in this account’s `/tariff/available` **and** `TariffVisibility`. Timing `now|month`; non-permanent forced to `now`.
+- Devices: `isPermanent()` or 403. `connect_cost === "-1"` → hide price.
+- iWon: unsigned redirect to hosted form; `returnUrl` is cabinet home only — no `/topup/return`, no balance polling. Log `additional_id` on initiate. `IWON_ACTIVE` off → 404. Amount 1000–50_000_000 soʻm; strip spaces before validate; failed validation always `route('topup')`.
+- History: `Period` to API as `d.m.Y` (4-digit year). Trim rows with `contains()`. Payments total `/100`; traffic `/1024/1024`.

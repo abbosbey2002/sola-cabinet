@@ -23,7 +23,7 @@ final class TrafficController extends Controller
         $period = Period::lastMonth();
 
         return $this->view->make('trafic.index', [
-            'profile' => AbonentProfile::from($this->sola->abonentInfo($this->accountId())),
+            'profile' => AbonentProfile::from($this->sola->abonentInfo($this->accountId()), $this->session->billingLogin()),
             'accounts' => $this->accounts(),
             'period' => $period,
             'traffic' => $this->history()->traffic($this->accountId(), $period),

@@ -1,0 +1,76 @@
+{
+  "url": "http://localhost:8080/",
+  "lang": "ru",
+  "theme": "dark",
+  "heading": "Мой счёт",
+  "navCurrent": "Мой счёт",
+  "title": "Мой счёт - Sola",
+  "mainStart": "Мой счёт\nБаланс\n\nБаланс\n\n0\nсум\n\nПополнить баланс\nДобавьте 125 000 сум до 24.09.2026 — тогда тариф спишется вовремя.\nВаш тариф\n\nSmart 50\n\n125 000 сум\n\nСледующий платёж\n\n125 000\nсум · 24.09.2026\n\n23\nдня осталось\nВаш тариф\nSmart 50\n125 000 сум\nУстройства\n2 устройства\nПоследнее подключение: 13.08.2026\nПоследний платёж\nЗа последние 12 месяцев платежей не было\nПомощь и акции\nАкции, бонусы, колл-центр",
+  "tariffMentions": [
+    "Smart 50",
+    "Smart 50"
+  ],
+  "dateMentions": [
+    "24.09.2026",
+    "24.09.2026",
+    "13.08.2026"
+  ],
+  "copy": {
+    "className": "u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink",
+    "width": 0,
+    "height": 0,
+    "padding": "0px",
+    "minWidth": "0px",
+    "minHeight": "0px"
+  },
+  "ringStroke": "var(--c-warn)",
+  "ringComputed": "rgb(240, 194, 74)",
+  "warnCss": {
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(229, 237, 221)"
+  },
+  "figureColor": "rgb(229, 237, 221)",
+  "heroes": [
+    {
+      "padding": "24px",
+      "height": 225,
+      "label": "Баланс"
+    },
+    {
+      "padding": "32px",
+      "height": 292,
+      "label": "Ваш тариф"
+    }
+  ],
+  "metricCards": [
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/tariffs",
+      "text": "Ваш тариф Smart 50 125 000 сум",
+      "height": 176
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/devices",
+      "text": "Устройства 2 устройства Последнее подключение: 13.08.2026",
+      "height": 176
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/finance",
+      "text": "Последний платёж За последние 12 месяцев платежей не было",
+      "height": 176
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/services",
+      "text": "Помощь и акции Акции, бонусы, колл-центр",
+      "height": 176
+    }
+  ],
+  "overflow": {
+    "innerWidth": 1440,
+    "clientWidth": 1440,
+    "scrollWidth": 1440
+  }
+}

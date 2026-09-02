@@ -48,6 +48,7 @@
 
         // State — each one is paired with a word in the markup, never used alone
         'check' => '<path d="m5 12.5 4.5 4.5L19 7"/>',
+        'shield' => '<path d="M12 3 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6l-8-3Z"/>',
         'alert' => '<path d="M12 4 2.8 20h18.4L12 4Z"/><path d="M12 10v4"/><path d="M12 17.2v.1"/>',
         'clock' => '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
         'minus' => '<path d="M6 12h12"/>',

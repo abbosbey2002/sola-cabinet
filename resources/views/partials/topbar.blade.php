@@ -12,11 +12,11 @@
         ['route' => 'services', 'icon' => 'gift', 'label' => __('app.nav.services')],
     ];
 
-    // A legal entity (yuridik shaxs) is not offered tariff switching at all —
-    // billing's `legal` field on /abonent/info marks these accounts (see
-    // AbonentProfile::isLegalEntity()). TariffController enforces the same
-    // rule server-side; this only keeps the link from being offered.
+    // One-off subscribers manage tariffs elsewhere — hide the section entirely.
+    // A legal entity is not offered tariff switching (see below).
     if (isset($profile) && $profile->isLegalEntity()) {
+        $items = array_values(array_filter($items, fn (array $item): bool => ($item['route'] ?? null) !== 'tariff'));
+    } elseif ($isOneTime ?? false) {
         $items = array_values(array_filter($items, fn (array $item): bool => ($item['route'] ?? null) !== 'tariff'));
     }
 @endphp
@@ -40,23 +40,9 @@
                 <span class="sr-only">@lang('app.ui.menu')</span>
             </button>
 
-            <a href="{{ route('cabinet') }}" class="shrink-0 no-underline">
+            <a href="{{ route('cabinet') }}" class="flex shrink-0 items-center gap-3 no-underline">
                 <x-logo/>
             </a>
-
-            @isset($profile)
-                <dl class="u-id-facts ml-5 hidden min-w-0 items-center gap-x-7 xl:flex">
-                    @foreach ([
-                        ['label' => __('app.dash.contract'), 'value' => $profile->contractNumber()],
-                    ] as $fact)
-                        @continue(blank($fact['value']))
-                        <div class="flex min-w-0 items-baseline gap-2">
-                            <dt class="u-label">{{ $fact['label'] }}</dt>
-                            <dd class="truncate text-sm font-semibold text-ink">{{ $fact['value'] }}</dd>
-                        </div>
-                    @endforeach
-                </dl>
-            @endisset
 
             <div class="ml-auto flex shrink-0 items-center gap-2">
                 @if (config('sola.call_center'))
@@ -73,6 +59,8 @@
                      place: enlarging the text is needed more often than
                      switching language, and its icon is not self-explanatory. --}}
                 <x-lang-switch class="hidden sm:block"/>
+
+                <x-wallet-connect/>
 
                 @isset($accounts)
                     <x-account-menu :accounts="$accounts" class="hidden sm:block"/>
@@ -98,7 +86,7 @@
      role="dialog" aria-modal="true" aria-label="{{ __('app.ui.menu') }}">
     <div data-nav-scrim class="absolute inset-0 bg-black/60"></div>
 
-    <div class="u-rise absolute inset-y-0 left-0 flex w-[min(21rem,88vw)] flex-col overflow-y-auto border-r-2 border-line bg-surface">
+    <div data-nav-panel class="u-nav-panel absolute inset-y-0 left-0 flex w-[min(21rem,88vw)] flex-col overflow-y-auto border-r-2 border-line bg-surface">
         <div class="flex items-center justify-between px-5 py-4">
             <x-logo/>
 
@@ -124,12 +112,18 @@
         </nav>
 
         @isset($profile)
-            <dl class="mx-3 mb-3 mt-4 space-y-2.5 rounded-xl bg-surface-2 px-4 py-3.5">
-                @foreach ([
+            @php
+                $showContractInMenu = $profile->isLegalEntity() && filled($profile->contractNumber());
+                $facts = [
                     ['label' => __('app.cabinet.fio'), 'value' => $profile->fullName()],
-                    ['label' => __('app.dash.contract'), 'value' => $profile->contractNumber(), 'copyable' => true],
                     ['label' => __('app.accounts.personal'), 'value' => request()->cookie('account'), 'copyable' => true],
-                ] as $fact)
+                ];
+                if ($showContractInMenu) {
+                    array_splice($facts, 1, 0, [['label' => __('app.dash.contract'), 'value' => $profile->contractNumber(), 'copyable' => true]]);
+                }
+            @endphp
+            <dl class="mx-3 mb-3 mt-4 space-y-2.5 rounded-xl bg-surface-2 px-4 py-3.5">
+                @foreach ($facts as $fact)
                     @continue(blank($fact['value']))
                     <div>
                         <dt class="u-label">{{ $fact['label'] }}</dt>

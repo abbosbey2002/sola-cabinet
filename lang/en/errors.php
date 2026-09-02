@@ -28,4 +28,6 @@ return [
 
     'unknown' => 'Something went wrong, please try again later',
     'service_unavailable' => 'The service is temporarily unavailable, please try again later',
+    'service_unavailable_hint' => 'Billing could not be reached. Refresh the page in a minute.',
+    'service_unavailable_retry' => 'Refresh the page',
 ];

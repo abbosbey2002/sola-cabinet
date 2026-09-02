@@ -1,0 +1,18 @@
+---
+description: Core architecture of the Sola subscriber cabinet
+alwaysApply: true
+---
+
+# Architecture
+
+Thin Blade client over the SOLA billing API. Subscriber data is not stored here. SQLite is only `admins`, `enabled_tariffs`, and local Telescope.
+
+- Map payloads in `app/Support/` (`AbonentProfile`, `BillingHistory`, `ConnectedTariff`, `ChargeCycle`, `Period`, `TariffVisibility`, `IwonCheckout`). Controllers stay thin.
+- Missing API fields: hide the UI. Do not invent dates or amounts. Prefer live code comments over stale `docs/task/BAJARILMAGAN_TASKLAR.md`.
+- Auth is cookies (`AbonentSession`), not a Laravel guard. Do not rename cookie keys. Display name = `/identify` `abonName` ?: `login`, never `/abonent/info`.`name`.
+- `isPermanent` is `abonType >= 2`. Legal entity (`legal`) is forbidden from tariff switch. Controllers re-check before spending; Blade gates are courtesy.
+- Home device count: `count(/device/list)`, not `device_count`. Match tariffs by `tariff_id` only.
+- Money: `/abonent/info` `saldo` and `tariff_price` are **soʻm**. Tariff `cost` and payment `amount` are **tiyin** (`/100`). Traffic is **bytes**. iWon query amount is tiyin via `round($som * 100)`.
+- `charge_date` is already the next payment. Fallback: `ConnectedTariff` from `date_begin`. Never `contract_date`. Dates to billing: payments/traffic `d.m.Y`; HTML inputs `Y-m-d`; connect `Y-m-d` with **no** `lang` field.
+- Money/hardware: POST + CSRF + FormRequest. `/tariffs` list and `connect()` share `TariffVisibility`. iWon return URL is untrusted; confirm via billing saldo.
+- Copy: `lang/{ru,uz,en}` together. Timezone UTC. `config()`, not `env()`. Views folder `trafic/` is misspelled — do not rename casually.

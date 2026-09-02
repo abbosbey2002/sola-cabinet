@@ -8,6 +8,7 @@ use App\Services\Sola\FakeLoginServer;
 use App\Services\Sola\FakeSolaServer;
 use App\Services\Sola\SolaClient;
 use App\Support\AbonentSession;
+use App\Support\IpLocation;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Client\Factory as HttpFactory;
@@ -23,6 +24,8 @@ final class AppServiceProvider extends ServiceProvider
         ));
 
         $this->app->scoped(AbonentSession::class);
+
+        $this->app->singleton(IpLocation::class, fn (): IpLocation => IpLocation::fromConfig());
 
         $this->registerTelescope();
     }
@@ -63,6 +66,7 @@ final class AppServiceProvider extends ServiceProvider
 
             $view->with('abonentType', $session->abonentType());
             $view->with('isPermanent', $session->isPermanent());
+            $view->with('isOneTime', $session->isOneTime());
         });
     }
 

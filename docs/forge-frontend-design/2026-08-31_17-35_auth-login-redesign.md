@@ -1,0 +1,13 @@
+# Auth login — dashboard-aligned redesign
+- **Date:** 2026-08-31 17:35
+- **Mode:** SaaS + Multi-market (uz/ru/en)
+- **Screens/components delivered**
+  - `layouts/guest.blade.php` — split desktop layout, brand aside, ambient bg
+  - `auth/login.blade.php`, `auth/verify.blade.php` — hero card, step badges, icon headers
+  - `auth/select_account.blade.php` — step badge header
+  - `app.css` — `.u-auth-bg`, `.u-auth-aside`, `.u-auth-trust`
+  - `components/icon.blade.php` — `shield` glyph
+  - `lang/{uz,ru,en}/app.php` — auth tagline, steps, trust copy
+- **Decisions:** Reused dashboard tokens (`u-card-hero`, `u-badge-network`, logo green gradient) so sign-in feels like the same product as the cabinet home. Desktop left column carries trust facts; mobile keeps the form first and hides duplicate call-centre line when aside shows it.
+- **Quality floor result:** Auth tests 20/20; Vite build clean; inline SVG only; existing phone mask / CSRF / a11y patterns preserved; `prefers-reduced-motion` inherits global `.u-rise` rules.
+- **Left for later:** Optional real screenshot QA at 320px and dark theme in browser.

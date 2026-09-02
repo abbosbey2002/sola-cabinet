@@ -37,15 +37,10 @@ Route::middleware('abonent.verified')->group(function (): void {
     Route::get('/finance', [PaymentController::class, 'index'])->name('payment');
     Route::post('/finance', [PaymentController::class, 'filter'])->name('payment.filter');
 
-    // iWon's own integration has no callback — /return is where the
-    // subscriber's browser lands after the hosted card form, never trusted
-    // on its own (see TopUpController). Gated closed at config('iwon.active')
-    // until the service id/account param are live, same pattern as the
-    // tariff-visibility admin gate.
+    // iWon card top-up — unsigned browser redirect, no server callback.
     Route::prefix('topup')->group(function (): void {
         Route::get('/', [TopUpController::class, 'index'])->name('topup');
         Route::post('/', [TopUpController::class, 'store'])->name('topup.store');
-        Route::get('/return', [TopUpController::class, 'checkReturn'])->name('topup.return');
     });
 
     /*

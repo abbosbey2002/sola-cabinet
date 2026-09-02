@@ -1,0 +1,79 @@
+{
+  "url": "http://localhost:8080/",
+  "lang": "uz",
+  "theme": "dark",
+  "heading": "Hisobim",
+  "navCurrent": "Hisobim",
+  "title": "Hisobim - Sola",
+  "mainStart": "Hisobim\nBalans\n\nBalans\n\n0\nso'm\n\nHisobni to'ldirish\n24.09.2026 gacha yana 125 000 so'm qo'shing. Shunda tarif o'z vaqtida yechiladi.\nTarifingiz\n\nSmart 50\n\n125 000 so'm\n\nKeyingi to'lov\n\n125 000\nso'm · 24.09.2026\n\n23\nkun qoldi\nTarifingiz\nSmart 50\n125 000 so'm\nQurilmalar\n2 ta qurilma\nOxirgi ulangan: 13.08.2026\nSo'nggi to'lov\nOxirgi 12 oyda to'lov qilmagansiz\nYordam va takliflar\nAksiyalar, bonuslar, aloqa markazi",
+  "tariffMentions": [
+    "tarif",
+    "Tarif",
+    "Smart 50",
+    "Tarif",
+    "Smart 50"
+  ],
+  "dateMentions": [
+    "24.09.2026",
+    "24.09.2026",
+    "13.08.2026"
+  ],
+  "copy": {
+    "className": "u-no-print grid size-11 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-surface-2 hover:text-ink",
+    "width": 0,
+    "height": 0,
+    "padding": "0px",
+    "minWidth": "0px",
+    "minHeight": "0px"
+  },
+  "ringStroke": "var(--c-warn)",
+  "ringComputed": "rgb(240, 194, 74)",
+  "warnCss": {
+    "bg": "rgba(0, 0, 0, 0)",
+    "color": "rgb(229, 237, 221)"
+  },
+  "figureColor": "rgb(229, 237, 221)",
+  "heroes": [
+    {
+      "padding": "20px",
+      "height": 284,
+      "label": "Balans"
+    },
+    {
+      "padding": "24px",
+      "height": 365,
+      "label": "Tarifingiz"
+    }
+  ],
+  "metricCards": [
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/tariffs",
+      "text": "Tarifingiz Smart 50 125 000 so'm",
+      "height": 123
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/devices",
+      "text": "Qurilmalar 2 ta qurilma Oxirgi ulangan: 13.08.2026",
+      "height": 123
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/finance",
+      "text": "So'nggi to'lov Oxirgi 12 oyda to'lov qilmagansiz",
+      "height": 113
+    },
+    {
+      "tag": "A",
+      "href": "http://localhost:8080/services",
+      "text": "Yordam va takliflar Aksiyalar, bonuslar, aloqa markazi",
+      "height": 120
+    }
+  ],
+  "overflow": {
+    "innerWidth": 390,
+    "clientWidth": 390,
+    "scrollWidth": 390
+  }
+}

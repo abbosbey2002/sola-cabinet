@@ -20,7 +20,13 @@ final class AuthTest extends TestCase
     #[Test]
     public function the_login_screen_is_reachable(): void
     {
-        $this->get(route('login'))->assertOk();
+        $this->get(route('login'))
+            ->assertOk()
+            ->assertSee('u-page-head__icon', escape: false)
+            ->assertSee('u-auth-orbs', escape: false)
+            ->assertSee('data-progress', false)
+            ->assertSee('data-offline-banner', false)
+            ->assertSee(trans('app.auth.title'));
     }
 
     #[Test]
@@ -42,6 +48,8 @@ final class AuthTest extends TestCase
         // here to prove one is not silently aliasing the other.
         $response->assertCookie('billing_login', 'TESTER01');
         $response->assertCookie('full_name', 'Tester');
+        $response->assertSee('data-otp', false);
+        $response->assertSee('data-offline-banner', false);
 
         Http::assertSent(fn ($request): bool => $request['phn'] === '998901234567'
             && $request['sendsms'] === 1);

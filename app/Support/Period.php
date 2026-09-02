@@ -62,6 +62,17 @@ final class Period
     }
 
     /**
+     * The trailing calendar year through today — what the home "last payment"
+     * card searches before it admits there were none.
+     */
+    public static function lastYear(): self
+    {
+        $now = CarbonImmutable::now();
+
+        return new self($now->subYear()->startOfDay(), $now->endOfDay());
+    }
+
+    /**
      * Every month the range touches, as the "Y-m" strings the API takes.
      *
      * @return list<string>

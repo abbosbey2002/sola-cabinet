@@ -6,6 +6,7 @@
  */
 
 const OPEN = 'is-open';
+const SLIDE_MS = 340;
 
 export default function initNav() {
     const drawer = document.querySelector('[data-nav-drawer]');
@@ -14,18 +15,30 @@ export default function initNav() {
     if (!drawer || !toggle) return;
 
     const scrim = drawer.querySelector('[data-nav-scrim]');
+    let hideTimer = 0;
 
     const setOpen = (open) => {
-        drawer.classList.toggle(OPEN, open);
-        drawer.toggleAttribute('hidden', !open);
+        window.clearTimeout(hideTimer);
         toggle.setAttribute('aria-expanded', String(open));
         document.body.style.overflow = open ? 'hidden' : '';
 
         if (open) {
+            drawer.removeAttribute('hidden');
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => drawer.classList.add(OPEN));
+            });
             drawer.querySelector('a, button')?.focus();
-        } else {
-            toggle.focus();
+
+            return;
         }
+
+        drawer.classList.remove(OPEN);
+        toggle.focus();
+
+        const hide = () => drawer.setAttribute('hidden', '');
+        const instant = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (instant) hide();
+        else hideTimer = window.setTimeout(hide, SLIDE_MS);
     };
 
     toggle.addEventListener('click', () => setOpen(!drawer.classList.contains(OPEN)));

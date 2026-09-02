@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
       data-close-label="{{ __('app.ui.close') }}"
-      data-error-label="{{ __('app.ui.error') }}">
+      data-error-label="{{ __('app.ui.error') }}"
+      data-timeout-label="{{ __('app.ui.timeout') }}"
+      data-retry-label="{{ __('app.ui.retry') }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +16,7 @@
 
     <title>@yield('title'){{ config('app.name') }}</title>
 
-    <link rel="icon" href="/img/favicon.png" type="image/png">
+    @include('partials.document-icons')
 
     <x-view-boot/>
 
@@ -23,6 +25,10 @@
 </head>
 
 <body class="min-h-dvh">
+
+<div class="u-progress u-no-print" data-progress hidden aria-hidden="true"></div>
+
+@include('partials.offline-banner')
 
 <a href="#content"
    class="sr-only z-[80] focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:rounded-full focus:border-2 focus:border-action focus:bg-surface focus:px-5 focus:py-3 focus:text-base focus:font-semibold focus:text-ink">
@@ -35,16 +41,19 @@
 
     <main id="content" class="mx-auto w-full max-w-[1240px] flex-1 px-4 pb-16 pt-7 sm:px-6">
         @hasSection('heading')
-            {{-- items-end, so the period form's buttons sit on the heading's
-                 baseline; wrap, because the Russian heading plus the two date
-                 fields do not share a line below ~900px. --}}
-            <div class="u-rise mb-5 flex flex-wrap items-end justify-between gap-5">
-                <h1 class="u-display text-3xl text-ink">@yield('heading')</h1>
-
-                @hasSection('toolbar')
-                    <div class="flex flex-wrap items-end gap-3">@yield('toolbar')</div>
+            {{-- Icon + title share one row; a lead (if any) sits under the
+                 words. items-end keeps the period form's buttons on the
+                 heading cluster's baseline. Wrap: the Russian title plus the
+                 two date fields do not share a line below ~900px. --}}
+            <x-page-heading :icon="trim($__env->yieldContent('heading-icon')) ?: null">
+                <x-slot:title>@yield('heading')</x-slot:title>
+                @hasSection('lead')
+                    <x-slot:lead>@yield('lead')</x-slot:lead>
                 @endif
-            </div>
+                @hasSection('toolbar')
+                    <x-slot:toolbar>@yield('toolbar')</x-slot:toolbar>
+                @endif
+            </x-page-heading>
         @endif
 
         @yield('content')
@@ -57,19 +66,16 @@
     </footer>
 </div>
 
-<x-modal name="confirm" :label="__('app.ui.confirm')">
-    <div class="text-center">
-        <div class="mx-auto grid size-12 place-items-center rounded-xl"
-             style="background: var(--c-warn-soft); color: var(--c-warn)">
-            <x-icon name="alert" size="size-6"/>
-        </div>
-
-        <p data-confirm-question class="mt-4 text-base font-semibold leading-snug text-ink"></p>
+<x-modal name="confirm" :label="__('app.ui.confirm')" :header="false">
+    <div class="u-modal-icon" style="background: var(--c-warn-soft); color: var(--c-warn)">
+        <x-icon name="alert" size="size-6"/>
     </div>
 
-    <div class="mt-6 flex flex-wrap gap-3">
-        <button type="button" data-modal-close class="u-btn-ghost flex-1">@lang('app.no')</button>
-        <button type="button" data-confirm-accept class="u-btn-primary flex-1">@lang('app.yes')</button>
+    <p data-confirm-question class="mt-4 text-center text-base font-semibold leading-snug text-ink"></p>
+
+    <div class="u-modal-actions">
+        <button type="button" data-modal-close class="u-btn-ghost">@lang('app.no')</button>
+        <button type="button" data-confirm-accept class="u-btn-primary">@lang('app.yes')</button>
     </div>
 </x-modal>
 
