@@ -101,7 +101,7 @@
     </div>
 </div>
 
-@if ($errors->any())
+@if (isset($errors) && $errors->any())
     <template data-toast data-tone="error">{{ $errors->first() }}</template>
 @endif
 
