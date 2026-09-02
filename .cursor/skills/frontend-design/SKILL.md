@@ -74,6 +74,7 @@ Do **not**: SMS resend (identify is not retried — SMS cost), infinite spinners
 
 Chanel: remove one accessory before you stop.
 
+<!--  -->
 ## Session note
 
 Write `docs/forge-frontend-design/<YYYY-MM-DD_HH-MM>_<task>.md` from `date +%Y-%m-%d_%H-%M` before ending the turn:
