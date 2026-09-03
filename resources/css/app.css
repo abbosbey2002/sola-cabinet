@@ -495,13 +495,31 @@
         @apply flex shrink-0 items-center;
     }
 
-    .u-topup-iwon-logo {
-        @apply block h-8 w-auto;
-    }
-
     .u-topup-iwon-title {
         @apply text-sm font-semibold leading-snug text-ink;
     }
+
+    /* iWon mark — same light/dark swap as .u-logo. Do not set display on
+       `img` here: that beats .u-iwon-on-dark { hidden } on specificity and
+       shows both lockups in light theme. */
+    .u-iwon-logo {
+        @apply inline-flex shrink-0 items-center;
+    }
+
+    .u-iwon-on-light,
+    .u-iwon-on-dark {
+        @apply h-8 w-auto;
+    }
+
+    .u-iwon-on-dark { @apply hidden; }
+
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme='light']) .u-iwon-on-light { @apply hidden; }
+        :root:not([data-theme='light']) .u-iwon-on-dark { @apply block; }
+    }
+
+    :root[data-theme='dark'] .u-iwon-on-light { @apply hidden; }
+    :root[data-theme='dark'] .u-iwon-on-dark { @apply block; }
 
     .u-topup-form {
         @apply space-y-7;

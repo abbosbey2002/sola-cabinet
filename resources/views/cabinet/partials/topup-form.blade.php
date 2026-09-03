@@ -15,7 +15,7 @@
     {{-- Checkout is iWon; cards are chosen on their page. One quiet row, no method picker. --}}
     <div @class(['u-topup-iwon', 'mt-3' => $showHeadline])>
         <span class="u-topup-iwon-logo-wrap" aria-hidden="true">
-            <img src="{{ asset('img/iwon-logo.svg') }}" alt="" class="u-topup-iwon-logo" width="91" height="32">
+            <x-iwon-logo/>
         </span>
         <div class="min-w-0">
             <p class="u-topup-iwon-title">@lang('app.topup.iwon_via')</p>
