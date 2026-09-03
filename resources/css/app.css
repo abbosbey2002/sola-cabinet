@@ -369,8 +369,11 @@
         grid-column: 1;
     }
 
+    /* Full width on phones so the period date grid can split the content
+       column; sm:w-auto keeps the toolbar able to sit beside a lead when both
+       exist. Without min-w-0 the two date fields fight for min-content width. */
     .u-page-head__toolbar {
-        @apply flex flex-wrap items-end gap-3;
+        @apply flex w-full min-w-0 flex-wrap items-end gap-3 sm:w-auto;
     }
 
     .u-figure {

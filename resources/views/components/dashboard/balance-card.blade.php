@@ -7,19 +7,29 @@
     $isPermanent = $dash->kind === 'permanent';
     $showContract = in_array($dash->kind, ['permanent', 'legal'], true);
     $contract = $showContract ? $profile->contractNumber() : null;
+    $status = $profile->status();
 @endphp
 
 <section {{ $attributes->merge(['class' => 'u-card u-card-dash-balance u-rise flex h-full flex-col', 'style' => '--i:0']) }}
     aria-labelledby="dash-balance-title">
     <h2 id="dash-balance-title" class="sr-only">@lang('app.header.balance')</h2>
 
-    @if ($isPermanent)
-        {{-- Permanent: amount, top-up and balance note in one tight stack. --}}
+    {{-- Status is billing OffReasonName as free text — no colour mapping,
+         hide when the API omits it. Same label row for every subscriber kind. --}}
+    <div class="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
         <p class="u-label flex items-center gap-2">
             <x-icon name="wallet" size="size-4"/>
             @lang('app.header.balance')
         </p>
+        @if (filled($status))
+            <span data-abonent-status class="u-pill-neutral min-w-0">
+                <span class="sr-only">@lang('app.cabinet.status'): </span>{{ $status }}
+            </span>
+        @endif
+    </div>
 
+    @if ($isPermanent)
+        {{-- Permanent: amount, top-up and balance note in one tight stack. --}}
         <div class="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
             <p class="flex flex-wrap items-baseline gap-x-2.5">
                 <span class="u-figure text-4xl"
@@ -47,20 +57,14 @@
             </div>
         @endif
     @else
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div class="min-w-0">
-                <p class="u-label flex items-center gap-2">
-                    <x-icon name="wallet" size="size-4"/>
-                    @lang('app.header.balance')
-                </p>
-                <p class="mt-0.5 text-sm text-muted">@lang('app.payment.balance_hint')</p>
-                <p class="mt-2 flex flex-wrap items-baseline gap-x-2.5">
-                    <span class="u-figure text-4xl"
-                        data-count-up="{{ (int) round($dash->balance) }}"
-                        @if ($dash->balance < 0) style="color: var(--c-danger)" @endif>{{ $dash->formatSigned($dash->balance) }}</span>
-                    <span class="text-lg font-semibold text-muted">@lang('app.ye')</span>
-                </p>
-            </div>
+        <p class="mt-0.5 text-sm text-muted">@lang('app.payment.balance_hint')</p>
+        <div class="mt-2 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <p class="flex flex-wrap items-baseline gap-x-2.5">
+                <span class="u-figure text-4xl"
+                    data-count-up="{{ (int) round($dash->balance) }}"
+                    @if ($dash->balance < 0) style="color: var(--c-danger)" @endif>{{ $dash->formatSigned($dash->balance) }}</span>
+                <span class="text-lg font-semibold text-muted">@lang('app.ye')</span>
+            </p>
 
             @if ($dash->canTopUp)
                 <a href="{{ route('topup') }}" data-modal-open="topup-modal"

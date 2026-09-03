@@ -87,6 +87,11 @@ final class AbonentProfile
         return $this->string('address');
     }
 
+    /**
+     * Billing's OffReasonName, exposed as `status`. Free text in the request
+     * `lang` (live: `"Активен"`), not a machine code. Missing or blank → null;
+     * the template hides the pill rather than inventing a label.
+     */
     public function status(): ?string
     {
         return $this->string('status');

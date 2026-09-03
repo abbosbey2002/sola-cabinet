@@ -24,24 +24,21 @@
 <header class="u-no-print sticky top-0 z-40 border-b-2 border-line bg-bg/90 backdrop-blur-md">
     <div class="mx-auto max-w-[1240px] px-4 sm:px-6">
 
-        {{-- flex-wrap is the last defence on narrow screens: the right-hand
-             group drops to a second line rather than producing a horizontal
-             scrollbar. From lg it is nowrap, so a long name does not break the
-             row and the truncate below can do its job — a wrapping flex line
-             breaks first and shrinks second, which means truncate never fires
-             while wrap is on.
-
-             At 145% text the row does not fit either way; that case is handled
-             by the u-id-row / u-id-facts rules at the end of app.css. --}}
-        <div class="u-id-row flex min-h-[4.5rem] flex-wrap items-center gap-3 py-2 lg:flex-nowrap">
+        {{-- One row on phones: wrap used to dump balance + settings onto a
+             second line with empty space on the left. Compact logo / balance
+             keep the row inside ~320px. At 145% text the row still cannot fit;
+             that case is handled by the u-id-row / u-id-facts rules at the
+             end of app.css (those force wrap again under :root[data-text]). --}}
+        <div class="u-id-row flex min-h-[4.5rem] flex-nowrap items-center gap-2 py-2 sm:gap-3">
             <button type="button" data-nav-toggle aria-expanded="false" aria-controls="nav-drawer"
                     class="-ml-2 grid size-12 shrink-0 place-items-center rounded-full text-ink transition-colors hover:bg-surface-2 lg:hidden">
                 <x-icon name="menu" size="size-6"/>
                 <span class="sr-only">@lang('app.ui.menu')</span>
             </button>
 
-            <a href="{{ route('cabinet') }}" class="flex shrink-0 items-center gap-3 no-underline">
-                <x-logo/>
+            <a href="{{ route('cabinet') }}" class="min-w-0 shrink no-underline">
+                <x-logo height="h-8 sm:h-9"
+                    class="max-w-[8.5rem] sm:max-w-none [&>img]:max-w-full [&>img]:object-contain [&>img]:object-left"/>
             </a>
 
             <div class="ml-auto flex shrink-0 items-center gap-2">
@@ -56,12 +53,10 @@
                     <x-nav-balance :profile="$profile"/>
                 @endisset
 
-                <x-view-settings/>
-
-                {{-- Both of these are dropped from the top row on a phone and
-                     offered inside the drawer instead. "Ko'rinish" keeps its
-                     place: enlarging the text is needed more often than
-                     switching language, and its icon is not self-explanatory. --}}
+                {{-- Theme / text size, language and account switching leave the
+                     phone top row for the drawer (inline panels, not nested
+                     dropdowns). From sm the disclosure chips fit again. --}}
+                <x-view-settings class="hidden sm:block"/>
                 <x-lang-switch class="hidden sm:block"/>
 
                 @isset($accounts)
@@ -156,10 +151,14 @@
             </div>
         @endisset
 
-        {{-- Pushes the language/call sections to the bottom of the drawer
+        {{-- Pushes the prefs/call sections to the bottom of the drawer
              regardless of viewport width, now that the nav above no longer
              carries flex-1 itself. --}}
         <div class="flex-1"></div>
+
+        <div class="border-t-2 border-line px-5 py-5 sm:hidden">
+            <x-view-settings as="panel"/>
+        </div>
 
         <div class="border-t-2 border-line px-5 py-5 sm:hidden">
             <p class="u-label mb-2">@lang('app.view.language')</p>

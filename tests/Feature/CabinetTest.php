@@ -62,7 +62,7 @@ final class CabinetTest extends TestCase
     }
 
     #[Test]
-    public function the_topbar_shows_the_balance_before_settings_on_a_phone_too(): void
+    public function the_topbar_keeps_the_balance_visible_and_moves_settings_to_the_drawer_on_a_phone(): void
     {
         $this->fakeSola();
 
@@ -70,6 +70,19 @@ final class CabinetTest extends TestCase
 
         $this->assertStringContainsString('data-nav-balance', $html);
         $this->assertDoesNotMatchRegularExpression('/data-nav-balance[^>]*\bhidden\b/', $html);
+
+        // The disclosure lives in the top row from sm up; on a phone the same
+        // radios are offered inline in the drawer so the row stays one line.
+        $this->assertMatchesRegularExpression(
+            '/data-disclosure[^>]*\bhidden sm:block\b/',
+            $html,
+        );
+        $this->assertStringContainsString('data-nav-drawer', $html);
+        $this->assertGreaterThan(
+            3,
+            substr_count($html, 'name="sola-theme"'),
+            'theme radios must appear in both the topbar disclosure and the drawer panel',
+        );
 
         $balance = strpos($html, 'data-nav-balance');
         $settings = strpos($html, 'name="sola-theme"');
@@ -1072,6 +1085,40 @@ final class CabinetTest extends TestCase
             // Billing's own login for the account, refreshed from /identify
             // on every switch — not the phone the subscriber logged in with.
             ->assertCookie('billing_login', 'TESTOV01');
+    }
+
+    #[Test]
+    public function the_home_page_shows_billing_status_on_the_balance_card(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'status' => 'Активен',
+                'curr_tariff_name' => 'Home 100',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertSee('data-abonent-status', false)
+            ->assertSee('Активен');
+    }
+
+    #[Test]
+    public function the_home_page_hides_billing_status_when_the_api_omits_it(): void
+    {
+        $this->fakeSola([
+            '*/abonent/info' => Http::response([
+                'name' => 'Tester Testov',
+                'saldo' => 125000,
+                'curr_tariff_name' => 'Home 100',
+            ]),
+        ]);
+
+        $this->verifiedSubscriber()->get('/')
+            ->assertOk()
+            ->assertDontSee('data-abonent-status');
     }
 
     #[Test]
