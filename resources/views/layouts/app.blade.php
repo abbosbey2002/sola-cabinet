@@ -63,7 +63,7 @@
             {!! trans('app.footer.copy', [
                 'year' => date('Y'),
                 'site' => '<a href="'.e(config('sola.site_url')).'" target="_blank" rel="noopener"
-                    class="font-semibold no-underline" style="color: var(--c-action)">Sola</a>',
+                    class="font-semibold no-underline" style="color: var(--c-action)">SOLA</a>',
             ]) !!}
         </p>
     </footer>
