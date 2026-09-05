@@ -79,7 +79,8 @@
         </button>
 
         <div data-disclosure-panel hidden
-             class="u-rise absolute right-0 top-[calc(100%+.5rem)] z-50 w-[min(21rem,90vw)] rounded-card border-2 border-line-strong bg-surface p-5"
+             class="u-rise absolute right-0 top-[calc(100%+.5rem)] z-50 w-[min(21rem,calc(100vw-2rem))] rounded-card border-2 border-line-strong bg-surface p-4 sm:p-5
+                    max-sm:fixed max-sm:inset-x-4 max-sm:top-[5.5rem] max-sm:w-auto"
              style="box-shadow: var(--shadow-card)">
 
             <fieldset class="border-0 p-0">

@@ -269,6 +269,19 @@
         transition: background-color .3s var(--ease-out-soft), color .3s var(--ease-out-soft);
     }
 
+    /* Tailwind v4 preflight dropped cursor:pointer on buttons (browser default
+       is default). Restore it for interactive controls — links with href keep
+       the UA pointer; buttons and button-roles need this explicitly. */
+    button:not(:disabled),
+    [role='button']:not([aria-disabled='true']),
+    summary {
+        cursor: pointer;
+    }
+
+    a[href] {
+        cursor: pointer;
+    }
+
     /* Thick and offset, so the ring reads on any surface. */
     :focus-visible {
         outline: 3px solid var(--c-action);
@@ -601,7 +614,7 @@
     }
 
     .u-btn-outline {
-        @apply inline-flex min-h-[2.75rem] select-none items-center justify-center gap-2.5
+        @apply inline-flex min-h-[2.75rem] cursor-pointer select-none items-center justify-center gap-2.5
                rounded-full border-2 border-line bg-surface px-5 py-2.5
                text-sm font-semibold leading-tight text-ink no-underline
                transition-[background-color,border-color,transform] duration-200;
@@ -617,7 +630,7 @@
        min-height 3rem — 48px at the 100% root, past the 44px touch minimum
        with room to spare, and it grows again on the data-text steps. */
     .u-btn-primary, .u-btn-ghost, .u-btn-danger {
-        @apply inline-flex min-h-[3rem] select-none items-center justify-center gap-2.5
+        @apply inline-flex min-h-[3rem] cursor-pointer select-none items-center justify-center gap-2.5
                rounded-full px-6 py-3 text-base font-semibold leading-tight no-underline
                transition-[background-color,color,border-color,box-shadow,transform] duration-200;
         transition-timing-function: var(--ease-out-soft);

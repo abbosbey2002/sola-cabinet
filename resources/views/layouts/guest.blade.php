@@ -87,8 +87,11 @@
         <div class="u-rise relative z-20 flex shrink-0 flex-wrap items-center justify-between gap-3">
             <x-logo :height="'h-10'" class="lg:hidden"/>
             <div class="ml-auto flex items-center gap-2">
-                <x-view-settings/>
+                {{-- Language first so view-settings is the rightmost control:
+                     its panel is right-anchored and must not spill past the
+                     left edge of a phone viewport. --}}
                 <x-lang-switch/>
+                <x-view-settings/>
             </div>
         </div>
 
