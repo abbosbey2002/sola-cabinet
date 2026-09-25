@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Services\Sola\SolaClient;
 use App\Services\Sola\SolaResponse;
 use App\Support\AbonentSession;
+use App\Support\Activity\ActivityRecorder;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 
 /**
@@ -39,6 +40,15 @@ abstract class Controller
     protected function accountId(): string
     {
         return $this->session->accountId();
+    }
+
+    /**
+     * This request's activity journal entry — see RecordActivity. Resolved on
+     * demand rather than injected, so no controller constructor changes.
+     */
+    protected function activity(): ActivityRecorder
+    {
+        return app(ActivityRecorder::class);
     }
 
     protected function flashInfo(string $text): void

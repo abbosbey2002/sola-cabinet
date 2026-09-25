@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\Admin\AdminLoginRequest;
+use App\Support\Admin\AdminRole;
 use App\Support\AdminSession;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
@@ -45,7 +46,11 @@ final class AdminAuthController
 
         $this->session->login((int) $admin->id);
 
-        return redirect()->route('admin.tariffs');
+        // Each role lands on the first screen it may open; an unknown role
+        // lands on statistics, which then answers 403 like any other page.
+        $role = AdminRole::tryFrom((string) ($admin->role ?? ''));
+
+        return redirect()->route($role?->homeRoute() ?? 'admin.stats');
     }
 
     public function logout(): RedirectResponse

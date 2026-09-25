@@ -47,7 +47,7 @@
         {{-- The card is nearly all table, so its padding drops to a hairline:
              at the normal card padding the rows lose a quarter of their width
              to whitespace on a phone. --}}
-        <section data-table data-page-size="10" class="u-card u-rise !p-2 sm:!p-3" style="--i:1" aria-labelledby="daily-title">
+        <section data-table data-page-size="10" data-activity-table="traffic" class="u-card u-rise !p-2 sm:!p-3" style="--i:1" aria-labelledby="daily-title">
             <h2 id="daily-title" class="sr-only">@lang('app.traffic.title')</h2>
 
             <div class="u-table-wrap u-scroll">

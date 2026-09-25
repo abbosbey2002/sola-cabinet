@@ -18,7 +18,7 @@ final class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        $username = 'admin';
+        $username = '   ';
         $password = 'password';
         $hash = Hash::make($password);
 

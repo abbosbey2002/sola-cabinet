@@ -1,5 +1,6 @@
 import '../css/app.css';
 
+import initActivity from './modules/activity.js';
 import initAjaxForms from './modules/ajax.js';
 import initAmountMask from './modules/amount-mask.js';
 import initAmountPresets from './modules/amount-presets.js';
@@ -42,6 +43,7 @@ function boot() {
     initTopUp();
     initOtp();
     initOffline();
+    initActivity();
     // Last: sees defaultPrevented from ajax / tariff / modal so it does not
     // start a page-progress bar on a fetch that never leaves this page.
     initMotion();

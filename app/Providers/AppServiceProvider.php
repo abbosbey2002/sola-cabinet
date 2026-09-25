@@ -8,6 +8,9 @@ use App\Services\Sola\FakeLoginServer;
 use App\Services\Sola\FakeSolaServer;
 use App\Services\Sola\SolaClient;
 use App\Support\AbonentSession;
+use App\Support\Activity\ActivityRecorder;
+use App\Support\Activity\GeoLocator;
+use App\Support\Admin\CurrentAdmin;
 use App\Support\IpLocation;
 use Illuminate\Contracts\Cache\Repository as CacheRepository;
 use Illuminate\Contracts\View\View;
@@ -26,6 +29,15 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->scoped(AbonentSession::class);
 
         $this->app->singleton(IpLocation::class, fn (): IpLocation => IpLocation::fromConfig());
+
+        // Per request: the recorder holds what the controller annotated about
+        // this request's event, the admin resolver the signed-in admin's row.
+        $this->app->scoped(ActivityRecorder::class);
+        $this->app->scoped(CurrentAdmin::class);
+
+        $this->app->singleton(GeoLocator::class, fn ($app): GeoLocator => new GeoLocator(
+            $app->make('config')->get('activity.geoip_database'),
+        ));
 
         $this->registerTelescope();
     }

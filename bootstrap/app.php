@@ -1,15 +1,20 @@
 <?php
 
 use App\Exceptions\SolaUnavailableException;
+use App\Http\Middleware\AuditAdminAccess;
 use App\Http\Middleware\EnsureAbonentIsVerified;
+use App\Http\Middleware\EnsureAdminCan;
 use App\Http\Middleware\EnsureAdminIsAuthenticated;
+use App\Http\Middleware\RecordActivity;
 use App\Http\Middleware\RedirectIfAbonentIsVerified;
 use App\Http\Middleware\RedirectIfAdminIsAuthenticated;
 use App\Http\Middleware\SetLocale;
+use App\Support\Activity\RequestContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\Log;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -38,8 +43,26 @@ return Application::configure(basePath: dirname(__DIR__))
         );
 
         // The locale lives in a cookie, so this has to run after cookie decryption.
+        // RecordActivity comes after it so a recorded event carries the
+        // locale the page was actually rendered in.
         $middleware->web(append: [
             SetLocale::class,
+            RecordActivity::class,
+        ]);
+
+        // Laravel sorts ThrottleRequests ahead of the web group's own
+        // middleware, which would put a throttled login's 429 outside
+        // RecordActivity and out of the journal. Pinned in front of it.
+        $middleware->prependToPriorityList(
+            before: ThrottleRequests::class,
+            prepend: RecordActivity::class,
+        );
+
+        // Written by activity.js in the browser (screen size, theme) and read
+        // back as plain text; it carries nothing secret and RequestContext
+        // re-validates every part of it.
+        $middleware->encryptCookies(except: [
+            RequestContext::SCREEN_COOKIE,
         ]);
 
         $middleware->alias([
@@ -47,6 +70,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'abonent.guest' => RedirectIfAbonentIsVerified::class,
             'admin.auth' => EnsureAdminIsAuthenticated::class,
             'admin.guest' => RedirectIfAdminIsAuthenticated::class,
+            'admin.can' => EnsureAdminCan::class,
+            'admin.audit' => AuditAdminAccess::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

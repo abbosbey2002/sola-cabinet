@@ -6,7 +6,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TariffConnectRequest;
 use App\Support\AbonentProfile;
+use App\Support\Activity\DeniedReason;
+use App\Support\Activity\Outcome;
+use App\Support\Activity\TariffChangeRecorder;
 use App\Support\ConnectedTariff;
+use App\Support\ErrorMessages;
 use App\Support\TariffVisibility;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\View\View;
@@ -66,52 +70,102 @@ final class TariffController extends Controller
      * reachable with a valid CSRF token by anyone signed in, whatever their
      * account type and whatever tariff id they put in the body.
      */
-    public function connect(TariffConnectRequest $request, TariffVisibility $visibility): RedirectResponse
-    {
+    public function connect(
+        TariffConnectRequest $request,
+        TariffVisibility $visibility,
+        TariffChangeRecorder $changes,
+    ): RedirectResponse {
         $accountId = $this->accountId();
         $isPermanent = $this->session->isPermanent();
+        $tariffId = $request->tariffId();
 
         // The same rule cabinet/tariff.blade.php gates the form on: only a
         // permanent subscriber may switch, unless there is no tariff at all yet.
-        $profile = AbonentProfile::from($this->sola->abonentInfo($accountId));
+        $info = $this->sola->abonentInfo($accountId);
+        $profile = AbonentProfile::from($info);
+        $this->activity()->withProfile($profile);
 
-        abort_if($profile->isLegalEntity(), 403);
+        // Every refusal below is recorded before the 403, so the admin's
+        // tariff-change history shows who tried and why they were turned away.
+        $deny = function (DeniedReason $reason, ?array $tariff = null) use ($changes, $request, $info, $tariffId): never {
+            $changes->deny($request, $info, $tariffId, $tariff, $reason);
+            $this->activity()->annotate(Outcome::Denied, meta: ['tariff_id' => $tariffId, 'denied_reason' => $reason->value]);
 
-        abort_unless($isPermanent || blank($profile->currentTariff()), 403);
+            abort(403);
+        };
+
+        if ($profile->isLegalEntity()) {
+            $deny(DeniedReason::LegalEntity);
+        }
+
+        if (! $isPermanent && ! blank($profile->currentTariff())) {
+            $deny(DeniedReason::NotPermanent);
+        }
 
         // The tariff has to be one billing actually offers THIS account, and
         // one the admin has opted in to /tariffs — the same filter that page
         // renders through, so an id nobody enabled can never be connected by
         // posting it directly.
-        $available = $visibility->filter((array) $this->sola->availableTariffs($accountId)->get('tariffs', []));
+        $offeredByBilling = (array) $this->sola->availableTariffs($accountId)->get('tariffs', []);
+        $tariff = self::findTariff($offeredByBilling, $tariffId);
 
-        $offered = collect($available)
-            ->contains(fn (array $tariff): bool => (int) $tariff['tariff_id'] === $request->tariffId());
+        if ($tariff === null) {
+            $deny(DeniedReason::NotInAvailable);
+        }
 
-        abort_unless($offered, 403);
+        if (self::findTariff($visibility->filter($offeredByBilling), $tariffId) === null) {
+            $deny(DeniedReason::NotAllowed, $tariff);
+        }
 
         // Only a permanent subscriber is offered the timing dialog; for anyone
         // else the page posts "now", so that is what the server honours rather
         // than trusting a hand-edited body.
         $timing = $isPermanent ? $request->timing() : 'now';
 
+        $connected = $timing === 'now'
+            ? null
+            : ConnectedTariff::current($this->sola->connectedTariffs($accountId), $profile->currentTariffId());
+
         $date = match ($timing) {
             'now' => CarbonImmutable::now(),
-            default => $this->connectionDate(
-                $profile,
-                ConnectedTariff::current($this->sola->connectedTariffs($accountId), $profile->currentTariffId()),
-            ),
+            default => $this->connectionDate($profile, $connected),
         };
 
-        $response = $this->sola->connectTariff($accountId, $request->tariffId(), $date->format('Y-m-d'));
+        $changeId = $changes->begin($request, $info, $tariffId, $tariff, $timing, $date, $connected);
+
+        $response = $changes->attempt(
+            $changeId,
+            $accountId,
+            fn () => $this->sola->connectTariff($accountId, $tariffId, $date->format('Y-m-d')),
+        );
+
+        $this->activity()->annotate(Outcome::ofBilling($response), $response, [
+            'tariff_id' => $tariffId,
+            'old_tariff_id' => $profile->currentTariffId(),
+            'timing' => $timing,
+            'tariff_change_id' => $changeId,
+        ]);
 
         if ($response->failed()) {
-            $this->flashDanger($response->errorMessage() ?? trans('errors.unknown'));
+            $this->flashDanger(ErrorMessages::forResponse($response));
         } else {
             $this->flashInfo(trans('app.modal.success_tariff'));
         }
 
         return redirect()->route('tariff');
+    }
+
+    /**
+     * @param  array<int, mixed>  $tariffs  /tariff/available rows
+     * @return array<string, mixed>|null
+     */
+    private static function findTariff(array $tariffs, int $tariffId): ?array
+    {
+        $match = collect($tariffs)->first(
+            fn (mixed $tariff): bool => is_array($tariff) && (int) ($tariff['tariff_id'] ?? 0) === $tariffId,
+        );
+
+        return is_array($match) ? $match : null;
     }
 
     /**

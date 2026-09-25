@@ -11,6 +11,28 @@ services:
     networks:
       - cabinet
 
+  # Activity journal (config/activity.php). Not a dependency of php: the
+  # cabinet renders without it, and recording failures are only logged.
+  # Published on 127.0.0.1 only, for a local psql / GUI client.
+  postgres:
+    image: postgres:18-alpine
+    container_name: cabinet_postgres
+    environment:
+      POSTGRES_DB: "${ACTIVITY_DB_DATABASE:-cabinet_activity}"
+      POSTGRES_USER: "${ACTIVITY_DB_USERNAME:-cabinet}"
+      POSTGRES_PASSWORD: "${ACTIVITY_DB_PASSWORD:-cabinet-local}"
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - cabinet
+
   nginx:
     image: nginx:1.27-alpine
     container_name: cabinet_nginx
@@ -23,6 +45,9 @@ services:
       - php
     networks:
       - cabinet
+
+volumes:
+  postgres-data:
 
 networks:
   cabinet:

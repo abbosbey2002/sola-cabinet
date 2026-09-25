@@ -42,7 +42,8 @@
                     @csrf
                     <button type="submit" class="u-btn-ghost u-btn-sm"
                             data-confirm="{{ $addDeviceConfirm }}"
-                            data-confirm-action="{{ __('app.dash.connect') }}">
+                            data-confirm-action="{{ __('app.dash.connect') }}"
+                            data-activity-cancel="device">
                         <x-icon name="plus" size="size-4"/>@lang('app.services.add_devices')
                     </button>
                 </form>
@@ -94,7 +95,9 @@
                                             <button type="submit" class="u-btn-danger u-btn-sm"
                                                     data-confirm="{{ __('app.header.are_you_cancel') }}"
                                                     data-confirm-action="{{ __('app.detele') }}"
-                                                    data-confirm-tone="danger">
+                                                    data-confirm-tone="danger"
+                                                    data-activity-cancel="device"
+                                                    data-activity-permit="{{ $device['permit_id'] }}">
                                                 <x-icon name="trash" size="size-4"/>@lang('app.detele')
                                             </button>
                                         </form>

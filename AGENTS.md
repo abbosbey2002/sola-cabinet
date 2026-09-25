@@ -2,7 +2,7 @@
 
 Laravel 13 / PHP 8.3+ Blade app for `lk.sola.uz`. ROLE=BLADE: server-rendered pages, small vanilla JS modules, no SPA, no Laravel user guard.
 
-Every subscriber number on screen comes from the SOLA billing API in real time. SQLite is only for `admins`, `enabled_tariffs`, and local Telescope. Do not invent billing fields. Do not derive a “helpful” date or amount when the API omitted it — hide the block.
+Every subscriber number on screen comes from the SOLA billing API in real time. SQLite is only for `admins`, `enabled_tariffs`, and local Telescope. PostgreSQL (`activity` connection) holds the activity journal — history and audit only, never read back onto a cabinet screen (see "Activity journal" below). Do not invent billing fields. Do not derive a “helpful” date or amount when the API omitted it — hide the block.
 
 Authoritative API notes: `docs/api/SOLA_API.md` (observed traffic) and `docs/api/SOLA_API_REFERENCE.md` (gateway source). `docs/task/BAJARILMAGAN_TASKLAR.md` and older task notes **lag** — prefer `AbonentProfile` comments and live code when they disagree (e.g. contract number is `/identify`.`login`; next charge is `charge_date`).
 
@@ -96,6 +96,19 @@ POST + CSRF + FormRequest. Never GET.
 iWon is a **unsigned browser GET**, no callback. After payment iWon sends the subscriber to cabinet home (`returnUrl`); this app does not confirm the credit — billing updates saldo on its own. Log `additional_id` on initiate.
 
 `/tariffs` and `connect()` must use the same `TariffVisibility::filter()` — opt-in SQLite `enabled_tariffs`. A hidden id must not connect via a crafted POST.
+
+## Activity journal (admin statistics)
+
+`config/activity.php`, `app/Support/Activity/`, plan `docs/plans/2026-09-23_activity-log-and-stats.md`, server steps `docs/task/ACTIVITY_JOURNAL_DEPLOY.uz.md`. Off unless `ACTIVITY_ENABLED=true` (stores phone, name, IP — ZRU-547 sign-off before production).
+
+- Tables on the `activity` connection (PostgreSQL; `:memory:` SQLite in tests): `activity_events`, `tariff_changes`, `activity_daily`/`activity_monthly`, `admin_audit`. Migrations live in `database/migrations/activity` and run via `php artisan activity:migrate` — a bare `migrate` never touches them.
+- One event per request: `RecordActivity` maps the route name (`ActivityEvent::forRoute`) and writes after the response; controllers only add what the status cannot say via `$this->activity()->annotate(...)`. New cabinet route that is a menu page or action → add it to `ActivityEvent::forRoute` and the `admin.events.*` copy.
+- Writes are `defer(...)->always()` — without `always()` Laravel drops them on 4xx/5xx. `RecordActivity` is pinned before `ThrottleRequests` in the middleware priority, or 429s are lost.
+- `tariff_changes` is the money audit: the `pending` row is written synchronously **before** billing is called, then settled (`success` / `insufficient_funds` = code 129 / `billing_error` / `denied` + reason / `unavailable`). Prices stored in soʻm (`cost` tiyin → `/100` with integer math).
+- Recording never blocks or breaks the subscriber: every write is try/catch + log.
+- Never stored: SMS code, cookie values, tokens, full billing responses except `tariff_changes.profile_snapshot`. Session id only as a sha256 fingerprint.
+- Admin roles `admin` / `analyst` / `sales` (`admins.role`, `AdminAbility` table, `admin.can:` middleware, read fresh per request). Analyst sees phone/name masked everywhere, including CSV and the snapshot (`PersonalData`). Every admin request lands in `admin_audit`.
+- Cron `schedule:run` runs `activity:rollup` (idempotent) and `activity:prune` (12 months events, 3 years tariff changes / audit).
 
 ## SOLA client behaviour
 

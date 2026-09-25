@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Architecture
 
-Thin Blade client over the SOLA billing API. Subscriber data is not stored here. SQLite is only `admins`, `enabled_tariffs`, and local Telescope.
+Thin Blade client over the SOLA billing API. Screens never show stored subscriber data. SQLite is only `admins`, `enabled_tariffs`, and local Telescope. PostgreSQL (`activity` connection) holds the activity journal for admin statistics — history/audit only; rules in AGENTS.md "Activity journal".
 
 - Map payloads in `app/Support/` (`AbonentProfile`, `BillingHistory`, `ConnectedTariff`, `ChargeCycle`, `Period`, `TariffVisibility`, `IwonCheckout`). Controllers stay thin.
 - Missing API fields: hide the UI. Do not invent dates or amounts. Prefer live code comments over stale `docs/task/BAJARILMAGAN_TASKLAR.md`.

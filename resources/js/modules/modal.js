@@ -36,8 +36,21 @@ export function openModal(name) {
     (targets.find((el) => !el.hasAttribute('data-modal-close')) ?? targets[0])?.focus();
 }
 
-export function closeModal() {
+/**
+ * @param {'program'|'dismiss'} reason  'dismiss' when the subscriber closed the
+ *   dialog themselves (×, the overlay, Escape) rather than a module closing it
+ *   on the way to acting on their choice. Announced as a `sola:modal-dismiss`
+ *   event so the activity journal can count dialogs abandoned unconfirmed.
+ */
+export function closeModal(reason = 'program') {
     if (!active) return;
+
+    if (reason === 'dismiss') {
+        active.dispatchEvent(new CustomEvent('sola:modal-dismiss', {
+            bubbles: true,
+            detail: { name: active.dataset.modal },
+        }));
+    }
 
     active.setAttribute('hidden', '');
     active = null;
@@ -60,7 +73,7 @@ export default function initModals() {
 
         if (event.target.closest('[data-modal-close]') || event.target.matches('[data-modal-overlay]')) {
             event.preventDefault();
-            closeModal();
+            closeModal('dismiss');
         }
     });
 
@@ -68,7 +81,7 @@ export default function initModals() {
         if (!active) return;
 
         if (event.key === 'Escape') {
-            closeModal();
+            closeModal('dismiss');
 
             return;
         }

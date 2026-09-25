@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Services\Sola\SolaResponse;
 use App\Support\AbonentProfile;
+use App\Support\Activity\Outcome;
 use App\Support\ConnectedDevices;
 use App\Support\IpLocation;
 use Illuminate\Contracts\View\View;
@@ -51,6 +52,7 @@ final class DeviceController extends Controller
 
         return $this->flashAndReturn(
             $this->sola->addDevice($this->accountId()),
+            [],
             trans('app.header.success_device'),
         );
     }
@@ -66,12 +68,18 @@ final class DeviceController extends Controller
 
         return $this->flashAndReturn(
             $this->sola->deleteDevice($this->accountId(), $permitId),
+            ['permit_id' => mb_substr($permitId, 0, 32)],
             trans('app.header.success_deleted'),
         );
     }
 
-    private function flashAndReturn(SolaResponse $response, string $successText): RedirectResponse
+    /**
+     * @param  array<string, scalar|null>  $meta
+     */
+    private function flashAndReturn(SolaResponse $response, array $meta, string $successText): RedirectResponse
     {
+        $this->activity()->annotate(Outcome::ofBilling($response), $response, $meta);
+
         if ($response->successful()) {
             $this->flashInfo($successText);
         } else {

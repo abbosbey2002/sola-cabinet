@@ -13,6 +13,11 @@
     <meta name="theme-color" content="#f1f6ed">
     {{-- ajax.js reads this; without it the period forms answer 419. --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if (config('activity.enabled') && Route::has('activity.beacon'))
+        {{-- Where activity.js reports print / search / cancelled dialogs.
+             Absent while the journal is off, and the module then does nothing. --}}
+        <meta name="activity-beacon" content="{{ route('activity.beacon') }}">
+    @endif
 
     <title>@yield('title'){{ config('app.name') }}</title>
 

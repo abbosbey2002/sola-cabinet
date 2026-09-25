@@ -7,6 +7,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\VerifyRequest;
+use App\Support\Activity\ActivityEvent;
+use App\Support\Activity\Outcome;
 use App\Support\ErrorMessages;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -27,6 +29,13 @@ final class AuthController extends Controller
 
         $phone = $request->phone();
         $response = $this->sola->identify($phone);
+
+        // No account is chosen yet, so the phone typed is the only way to tell
+        // who this was — kept even when billing did not know the number.
+        $this->activity()->annotate(Outcome::ofBilling($response), $response, [
+            'phone_typed' => $phone,
+            'accounts' => count((array) $response->get('accs', [])),
+        ]);
 
         if ($response->failed()) {
             return $this->view->make('auth.login')
@@ -59,6 +68,8 @@ final class AuthController extends Controller
         }
 
         $response = $this->sola->verify($this->session->login(), $request->code());
+
+        $this->activity()->annotate(Outcome::ofBilling($response), $response);
 
         if ($response->failed()) {
             return $this->view->make('auth.verify')
@@ -97,7 +108,21 @@ final class AuthController extends Controller
             ->first(fn (mixed $account): bool => is_array($account)
                 && (string) ($account['accId'] ?? '') === $accountId);
 
-        abort_if($account === null, 403);
+        if ($account === null) {
+            $this->activity()->annotate(Outcome::Denied, meta: ['requested_account_id' => mb_substr($accountId, 0, 32)]);
+
+            abort(403);
+        }
+
+        // The same route serves the first pick after sign-in and a later
+        // switch from the header menu; only the second one had an account.
+        $previous = $this->session->accountId();
+
+        $this->activity()->annotate(
+            Outcome::Ok,
+            meta: ['previous_account_id' => $previous !== '' ? $previous : null],
+            event: $previous === '' ? ActivityEvent::AuthAccountSelected : ActivityEvent::AuthAccountSwitched,
+        );
 
         $this->selectAccount($account);
 

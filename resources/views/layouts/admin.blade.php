@@ -37,12 +37,19 @@
     @lang('app.ui.skip')
 </a>
 
+@inject('currentAdmin', 'App\Support\Admin\CurrentAdmin')
+
 @php
-    // One entry today (Tariffs) — a list rather than one hard-coded link so
-    // the next admin screen slots in without restructuring the shell.
-    $navItems = [
-        ['route' => 'admin.tariffs', 'icon' => 'tag', 'label' => trans('app.admin.tariffs_title')],
-    ];
+    // Only the screens this admin's role may open (AdminAbility) — the
+    // routes check again, this just keeps a dead link off the sidebar.
+    $navItems = collect([
+        ['route' => 'admin.stats', 'match' => 'admin.stats*', 'icon' => 'chart', 'label' => trans('admin.nav.stats'), 'ability' => \App\Support\Admin\AdminAbility::ViewStats],
+        ['route' => 'admin.tariff-changes', 'match' => 'admin.tariff-changes*', 'icon' => 'refresh', 'label' => trans('admin.nav.tariff_changes'), 'ability' => \App\Support\Admin\AdminAbility::ViewTariffChanges],
+        ['route' => 'admin.accounts', 'match' => 'admin.accounts*', 'icon' => 'user', 'label' => trans('admin.nav.accounts'), 'ability' => \App\Support\Admin\AdminAbility::ViewAccountHistory],
+        ['route' => 'admin.tariffs', 'match' => 'admin.tariffs*', 'icon' => 'tag', 'label' => trans('app.admin.tariffs_title'), 'ability' => \App\Support\Admin\AdminAbility::ManageTariffs],
+    ])->filter(fn (array $item): bool => $currentAdmin->can($item['ability']));
+
+    $identity = $currentAdmin->identity();
 @endphp
 
 <div class="flex min-h-dvh">
@@ -55,14 +62,21 @@
             <span class="u-label rounded-full bg-surface-2 px-2.5 py-1 text-ink">Admin</span>
         </div>
 
-        <nav class="mt-8 flex flex-1 flex-col gap-1" aria-label="@lang('app.admin.tariffs_title')">
+        <nav class="mt-8 flex flex-1 flex-col gap-1" aria-label="@lang('admin.nav.label')">
             @foreach ($navItems as $item)
                 <a href="{{ route($item['route']) }}" class="u-sidebar-link"
-                   @if (request()->routeIs($item['route'])) aria-current="page" @endif>
+                   @if (request()->routeIs($item['match'])) aria-current="page" @endif>
                     <x-icon :name="$item['icon']" size="size-5"/>{{ $item['label'] }}
                 </a>
             @endforeach
         </nav>
+
+        @if ($identity)
+            <div class="mb-3 rounded-xl bg-surface-2 px-3.5 py-3">
+                <p class="truncate text-sm font-semibold text-ink" title="{{ $identity->username }}">{{ $identity->username }}</p>
+                <p class="u-label mt-0.5">{{ $identity->role ? __('admin.roles.'.$identity->role->value) : '—' }}</p>
+            </div>
+        @endif
 
         <form method="post" action="{{ route('admin.logout') }}">
             @csrf
@@ -73,8 +87,9 @@
     </aside>
 
     <div class="flex min-w-0 flex-1 flex-col">
-        {{-- Mobile: the sidebar collapses to this bar — one nav item does not
-             earn a drawer/hamburger of its own. --}}
+        {{-- Mobile: the sidebar collapses to this bar, with the sections as a
+             scrolling row of links under it — four entries do not earn a
+             drawer that hides them behind a tap. --}}
         <header class="u-no-print flex min-h-[4rem] items-center justify-between gap-3 border-b-2 border-line px-4 sm:hidden">
             <div class="flex items-center gap-2.5">
                 <x-logo height="h-8"/>
@@ -88,6 +103,16 @@
                 </button>
             </form>
         </header>
+
+        <nav class="u-no-print u-scroll flex gap-1 overflow-x-auto border-b-2 border-line px-3 py-2 sm:hidden"
+             aria-label="@lang('admin.nav.label')">
+            @foreach ($navItems as $item)
+                <a href="{{ route($item['route']) }}" class="u-sidebar-link shrink-0 whitespace-nowrap"
+                   @if (request()->routeIs($item['match'])) aria-current="page" @endif>
+                    <x-icon :name="$item['icon']" size="size-5"/>{{ $item['label'] }}
+                </a>
+            @endforeach
+        </nav>
 
         <main id="content" class="w-full flex-1 px-4 pb-16 pt-7 sm:px-8">
             @hasSection('heading')

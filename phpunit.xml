@@ -28,5 +28,12 @@
         <env name="SOLA_PASSWORD" value="secret"/>
         <env name="SOLA_SECRET_KEY" value="secret-key"/>
         <env name="IWON_ACTIVE" value="false"/>
+        <!-- Activity journal: off unless a test turns it on, and when it does,
+             an in-memory SQLite instead of PostgreSQL (tests/Concerns/UsesActivityDatabase). -->
+        <env name="ACTIVITY_ENABLED" value="false"/>
+        <env name="ACTIVITY_DB_CONNECTION" value="activity"/>
+        <env name="ACTIVITY_DB_DRIVER" value="sqlite"/>
+        <env name="ACTIVITY_DB_DATABASE" value=":memory:"/>
+        <env name="ACTIVITY_GEOIP_DATABASE" value="/nonexistent/GeoLite2-City.mmdb"/>
     </php>
 </phpunit>

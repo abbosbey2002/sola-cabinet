@@ -19,6 +19,12 @@ composer install --no-dev --optimize-autoloader
 touch database/database.sqlite
 php artisan migrate --force
 
+# Activity journal (PostgreSQL). A no-op while ACTIVITY_ENABLED=false. Not
+# fatal: the cabinet runs without the journal, and a database that is down
+# must not leave the site in maintenance mode — set -e would stop right here,
+# before "php artisan up".
+php artisan activity:migrate --force || echo "WARNING: activity:migrate failed — journal tables not migrated" >&2
+
 npm ci
 npm run build
 

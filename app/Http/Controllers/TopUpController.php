@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TopUpRequest;
 use App\Support\AbonentProfile;
+use App\Support\Activity\Outcome;
 use App\Support\IwonCheckout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -49,6 +50,12 @@ final class TopUpController extends Controller
 
         Log::info('iwon.topup.initiated', [
             'account_id' => $accountId,
+            'amount_som' => $amount,
+            'balance_before' => $balanceBefore,
+            'additional_id' => $redirect->additionalId,
+        ]);
+
+        $this->activity()->annotate(Outcome::Ok, meta: [
             'amount_som' => $amount,
             'balance_before' => $balanceBefore,
             'additional_id' => $redirect->additionalId,

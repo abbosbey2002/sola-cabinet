@@ -34,6 +34,11 @@ final class PaymentController extends Controller
     {
         $period = $request->period();
 
+        $this->activity()->addMeta([
+            'begin' => $period->startInput(),
+            'end' => $period->endInput(),
+        ]);
+
         return view('payment.result', [
             'period' => $period,
             'payments' => $this->history()->payments($this->accountId(), $period),

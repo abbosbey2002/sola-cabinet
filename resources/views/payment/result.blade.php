@@ -45,7 +45,7 @@
 @if ($payments['rows'])
     {{-- Nearly all table, so the card padding drops to a hairline: at the full
          card padding the rows lose a quarter of their width on a phone. --}}
-    <section data-table data-page-size="10" class="u-card u-rise mt-4 !p-2 sm:!p-3" style="--i:1" aria-labelledby="history-title">
+    <section data-table data-page-size="10" data-activity-table="payments" class="u-card u-rise mt-4 !p-2 sm:!p-3" style="--i:1" aria-labelledby="history-title">
         <h2 id="history-title" class="sr-only">@lang('app.payment.pays')</h2>
 
         <x-table-toolbar search print/>

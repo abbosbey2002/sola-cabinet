@@ -25,6 +25,11 @@ return [
     '125' => 'Не указан номер телефона для SMS',
     '126' => 'Тип абонента ВРЕМЕННЫЙ не имеет доступа к ПК',
     '127' => 'Имеется устройство с не привязанным MAC адресом',
+    '128' => 'This service is not available to a one-off subscriber',
+    '129' => 'Your balance is too low to change the tariff. Top up your account and try again.',
+    '130' => 'A required parameter is missing or invalid (service_id)',
+    '131' => 'A required parameter is missing or invalid (service_conndate)',
+    '132' => 'Your balance is too low to connect this service. Top up your account and try again.',
 
     'unknown' => 'Something went wrong, please try again later',
     'service_unavailable' => 'The service is temporarily unavailable, please try again later',

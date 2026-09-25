@@ -34,6 +34,11 @@ final class TrafficController extends Controller
     {
         $period = $request->period();
 
+        $this->activity()->addMeta([
+            'begin' => $period->startInput(),
+            'end' => $period->endInput(),
+        ]);
+
         return view('trafic.result', [
             'period' => $period,
             'traffic' => $this->history()->traffic($this->accountId(), $period),

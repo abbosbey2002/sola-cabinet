@@ -50,9 +50,38 @@ npm run dev        # ochiq qolsin, http://localhost:8080 avtomatik yangilanadi
 |---|---|---|
 | nginx | nginx:1.27-alpine | 8080 → 80 |
 | php   | php:8.4-fpm (build) | 9000 (ichki) |
+| postgres | postgres:18-alpine | 127.0.0.1:5433 → 5432 |
 
-Baza servisi yo'q — ilova hech qanday ma'lumotlar bazasidan foydalanmaydi
-(pastga qarang).
+Kabinet ekranlaridagi raqamlar avvalgidek faqat billing API'dan keladi.
+`postgres` faqat **harakatlar jurnali** uchun (statistika, tarif almashtirish
+tarixi, admin audit) — pastdagi "Harakatlar jurnali" bo'limiga qarang.
+
+### Harakatlar jurnali (PostgreSQL)
+
+Default o'chiq (`ACTIVITY_ENABLED=false`). Lokal yoqish uchun `.env` ga:
+
+```env
+ACTIVITY_ENABLED=true
+ACTIVITY_DB_HOST=postgres
+ACTIVITY_DB_PASSWORD=cabinet-local
+```
+
+keyin:
+
+```bash
+docker compose up -d postgres
+docker compose exec -u www-data php php artisan config:clear
+docker compose exec -u www-data php php artisan activity:migrate --force
+```
+
+Oddiy `php artisan migrate` bu jadvallarga **tegmaydi** — ular
+`database/migrations/activity` papkasida, o'z connection'ida.
+Admin panel: `/admin/stats`, `/admin/tariff-changes`, `/admin/accounts`.
+Rolli admin: `php artisan admin:create ali --role=analyst` (`admin`,
+`analyst`, `sales`), rolni almashtirish: `php artisan admin:role ali sales`.
+
+Testlar PostgreSQL'siz ishlaydi: `phpunit.xml` jurnalni xotiradagi SQLite'ga
+yo'naltiradi.
 
 ## Telescope (faqat local)
 

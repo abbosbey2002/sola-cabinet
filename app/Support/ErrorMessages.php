@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Services\Sola\SolaResponse;
 use Illuminate\Support\Facades\Lang;
 
 /**
@@ -25,5 +26,22 @@ final class ErrorMessages
         }
 
         return (string) trans('errors.unknown');
+    }
+
+    /**
+     * A failed billing response, worded for the subscriber: our own
+     * translation when the code has one (it speaks the page's language and can
+     * say what to do next — "top up and try again" for 129), billing's errMsg
+     * when it does not, the generic message when there is neither.
+     */
+    public static function forResponse(SolaResponse $response): string
+    {
+        $code = $response->errorCode();
+
+        if ($code !== null && $code !== 0 && Lang::has("errors.{$code}")) {
+            return (string) trans("errors.{$code}");
+        }
+
+        return $response->errorMessage() ?? (string) trans('errors.unknown');
     }
 }

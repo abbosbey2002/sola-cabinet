@@ -1,5 +1,6 @@
 <?php
 
+use App\Support\Activity\ActivityRecorder;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Schedule;
 use Laravel\Telescope\Telescope;
@@ -40,3 +41,19 @@ Artisan::command('inspire', function () {
 if (app()->environment('local') && class_exists(Telescope::class)) {
     Schedule::command('telescope:prune --hours=48')->daily();
 }
+
+/*
+| Activity journal (config/activity.php). Yesterday's totals are rolled up
+| after midnight UTC, then retention runs. Both need the server's cron to call
+| "php artisan schedule:run" every minute — see DEPLOY.ru.md. The rollup is
+| idempotent, so a double-fire only rebuilds the same rows.
+*/
+Schedule::command('activity:rollup')
+    ->dailyAt('00:30')
+    ->when(fn (): bool => ActivityRecorder::isEnabled())
+    ->withoutOverlapping();
+
+Schedule::command('activity:prune')
+    ->dailyAt('01:00')
+    ->when(fn (): bool => ActivityRecorder::isEnabled())
+    ->withoutOverlapping();
